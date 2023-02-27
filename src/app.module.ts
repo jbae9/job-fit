@@ -17,7 +17,6 @@ import { ThrottlerModule } from '@nestjs/throttler'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { JwtConfigService } from './_config/jwt.config.service'
 import { TypeOrmConfigService } from './_config/typeorm.config.service'
-import { AuthMiddleware } from './middlewares/auth.middleware'
 import { CompanyModule } from './company/company.module'
 
 @Module({
@@ -27,7 +26,9 @@ import { CompanyModule } from './company/company.module'
             useClass: TypeOrmConfigService,
         }),
         JwtModule.registerAsync({
+            imports: [ConfigModule],
             useClass: JwtConfigService,
+            inject: [ConfigService],
         }),
         // CacheModule.register({
         //     ttl: 60000, // 데이터 캐싱 시간(밀리 초 단위, 1000 = 1초)
@@ -45,11 +46,4 @@ import { CompanyModule } from './company/company.module'
     controllers: [AppController, UserController, JobPostController],
     providers: [AppService],
 })
-export class AppModule implements NestModule {
-    // NestModule 인터페이스 구현
-    configure(consumer: MiddlewareConsumer) {
-        consumer
-            .apply(AuthMiddleware) // 미들웨어 적용!
-            .forRoutes({ path: 'user/update', method: RequestMethod.PUT })
-    }
-}
+export class AppModule {}
