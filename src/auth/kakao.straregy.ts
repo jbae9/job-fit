@@ -8,7 +8,7 @@ import { CreateUserDto } from './dto/create-user.dto'
 export class KakaoStrategy extends PassportStrategy(Strategy) {
     constructor(private readonly authService: AuthService) {
         super({
-            clientId: process.env.KAKAO_KEY,
+            clientID: process.env.KAKAO_KEY,
             callbackURL: process.env.KAKAO_CALLBACK,
         })
     }
@@ -27,6 +27,8 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
             nickname,
             profileImage,
             role: 'user',
+            addressUpper: null,
+            addressLower: null,
         }
 
         // DB에 회원이 존재하는지 검사
