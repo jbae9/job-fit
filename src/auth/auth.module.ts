@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from 'src/entities/user.entity'
 import { JwtConfigService } from 'src/_config/jwt.config.service'
 import { AuthService } from './auth.service'
+import { JwtStrategy } from './jwt.strategy'
 import { KakaoStrategy } from './kakao.straregy'
 
 @Module({
@@ -20,6 +21,6 @@ import { KakaoStrategy } from './kakao.straregy'
             inject: [ConfigService],
         }),
     ],
-    providers: [AuthService, KakaoStrategy],
+    providers: [AuthService, KakaoStrategy, JwtStrategy],
 })
 export class AuthModule {}
