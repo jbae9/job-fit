@@ -16,6 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { JwtConfigService } from './_config/jwt.config.service'
 import { TypeOrmConfigService } from './_config/typeorm.config.service'
 import { CompanyModule } from './company/company.module'
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -42,6 +43,7 @@ import { CompanyModule } from './company/company.module'
         UserModule,
         JobpostModule,
         CompanyModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],
