@@ -35,7 +35,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy) {
         const user = await this.authService.findUser(email)
 
         // 회원이 없을 때 회원가입 진행
-        if (user === null) {
+        if (!user) {
             const createUserResult = await this.authService.createUser(
                 userProfile
             )
