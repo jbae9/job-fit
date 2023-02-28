@@ -1,5 +1,7 @@
 import { Builder, By, Key, until, WebDriver } from 'selenium-webdriver'
 import { Options } from 'selenium-webdriver/chrome'
+import * as cheerio from 'cheerio'
+import axios from 'axios'
 
 const selenium = async () => {
     const options = new Options()
@@ -11,10 +13,10 @@ const selenium = async () => {
         .setChromeOptions(options)
         .build()
 
-    const driverBody = await new Builder()
-        .forBrowser('chrome')
-        .setChromeOptions(options)
-        .build()
+    // const driverBody = await new Builder()
+    //     .forBrowser('chrome')
+    //     .setChromeOptions(options)
+    //     .build()
 
     try {
         await driver.get(
@@ -49,10 +51,9 @@ const selenium = async () => {
         const allJobs = await driver.findElements(
             By.css(`div[data-cy="job-card"]`)
         )
-        console.log('allJobs')
 
         const allJobsArr = []
-        for (let i = 0; i < allJobs.length; i++) {
+        for (let i = 0; i < 1; i++) {
             const originalUrl = await allJobs[i]
                 .findElement(By.css('a'))
                 .getAttribute('href')
@@ -71,15 +72,18 @@ const selenium = async () => {
                 .findElement(By.className('job-card-company-location'))
                 .getText()
 
-            await driverBody.get(originalUrl)
+            const jobPage = await axios.get(originalUrl)
+            const $ = cheerio.load(jobPage.data)
+            const content = $('.JobContent_descriptionWrapper__SM4UD')
+            console.log(content.text())
 
-            const content = await driverBody
-                .findElement(
-                    By.css(
-                        '#__next > div.JobDetail_cn__WezJh > div.JobDetail_contentWrapper__DQDB6 > div.JobDetail_relativeWrapper__F9DT5 > div > div.JobContent_descriptionWrapper__SM4UD > section'
-                    )
-                )
-                .getAttribute('innerHTML')
+            // const content = await driverBody
+            //     .findElement(
+            //         By.css(
+            //             '#__next > div.JobDetail_cn__WezJh > div.JobDetail_contentWrapper__DQDB6 > div.JobDetail_relativeWrapper__F9DT5 > div > div.JobContent_descriptionWrapper__SM4UD > section'
+            //         )
+            //     )
+            //     .getAttribute('innerHTML')
 
             allJobsArr.push({
                 originalUrl: originalUrl,
@@ -91,11 +95,12 @@ const selenium = async () => {
             })
         }
 
-        console.log(allJobsArr)
+        // console.log(allJobsArr)
     } catch (error) {
         console.log(error)
     } finally {
         await driver.quit()
+        // await driverBody.quit()
     }
 }
 
