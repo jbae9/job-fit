@@ -8,7 +8,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm'
 
-@Entity({ schema: 'JobBoard', name: 'User' })
+@Entity({ schema: 'jobfit', name: 'user' })
 export class User {
     @PrimaryGeneratedColumn({ type: 'int' })
     userId: number
@@ -17,19 +17,19 @@ export class User {
     @Column({ type: 'varchar' })
     email: string
 
-    @Column({ type: 'varchar' })
+    @Column({ type: 'varchar', nullable: true })
     nickname: string | null
 
-    @Column({ type: 'varchar' })
+    @Column({ type: 'varchar', nullable: true })
     profileImage: string | null
 
     @Column({ type: 'varchar' })
     role: string
 
-    @Column({ type: 'varchar' })
+    @Column({ type: 'varchar', nullable: true })
     addressUpper: string | null
 
-    @Column({ type: 'varchar' })
+    @Column({ type: 'varchar', nullable: true })
     addressLower: string | null
 
     @CreateDateColumn()
