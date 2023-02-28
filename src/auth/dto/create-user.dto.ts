@@ -3,4 +3,6 @@ export class CreateUserDto {
     nickname: string | null
     profileImage: string | null
     role: string
+    addressUpper: string | null
+    addressLower: string | null
 }
