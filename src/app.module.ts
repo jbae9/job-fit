@@ -42,7 +42,7 @@ import { CompanyModule } from './company/company.module'
         JobPostModule,
         CompanyModule,
     ],
-    controllers: [AppController, UserController, JobPostController],
+    controllers: [AppController],
     providers: [AppService],
 })
 export class AppModule implements NestModule {
