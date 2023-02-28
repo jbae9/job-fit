@@ -21,29 +21,30 @@ const selenium = async () => {
             'https://www.wanted.co.kr/wdlist/518?country=kr&job_sort=job.latest_order&years=-1&locations=all'
         )
 
-        let lastHeight = await driver.executeScript(
-            'return document.body.scrollHeight'
-        )
+        // 무한 스크롤링
+        // let lastHeight = await driver.executeScript(
+        //     'return document.body.scrollHeight'
+        // )
 
-        let newHeight
-        while (true) {
-            await driver.executeScript(
-                'window.scrollTo(0, document.body.scrollHeight)'
-            )
+        // let newHeight
+        // while (true) {
+        //     await driver.executeScript(
+        //         'window.scrollTo(0, document.body.scrollHeight)'
+        //     )
 
-            await new Promise((resolve) => setTimeout(resolve, 3000))
+        //     await new Promise((resolve) => setTimeout(resolve, 3000))
 
-            newHeight = await driver.executeScript(
-                'return document.body.scrollHeight'
-            )
+        //     newHeight = await driver.executeScript(
+        //         'return document.body.scrollHeight'
+        //     )
 
-            console.log(lastHeight)
-            console.log(newHeight)
-            if (newHeight == lastHeight) {
-                break
-            }
-            lastHeight = newHeight
-        }
+        //     console.log(lastHeight)
+        //     console.log(newHeight)
+        //     if (newHeight == lastHeight) {
+        //         break
+        //     }
+        //     lastHeight = newHeight
+        // }
 
         const allJobs = await driver.findElements(
             By.css(`div[data-cy="job-card"]`)
