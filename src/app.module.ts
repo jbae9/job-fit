@@ -7,10 +7,8 @@ import {
 } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { UserController } from './user/user.controller'
 import { UserModule } from './user/user.module'
-import { JobPostController } from './job-post/job-post.controller'
-import { JobPostModule } from './job-post/job-post.module'
+import { JobpostModule } from './jobpost/jobpost.module'
 import { ConfigModule, ConfigService } from '@nestjs/config/dist'
 import { JwtModule } from '@nestjs/jwt'
 import { ThrottlerModule } from '@nestjs/throttler'
@@ -23,7 +21,9 @@ import { CompanyModule } from './company/company.module'
     imports: [
         ConfigModule.forRoot({ isGlobal: true }),
         TypeOrmModule.forRootAsync({
+            imports: [ConfigModule],
             useClass: TypeOrmConfigService,
+            inject: [ConfigService],
         }),
         JwtModule.registerAsync({
             imports: [ConfigModule],
@@ -40,10 +40,10 @@ import { CompanyModule } from './company/company.module'
         //     limit: 10, // ttl (60초) 동안 limit 만큼의 요청만 받는다.
         // }),
         UserModule,
-        JobPostModule,
+        JobpostModule,
         CompanyModule,
     ],
-    controllers: [AppController, UserController, JobPostController],
+    controllers: [AppController],
     providers: [AppService],
 })
 export class AppModule {}

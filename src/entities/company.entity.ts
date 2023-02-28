@@ -1,4 +1,4 @@
-import { JobPost } from 'src/job-post/job-post.entity'
+import { Jobpost } from 'src/entities/jobpost.entity'
 import {
     Column,
     CreateDateColumn,
@@ -15,8 +15,8 @@ export class Company {
     @PrimaryGeneratedColumn({ type: 'int' })
     companyId: number
 
-    @OneToMany((type) => JobPost, (jobPost) => jobPost.jobPostId)
-    jobPost: JobPost[]
+    // @OneToMany((type) => Jobpost, (jobPost) => jobPost.jobPostId)
+    // jobPost: Jobpost[]
 
     @Index({ unique: true })
     @Column('varchar', { length: 100 })
