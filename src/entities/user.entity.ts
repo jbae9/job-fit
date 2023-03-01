@@ -1,22 +1,17 @@
-import { Company } from 'src/company/company.entity'
 import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
     Index,
-    ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm'
 
-@Entity({ schema: 'JobBoard', name: 'JobPost' })
-export class JobPost {
+@Entity({ schema: 'JobBoard', name: 'user' })
+export class User {
     @PrimaryGeneratedColumn({ type: 'int' })
-    jobPostId: number
-
-    @ManyToOne((type) => Company, (company) => company.companyId)
-    company: Company
+    userId: number
 
     @Index({ unique: true })
     @Column()
