@@ -1,7 +1,8 @@
 import axios from 'axios'
 import fs from 'fs'
+import { CompanyRepository } from 'src/company/company.repository'
 
-const axiosScraper = async () => {
+export async function wantedScraper() {
     const startDate = new Date(Date.now())
     console.log(startDate.toTimeString())
     try {
@@ -38,12 +39,15 @@ const axiosScraper = async () => {
                     const content = JSON.stringify(jobDetails.job.detail)
 
                     // Date으로 번경 필요
-                    const deadlineDtm =
+                    let deadlineDtm =
                         jobsList[i].due_time === null
                             ? null
                             : jobsList[i].due_time
+                    if (deadlineDtm !== null)
+                        deadlineDtm = new Date(deadlineDtm)
 
                     const companyId = jobsList[i].company.id
+                    const companyName = jobsList[i].company.name
 
                     // 회사 정보가 이미 저장되어있는지 확인
                     if (!allCompanyIdsArr.includes(companyId)) {
@@ -55,7 +59,6 @@ const axiosScraper = async () => {
                         )
                         const companyDetails = axiosCompanyDetails.data
 
-                        const companyName = companyDetails.company.name
                         const companyImgUrl =
                             companyDetails.company.logo_img.thumb
                         const companyHomepageUrl =
@@ -122,7 +125,7 @@ const axiosScraper = async () => {
                                 foundedYear: null,
                                 imageUrl: companyImgUrl,
                                 homepageUrl: companyHomepageUrl,
-                                annualSales: 0,
+                                annualSales: null,
                                 avgSalary: null,
                                 kreditjobUrl: null,
                                 industryType: industryType,
@@ -140,6 +143,7 @@ const axiosScraper = async () => {
                         deadlineDtm: deadlineDtm,
                         addressUpper: addressUpper,
                         addressLower: addressLower,
+                        companyName: companyName,
                     })
                 }
             }
@@ -147,29 +151,30 @@ const axiosScraper = async () => {
                 `https://www.wanted.co.kr${nextLink}`
             )
             nextLink = nextPage.data.links.next
+            // nextLink = null
         }
 
-        fs.writeFile(
-            'jobposts.txt',
-            JSON.stringify(allJobsArr),
-            function (err) {
-                console.log(err)
-            }
-        )
+        // fs.writeFile(
+        //     'jobposts.txt',
+        //     JSON.stringify(allJobsArr),
+        //     function (err) {
+        //         console.log(err)
+        //     }
+        // )
 
-        fs.writeFile(
-            'companies.txt',
-            JSON.stringify(allCompanies),
-            function (err) {
-                console.log(err)
-            }
-        )
+        // fs.writeFile(
+        //     'companies.txt',
+        //     JSON.stringify(allCompanies),
+        //     function (err) {
+        //         console.log(err)
+        //     }
+        // )
 
         const endDate = new Date(Date.now())
         console.log(endDate.toTimeString())
+
+        return { companies: allCompanies, jobposts: allJobsArr }
     } catch (error) {
         console.log(error)
     }
 }
-
-axiosScraper()

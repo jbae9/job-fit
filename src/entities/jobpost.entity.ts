@@ -39,8 +39,8 @@ export class Jobpost {
     @Column('datetime', { nullable: true })
     postedDtm: Date | null
 
-    @Column('datetime')
-    deadlineDtm: Date
+    @Column('datetime', { nullable: true })
+    deadlineDtm: Date | null
 
     @Column('varchar', { length: 100, nullable: true })
     preferenceCondition: string | null

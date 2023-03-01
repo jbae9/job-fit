@@ -12,11 +12,6 @@ const selenium = async () => {
         .setChromeOptions(options)
         .build()
 
-    // const driverBody = await new Builder()
-    //     .forBrowser('chrome')
-    //     .setChromeOptions(options)
-    //     .build()
-
     try {
         await driver.get(
             'https://www.wanted.co.kr/wdlist/518?country=kr&job_sort=job.latest_order&years=-1&locations=all'
@@ -79,9 +74,8 @@ const selenium = async () => {
 
             const content = JSON.stringify(data.job.detail)
 
-            // Date으로 번경 필요
-            const deadlineDtm =
-                data.job.due_time === null ? null : data.due_time
+            let deadlineDtm = data.job.due_time === null ? null : data.due_time
+            if (deadlineDtm !== null) deadlineDtm = new Date(deadlineDtm)
 
             allJobsArr.push({
                 originalSiteNite: '원티드',
@@ -102,7 +96,6 @@ const selenium = async () => {
         console.log(error)
     } finally {
         await driver.quit()
-        // await driverBody.quit()
     }
 }
 
