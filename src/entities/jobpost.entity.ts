@@ -15,8 +15,8 @@ export class Jobpost {
     @PrimaryGeneratedColumn({ type: 'int' })
     jobPostId: number
 
-    // @ManyToOne((type) => Company, (company) => company.companyId)
-    // company: Company
+    @ManyToOne(() => Company, (company) => company.companyId)
+    company: Company
 
     @Column('text')
     title: string

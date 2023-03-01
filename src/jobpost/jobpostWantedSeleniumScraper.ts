@@ -1,5 +1,6 @@
 import { Builder, By, Key, until, WebDriver } from 'selenium-webdriver'
 import { Options } from 'selenium-webdriver/chrome'
+import axios from 'axios'
 
 const selenium = async () => {
     const options = new Options()
@@ -11,10 +12,10 @@ const selenium = async () => {
         .setChromeOptions(options)
         .build()
 
-    const driverBody = await new Builder()
-        .forBrowser('chrome')
-        .setChromeOptions(options)
-        .build()
+    // const driverBody = await new Builder()
+    //     .forBrowser('chrome')
+    //     .setChromeOptions(options)
+    //     .build()
 
     try {
         await driver.get(
@@ -49,17 +50,12 @@ const selenium = async () => {
         const allJobs = await driver.findElements(
             By.css(`div[data-cy="job-card"]`)
         )
-        console.log('allJobs')
 
         const allJobsArr = []
-        for (let i = 0; i < allJobs.length; i++) {
+        for (let i = 0; i < 1; i++) {
             const originalUrl = await allJobs[i]
                 .findElement(By.css('a'))
                 .getAttribute('href')
-
-            const originalImgUrl = await allJobs[i]
-                .findElement(By.css('a > header'))
-                .getAttribute('style')
 
             const title = await allJobs[i]
                 .findElement(By.className('job-card-position'))
@@ -67,27 +63,37 @@ const selenium = async () => {
             const companyName = await allJobs[i]
                 .findElement(By.className('job-card-company-name'))
                 .getText()
-            const address = await allJobs[i]
-                .findElement(By.className('job-card-company-location'))
-                .getText()
 
-            await driverBody.get(originalUrl)
+            const wantedId = await allJobs[i]
+                .findElement(By.css('a'))
+                .getAttribute('data-position-id')
 
-            const content = await driverBody
-                .findElement(
-                    By.css(
-                        '#__next > div.JobDetail_cn__WezJh > div.JobDetail_contentWrapper__DQDB6 > div.JobDetail_relativeWrapper__F9DT5 > div > div.JobContent_descriptionWrapper__SM4UD > section'
-                    )
-                )
-                .getAttribute('innerHTML')
+            const { data } = await axios.get(
+                `https://www.wanted.co.kr/api/v4/jobs/${wantedId}`
+            )
+
+            const originalImgUrl = data.job.logo_img.thumb
+
+            const address = data.job.address.full_location
+            const [addressUpper, addressLower] = address.split(' ')
+
+            const content = JSON.stringify(data.job.detail)
+
+            // Date으로 번경 필요
+            const deadlineDtm =
+                data.job.due_time === null ? null : data.due_time
 
             allJobsArr.push({
+                originalSiteNite: '원티드',
                 originalUrl: originalUrl,
                 originalImgUrl: originalImgUrl,
                 title: title,
-                companyName: companyName,
-                address: address,
                 content: content,
+                salary: null,
+                deadlineDtm: deadlineDtm,
+                companyName: companyName,
+                addressUpper: addressUpper,
+                addressLower: addressLower,
             })
         }
 
@@ -96,6 +102,7 @@ const selenium = async () => {
         console.log(error)
     } finally {
         await driver.quit()
+        // await driverBody.quit()
     }
 }
 
