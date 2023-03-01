@@ -10,7 +10,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm'
 
-@Entity({ schema: 'JobBoard', name: 'Company' })
+@Entity({ schema: 'jobboard', name: 'company' })
 export class Company {
     @PrimaryGeneratedColumn({ type: 'int' })
     companyId: number
@@ -32,8 +32,25 @@ export class Company {
     address: string | null
 
     @Column('int', { nullable: true })
-    @Column('varchar', { length: 200 })
-    imageUrl: string
+    foundedYear: number | null
+
+    @Column('text', { nullable: true })
+    imageUrl: string | null
+
+    @Column('text', { nullable: true })
+    homepageUrl: string | null
+
+    @Column('text', { nullable: true })
+    annualSales: string | null
+
+    @Column('int', { nullable: true })
+    avgSalary: number | null
+
+    @Column('text', { nullable: true })
+    kreditjobUrl: string | null
+
+    @Column('varchar', { length: 100, nullable: true })
+    corporateType: string | null
 
     @CreateDateColumn()
     createdDtm: Date
