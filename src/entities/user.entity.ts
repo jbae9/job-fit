@@ -4,14 +4,35 @@ import {
     DeleteDateColumn,
     Entity,
     Index,
+    JoinTable,
+    ManyToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm'
+import { Jobpost } from './jobpost.entity'
+import { Stack } from './stack.entity'
 
 @Entity({ schema: 'jobfit', name: 'user' })
 export class User {
     @PrimaryGeneratedColumn({ type: 'int' })
     userId: number
+
+    @ManyToMany(() => Jobpost)
+    jobposts: Jobpost[]
+
+    @ManyToMany(() => Stack, { onDelete: 'CASCADE' })
+    @JoinTable({
+        name: 'userStack',
+        joinColumn: {
+            name: 'user_id',
+            referencedColumnName: 'userId',
+        },
+        inverseJoinColumn: {
+            name: 'stack_id',
+            referencedColumnName: 'stackId',
+        },
+    })
+    stacks: Stack[]
 
     @Index({ unique: true })
     @Column({ type: 'varchar' })
