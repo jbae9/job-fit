@@ -1,0 +1,27 @@
+<div class="header">
+    <div class="header-wrap">
+        <div class="header-logo-wrap">
+            <a class="logo" href="/"><img src="/images/logo.png" /></a>
+        </div>
+        <% if (!user) { %>
+        <div class="header-menu-wrap">
+            <ul>
+                <li>
+                    <a class="login-link" href="/login">회원가입/로그인</a>
+                </li>
+            </ul>
+        </div>
+        <% } else { %>
+        <div class="header-menu-wrap">
+            <ul>
+                <li>
+                    <a class="login-link" href="/mypage">마이페이지</a>
+                </li>
+                <li>
+                    <a class="login-link" href="/logout">로그아웃</a>
+                </li>
+            </ul>
+        </div>
+        <% } %>
+    </div>
+</div>

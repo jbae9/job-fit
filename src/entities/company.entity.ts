@@ -10,7 +10,7 @@ import {
     UpdateDateColumn,
 } from 'typeorm'
 
-@Entity({ schema: 'jobboard', name: 'company' })
+@Entity({ schema: 'jobfit', name: 'company' })
 export class Company {
     @PrimaryGeneratedColumn({ type: 'int' })
     companyId: number
