@@ -13,7 +13,7 @@ export class CompanyRepository extends Repository<Company> {
             .insert()
             .into(Company)
             .values(companies)
-            .orUpdate(['number_employees'])
+            .orIgnore()
             .execute()
     }
 }

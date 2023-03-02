@@ -27,9 +27,7 @@ export async function wantedScraper() {
     console.log(startDate.toTimeString())
     try {
         const { data } = await axios.get(
-            scrapingAntHost +
-                'https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=518&locations=all&years=-1&limit=100&offset=0&job_sort=job.latest_order' +
-                scrapingAntKey,
+            'https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=518&locations=all&years=-1&limit=100&offset=0&job_sort=job.latest_order',
             { headers: axiosHeaders }
         )
 
@@ -45,9 +43,7 @@ export async function wantedScraper() {
         const jobsList = data.data
         while (nextLink !== null) {
             const nextPage = await axios.get(
-                scrapingAntHost +
-                    `https://www.wanted.co.kr${nextLink}` +
-                    scrapingAntKey,
+                `https://www.wanted.co.kr${nextLink}`,
                 { headers: axiosHeaders }
             )
             // nextLink = nextPage.data.links.next
@@ -59,9 +55,7 @@ export async function wantedScraper() {
                     const title = jobsList[i].position
 
                     const axiosJobDetails = await axios.get(
-                        scrapingAntHost +
-                            `https://www.wanted.co.kr/api/v4/jobs/${jobsList[i].id}` +
-                            scrapingAntKey,
+                        `https://www.wanted.co.kr/api/v4/jobs/${jobsList[i].id}`,
                         { headers: axiosHeaders }
                     )
                     const jobDetails = axiosJobDetails.data
@@ -90,9 +84,7 @@ export async function wantedScraper() {
 
                         // 원티드 회사 정보 API
                         const axiosCompanyDetails = await axios.get(
-                            scrapingAntHost +
-                                `https://www.wanted.co.kr/api/v4/companies/${companyId}` +
-                                scrapingAntKey,
+                            `https://www.wanted.co.kr/api/v4/companies/${companyId}`,
                             { headers: axiosHeaders }
                         )
                         const companyDetails = axiosCompanyDetails.data
