@@ -11,9 +11,9 @@ async function bootstrap() {
 
     app.use(cookieParser())
 
-    // hbs 세팅
-    app.useStaticAssets(join(__dirname, '..', 'public'))
-    app.setBaseViewsDir(join(__dirname, '..', 'views'))
+    // ejs 세팅
+    app.useStaticAssets(join(__dirname, '..', 'src', 'public'))
+    app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'))
     app.setViewEngine('ejs')
 
     await app.listen(process.env.PORT)
