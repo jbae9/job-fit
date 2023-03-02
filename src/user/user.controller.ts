@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common'
 import { Get, Req, Res, UseGuards } from '@nestjs/common/decorators'
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard'
-import { KakaoAuthGuard } from 'src/auth/kakao-auth.guard'
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
+import { KakaoAuthGuard } from 'src/auth/guards/kakao-auth.guard'
 import { UserService } from './user.service'
 
 @Controller('user')
@@ -21,11 +21,5 @@ export class UserController {
         res.cookie('refreshToken', userRefreshToken)
 
         return res.redirect('/')
-    }
-
-    @UseGuards(JwtAuthGuard)
-    @Get('/auth/test')
-    async test(@Req() req) {
-        return req.user
     }
 }
