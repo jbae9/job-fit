@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common'
 
-@Controller('job-post')
-export class JobPostController {}
+@Controller('api/jobpost')
+export class JobpostController {}

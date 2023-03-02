@@ -15,18 +15,42 @@ export class Company {
     @PrimaryGeneratedColumn({ type: 'int' })
     companyId: number
 
-    // @OneToMany((type) => Jobpost, (jobPost) => jobPost.jobPostId)
-    // jobPost: Jobpost[]
+    @OneToMany(() => Jobpost, (jobPost) => jobPost.jobPostId)
+    jobPost: Jobpost[]
 
     @Index({ unique: true })
     @Column('varchar', { length: 100 })
-    name: string
+    companyName: string
 
-    @Column('varchar', { length: 300 })
-    address: string
+    @Column('varchar', { length: 10, nullable: true })
+    representativeName: string | null
 
-    @Column('varchar', { length: 200 })
-    imageUrl: string
+    @Column('int', { nullable: true })
+    numberEmployees: number | null
+
+    @Column('varchar', { length: 300, nullable: true })
+    address: string | null
+
+    @Column('int', { nullable: true })
+    foundedYear: number | null
+
+    @Column('text', { nullable: true })
+    imageUrl: string | null
+
+    @Column('text', { nullable: true })
+    homepageUrl: string | null
+
+    @Column('text', { nullable: true })
+    annualSales: string | null
+
+    @Column('int', { nullable: true })
+    avgSalary: number | null
+
+    @Column('text', { nullable: true })
+    kreditjobUrl: string | null
+
+    @Column('varchar', { length: 100, nullable: true })
+    corporateType: string | null
 
     @CreateDateColumn()
     createdDtm: Date
