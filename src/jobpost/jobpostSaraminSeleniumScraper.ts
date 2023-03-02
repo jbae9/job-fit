@@ -1,42 +1,50 @@
 import { Builder, By, Key, until, WebDriver } from 'selenium-webdriver'
 import { Options } from 'selenium-webdriver/chrome'
-import { SaraminScraper } from './jobpost.SaraminAxiosScraper'
+import { SaraminScraper } from './jobpostSaraminAxiosScraper'
 require('chromedriver')
 
-const selenium = async () => {
-	const options = new Options()
-	options.setPageLoadStrategy('normal')
-	options.excludeSwitches('enable-logging')
+export class saraminSelenium {
+	async getSaraminScraper() {
+		const options = new Options()
+		options.setPageLoadStrategy('normal')
+		options.excludeSwitches('enable-logging')
 
-	const driver = await new Builder()
-		.forBrowser('chrome')
-		.setChromeOptions(options)
-		.build()
+		const driver = await new Builder()
+			.forBrowser('chrome')
+			.setChromeOptions(options)
+			.build()
 
-	const saraminScraper = new SaraminScraper(`https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=1&cat_mcls=2&isAjaxRequest=0&page_count=2&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`);
-	let jobList = await saraminScraper.getDataAsHtml()
+		const saraminScraper = new SaraminScraper(`https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=1&cat_mcls=2&isAjaxRequest=0&page_count=2&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`);
+		let jobList = await saraminScraper.getDataAsHtml()
 
-	try {
-		for (let i = 0; i < jobList.length; i++) {
-			await driver.get(
-				`https://www.saramin.co.kr${jobList[i].originalUrl}`)
+		try {
+			for (let i = 0; i < jobList.length; i++) {
+				await driver.get(
+					`https://www.saramin.co.kr${jobList[i].originalUrl}`)
 
-			const allJobs = await driver.findElement(
-				By.css(`.wrap_jview > section:nth-child(1)`)
-			)
-			const salary = await allJobs
-				.findElement(By.className('jv_summary'))
-				.findElement(By.css('.cont > .col:nth-child(2) > dl:first-child > dd'))
-				.getText()
-			jobList[i].salary = salary
-			jobList[i].deadlineDtm == '채용' ? null : new Date(String(new Date().getFullYear) + '/' + jobList[i].deadlineDtm)
+				const allJobs = await driver.findElement(
+					By.css(`.wrap_jview > section:nth-child(1)`)
+				)
+				const salary = await allJobs
+					.findElement(By.className('jv_summary'))
+					.findElement(By.css('.cont > .col:nth-child(2) > dl:first-child > dd'))
+					.getText()
+				const postedDtm = await allJobs
+					.findElement(By.className('info_period'))
+					.findElement(By.css('dd:first-child'))
+					.getText()
+				jobList[i].push({ "postedDtm": new Date(postedDtm) })
+				jobList[i].salary = salary
+				jobList[i].deadlineDtm == '채용' ? null : new Date(String(new Date().getFullYear) + '/' + jobList[i].deadlineDtm)
+			}
+		} catch (err) {
+			console.log(err)
+		} finally {
+			await driver.quit()
+			return jobList
 		}
-	} catch (err) {
-		console.log(err)
-	} finally {
-		await driver.quit()
-		return jobList
 	}
+
 
 	// 무한 스크롤링
 	// let lastHeight = await driver.executeScript(
@@ -121,5 +129,3 @@ const selenium = async () => {
 	// 	// await driverBody.quit()
 	// }
 }
-
-selenium()
