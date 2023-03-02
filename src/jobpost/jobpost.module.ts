@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common'
+import { Logger, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { CompanyRepository } from 'src/company/company.repository'
 import { Jobpost } from '../entities/jobpost.entity'
@@ -9,6 +9,6 @@ import { JobpostService } from './jobpost.service'
 @Module({
     imports: [TypeOrmModule.forFeature([Jobpost])],
     controllers: [JobpostController],
-    providers: [JobpostService, JobpostRepository, CompanyRepository],
+    providers: [JobpostService, JobpostRepository, CompanyRepository, Logger],
 })
 export class JobpostModule {}

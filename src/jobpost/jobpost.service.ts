@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { CompanyRepository } from 'src/company/company.repository'
 import { JobpostRepository } from './jobpost.repository'
 import { wantedScraper } from './jobpostWantedAxiosScraper'
@@ -7,21 +7,23 @@ import { wantedScraper } from './jobpostWantedAxiosScraper'
 export class JobpostService {
     constructor(
         private jobpostRepository: JobpostRepository,
-        private companyRepository: CompanyRepository
+        private companyRepository: CompanyRepository,
+        private logger: Logger
     ) {}
 
     async postWantedJobposts() {
         const { companies, jobposts } = await wantedScraper()
-        await this.companyRepository.postCompaniesInBulk(companies)
+        await this.companyRepository.save(companies)
 
         for (let i = 0; i < jobposts.length; i++) {
             const companyId = await this.companyRepository.find({
                 select: { companyId: true },
                 where: { companyName: jobposts[i].companyName },
             })
+            this.logger.log(companyId)
 
-            await this.jobpostRepository.postJobpostsInBulk({
-                companyId: companyId,
+            await this.jobpostRepository.save({
+                companyId: companyId[0].companyId,
                 title: jobposts[i].title,
                 content: jobposts[i].content,
                 salary: jobposts[i].salary,

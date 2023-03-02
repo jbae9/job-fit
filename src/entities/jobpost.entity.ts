@@ -5,6 +5,7 @@ import {
     DeleteDateColumn,
     Entity,
     Index,
+    JoinColumn,
     ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -15,8 +16,12 @@ export class Jobpost {
     @PrimaryGeneratedColumn({ type: 'int' })
     jobPostId: number
 
-    @ManyToOne(() => Company, (company) => company.companyId)
+    @ManyToOne(() => Company)
+    @JoinColumn({ name: 'company_id' })
     company: Company
+
+    @Column('int')
+    companyId: number
 
     @Column('text')
     title: string

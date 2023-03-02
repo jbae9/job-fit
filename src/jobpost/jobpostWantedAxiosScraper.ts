@@ -1,13 +1,36 @@
 import axios from 'axios'
 import fs from 'fs'
-import { CompanyRepository } from 'src/company/company.repository'
 
 export async function wantedScraper() {
+    const userAgentsList = [
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/605.1.15',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Windows; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8',
+        'Mozilla/5.0 (Windows NT 10.0; Windows; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15',
+        'Mozilla/5.0 (Windows NT 10.0; Windows; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36',
+    ]
+    const axiosHeaders = {
+        'User-Agent':
+            userAgentsList[Math.floor(Math.random() * userAgentsList.length)],
+    }
+
+    const scrapingAntHost = 'https://api.scrapingant.com/v2/general?url='
+    const scrapingAntKey =
+        '&x-api-key=b910d11bc758423ab06caf3eb3acc468&browser=false'
+
     const startDate = new Date(Date.now())
     console.log(startDate.toTimeString())
     try {
         const { data } = await axios.get(
-            'https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=518&locations=all&years=-1&limit=100&offset=0&job_sort=job.latest_order'
+            scrapingAntHost +
+                'https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=518&locations=all&years=-1&limit=100&offset=0&job_sort=job.latest_order' +
+                scrapingAntKey,
+            { headers: axiosHeaders }
         )
 
         const axiosKreditjobIndustryCodes = await axios.get(
@@ -21,13 +44,25 @@ export async function wantedScraper() {
         const allCompanies = []
         const jobsList = data.data
         while (nextLink !== null) {
+            const nextPage = await axios.get(
+                scrapingAntHost +
+                    `https://www.wanted.co.kr${nextLink}` +
+                    scrapingAntKey,
+                { headers: axiosHeaders }
+            )
+            // nextLink = nextPage.data.links.next
+            nextLink = null
+
             for (let i = 0; i < jobsList.length; i++) {
                 if (jobsList[i].status === 'active') {
                     const originalUrl = `https://www.wanted.co.kr/wd/${jobsList[i].id}`
                     const title = jobsList[i].position
 
                     const axiosJobDetails = await axios.get(
-                        `https://www.wanted.co.kr/api/v4/jobs/${jobsList[i].id}`
+                        scrapingAntHost +
+                            `https://www.wanted.co.kr/api/v4/jobs/${jobsList[i].id}` +
+                            scrapingAntKey,
+                        { headers: axiosHeaders }
                     )
                     const jobDetails = axiosJobDetails.data
 
@@ -55,7 +90,10 @@ export async function wantedScraper() {
 
                         // 원티드 회사 정보 API
                         const axiosCompanyDetails = await axios.get(
-                            `https://www.wanted.co.kr/api/v4/companies/${companyId}`
+                            scrapingAntHost +
+                                `https://www.wanted.co.kr/api/v4/companies/${companyId}` +
+                                scrapingAntKey,
+                            { headers: axiosHeaders }
                         )
                         const companyDetails = axiosCompanyDetails.data
 
@@ -147,11 +185,6 @@ export async function wantedScraper() {
                     })
                 }
             }
-            const nextPage = await axios.get(
-                `https://www.wanted.co.kr${nextLink}`
-            )
-            nextLink = nextPage.data.links.next
-            // nextLink = null
         }
 
         // fs.writeFile(
@@ -178,3 +211,5 @@ export async function wantedScraper() {
         console.log(error)
     }
 }
+
+wantedScraper()
