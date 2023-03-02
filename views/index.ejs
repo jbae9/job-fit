@@ -1,0 +1,19 @@
+<html lang='ko'>
+    <head>
+        <meta charset='UTF-8' />
+        <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+        <title>JobFit</title>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <a href='http://localhost:3000/user/auth/kakao'>카카오로그인</a>
+        <button type="button" onclick="test()">테스트</a>
+    </body>
+</html>
+
+<script>
+    function test() {
+        axios.get('http://localhost:3000/user/auth/test')
+    }
+</script>
