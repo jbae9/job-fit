@@ -1,18 +1,20 @@
 import { CacheModule, Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
+import { PassportModule } from '@nestjs/passport'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { User } from 'src/entities/user.entity'
 import { JwtConfigService } from 'src/_config/jwt.config.service'
-import { UserController } from './user.controller'
-import { User } from '../entities/user.entity'
-import { UserService } from './user.service'
+import { AuthService } from './auth.service'
+import { JwtStrategy } from './strategy/jwt.strategy'
+import { KakaoStrategy } from './strategy/kakao.strategy'
 import redisStore from 'cache-manager-redis-store'
-import { forwardRef } from '@nestjs/common/utils'
-import { AuthModule } from 'src/auth/auth.module'
 
 @Module({
     imports: [
-        forwardRef(() => AuthModule),
+        PassportModule.register({
+            session: false,
+        }),
         TypeOrmModule.forFeature([User]),
         JwtModule.registerAsync({
             imports: [ConfigModule],
@@ -31,8 +33,7 @@ import { AuthModule } from 'src/auth/auth.module'
             }),
         }),
     ],
-    providers: [UserService],
-    exports: [UserService],
-    controllers: [UserController],
+    providers: [AuthService, KakaoStrategy, JwtStrategy],
+    exports: [PassportModule, JwtModule, AuthService],
 })
-export class UserModule {}
+export class AuthModule {}
