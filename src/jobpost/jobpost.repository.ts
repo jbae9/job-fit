@@ -15,4 +15,13 @@ export class JobpostRepository extends Repository<Jobpost> {
             .values(jobposts)
             .execute()
     }
+
+    async getSaraminData(jobpost: {}) {
+        const result = await this.createQueryBuilder()
+            .insert()
+            .into(Jobpost)
+            .values(jobpost)
+            .execute()
+        return result
+    }
 }

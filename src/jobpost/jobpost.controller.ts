@@ -1,4 +1,4 @@
-import { Controller, Post } from '@nestjs/common'
+import { Controller, Post, Get } from '@nestjs/common'
 import { JobpostService } from './jobpost.service'
 
 @Controller('api/jobpost')
@@ -8,5 +8,10 @@ export class JobpostController {
     @Post('/wanted')
     async postWantedJobposts() {
         return this.jobpostService.postWantedJobposts()
+    }
+
+    @Get('/saramin')
+    async getSaraminData() {
+        return await this.jobpostService.createJobpost()
     }
 }
