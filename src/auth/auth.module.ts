@@ -7,7 +7,7 @@ import { User } from 'src/entities/user.entity'
 import { JwtConfigService } from 'src/_config/jwt.config.service'
 import { AuthService } from './auth.service'
 import { JwtStrategy } from './strategy/jwt.strategy'
-import { KakaoStrategy } from './strategy/kakao.straregy'
+import { KakaoStrategy } from './strategy/kakao.strategy'
 import redisStore from 'cache-manager-redis-store'
 
 @Module({
