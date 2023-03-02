@@ -1,12 +1,34 @@
 import axios from 'axios'
 import fs from 'fs'
 
-const axiosScraper = async () => {
+export async function wantedScraper() {
+    const userAgentsList = [
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/605.1.15',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Windows; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8',
+        'Mozilla/5.0 (Windows NT 10.0; Windows; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15',
+        'Mozilla/5.0 (Windows NT 10.0; Windows; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36',
+    ]
+    const axiosHeaders = {
+        'User-Agent':
+            userAgentsList[Math.floor(Math.random() * userAgentsList.length)],
+    }
+
+    const scrapingAntHost = 'https://api.scrapingant.com/v2/general?url='
+    const scrapingAntKey =
+        '&x-api-key=b910d11bc758423ab06caf3eb3acc468&browser=false'
+
     const startDate = new Date(Date.now())
     console.log(startDate.toTimeString())
     try {
         const { data } = await axios.get(
-            'https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=518&locations=all&years=-1&limit=100&offset=0&job_sort=job.latest_order'
+            'https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=518&locations=all&years=-1&limit=100&offset=0&job_sort=job.latest_order',
+            { headers: axiosHeaders }
         )
 
         const axiosKreditjobIndustryCodes = await axios.get(
@@ -20,13 +42,21 @@ const axiosScraper = async () => {
         const allCompanies = []
         const jobsList = data.data
         while (nextLink !== null) {
+            const nextPage = await axios.get(
+                `https://www.wanted.co.kr${nextLink}`,
+                { headers: axiosHeaders }
+            )
+            // nextLink = nextPage.data.links.next
+            nextLink = null
+
             for (let i = 0; i < jobsList.length; i++) {
                 if (jobsList[i].status === 'active') {
                     const originalUrl = `https://www.wanted.co.kr/wd/${jobsList[i].id}`
                     const title = jobsList[i].position
 
                     const axiosJobDetails = await axios.get(
-                        `https://www.wanted.co.kr/api/v4/jobs/${jobsList[i].id}`
+                        `https://www.wanted.co.kr/api/v4/jobs/${jobsList[i].id}`,
+                        { headers: axiosHeaders }
                     )
                     const jobDetails = axiosJobDetails.data
 
@@ -38,12 +68,15 @@ const axiosScraper = async () => {
                     const content = JSON.stringify(jobDetails.job.detail)
 
                     // Date으로 번경 필요
-                    const deadlineDtm =
+                    let deadlineDtm =
                         jobsList[i].due_time === null
                             ? null
                             : jobsList[i].due_time
+                    if (deadlineDtm !== null)
+                        deadlineDtm = new Date(deadlineDtm)
 
                     const companyId = jobsList[i].company.id
+                    const companyName = jobsList[i].company.name
 
                     // 회사 정보가 이미 저장되어있는지 확인
                     if (!allCompanyIdsArr.includes(companyId)) {
@@ -51,11 +84,11 @@ const axiosScraper = async () => {
 
                         // 원티드 회사 정보 API
                         const axiosCompanyDetails = await axios.get(
-                            `https://www.wanted.co.kr/api/v4/companies/${companyId}`
+                            `https://www.wanted.co.kr/api/v4/companies/${companyId}`,
+                            { headers: axiosHeaders }
                         )
                         const companyDetails = axiosCompanyDetails.data
 
-                        const companyName = companyDetails.company.name
                         const companyImgUrl =
                             companyDetails.company.logo_img.thumb
                         const companyHomepageUrl =
@@ -122,7 +155,7 @@ const axiosScraper = async () => {
                                 foundedYear: null,
                                 imageUrl: companyImgUrl,
                                 homepageUrl: companyHomepageUrl,
-                                annualSales: 0,
+                                annualSales: null,
                                 avgSalary: null,
                                 kreditjobUrl: null,
                                 industryType: industryType,
@@ -140,36 +173,35 @@ const axiosScraper = async () => {
                         deadlineDtm: deadlineDtm,
                         addressUpper: addressUpper,
                         addressLower: addressLower,
+                        companyName: companyName,
                     })
                 }
             }
-            const nextPage = await axios.get(
-                `https://www.wanted.co.kr${nextLink}`
-            )
-            nextLink = nextPage.data.links.next
         }
 
-        fs.writeFile(
-            'jobposts.txt',
-            JSON.stringify(allJobsArr),
-            function (err) {
-                console.log(err)
-            }
-        )
+        // fs.writeFile(
+        //     'jobposts.txt',
+        //     JSON.stringify(allJobsArr),
+        //     function (err) {
+        //         console.log(err)
+        //     }
+        // )
 
-        fs.writeFile(
-            'companies.txt',
-            JSON.stringify(allCompanies),
-            function (err) {
-                console.log(err)
-            }
-        )
+        // fs.writeFile(
+        //     'companies.txt',
+        //     JSON.stringify(allCompanies),
+        //     function (err) {
+        //         console.log(err)
+        //     }
+        // )
 
         const endDate = new Date(Date.now())
         console.log(endDate.toTimeString())
+
+        return { companies: allCompanies, jobposts: allJobsArr }
     } catch (error) {
         console.log(error)
     }
 }
 
-axiosScraper()
+wantedScraper()

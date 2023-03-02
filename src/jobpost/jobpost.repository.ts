@@ -1,19 +1,27 @@
-import { Injectable } from "@nestjs/common";
-import { DataSource, Repository } from "typeorm";
-import { Jobpost } from '../entities/jobpost.entity';
+import { DataSource, Repository } from 'typeorm'
+import { Jobpost } from 'src/entities/jobpost.entity'
+import { Injectable } from '@nestjs/common'
 
 @Injectable()
-export class JobpostRepository extends Repository<Jobpost>{
-	constructor(private dataSource: DataSource) {
-		super(Jobpost, dataSource.createEntityManager());
-	}
+export class JobpostRepository extends Repository<Jobpost> {
+    constructor(private dataSource: DataSource) {
+        super(Jobpost, dataSource.createEntityManager())
+    }
 
-	async getSaraminData(jobpost: {}) {
-		const result = await this.createQueryBuilder()
-			.insert()
-			.into(Jobpost)
-			.values(jobpost)
-			.execute()
-		return result;
-	}
+    async postJobpostsInBulk(jobposts) {
+        await this.createQueryBuilder()
+            .insert()
+            .into(Jobpost)
+            .values(jobposts)
+            .execute()
+    }
+
+    async getSaraminData(jobpost: {}) {
+        const result = await this.createQueryBuilder()
+            .insert()
+            .into(Jobpost)
+            .values(jobpost)
+            .execute()
+        return result
+    }
 }
