@@ -1,0 +1,27 @@
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>JobFit</title>
+
+        <!-- Axios CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="/css/reset.css" />
+        <link rel="stylesheet" href="/css/common.css" />
+        <link rel="stylesheet" href="/css/header.css" />
+        <link rel="stylesheet" href="/css/login.css" />
+    </head>
+    <body>
+        <!-- header -->
+        <%- include('header.ejs') %>
+
+        <!-- body -->
+        <% if (components === 'main') { %> <%- include('main.ejs') %> <% } %> <%
+        if (components === 'login') { %> <%- include('login.ejs') %> <% } %>
+    </body>
+</html>
+
+<script></script>
