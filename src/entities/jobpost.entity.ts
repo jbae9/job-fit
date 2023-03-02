@@ -10,13 +10,13 @@ import {
     UpdateDateColumn,
 } from 'typeorm'
 
-@Entity({ schema: 'JobBoard', name: 'Jobpost' })
+@Entity({ schema: 'jobboard', name: 'jobpost' })
 export class Jobpost {
     @PrimaryGeneratedColumn({ type: 'int' })
     jobPostId: number
 
-    // @ManyToOne((type) => Company, (company) => company.companyId)
-    // company: Company
+    @ManyToOne(() => Company, (company) => company.companyId)
+    company: Company
 
     @Column('text')
     title: string
@@ -30,10 +30,10 @@ export class Jobpost {
     @Column('varchar', { length: 100 })
     originalSiteName: string
 
-    @Column('varchar', { length: 1000 })
+    @Column('text')
     originalUrl: string
 
-    @Column('varchar', { length: 1000, nullable: true })
+    @Column('text', { nullable: true })
     originalImgUrl: string | null
 
     @Column('datetime', { nullable: true })
