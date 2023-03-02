@@ -23,6 +23,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
                 'DATABASE_SYNCHRONIZE'
             ),
             namingStrategy: new SnakeNamingStrategy(),
+            timezone: '+09:00',
         }
     }
 }

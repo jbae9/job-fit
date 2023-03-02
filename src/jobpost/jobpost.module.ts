@@ -1,13 +1,14 @@
-import { Module } from '@nestjs/common'
+import { Logger, Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { CompanyRepository } from 'src/company/company.repository'
 import { Jobpost } from '../entities/jobpost.entity'
-import { JobpostService } from './jobpost.service'
 import { JobpostController } from './jobpost.controller'
-import { JobpostRepository } from "./jobpost.repository";
+import { JobpostRepository } from './jobpost.repository'
+import { JobpostService } from './jobpost.service'
 
 @Module({
-    controllers: [JobpostController],
     imports: [TypeOrmModule.forFeature([Jobpost])],
-    providers: [JobpostService, JobpostRepository],
+    controllers: [JobpostController],
+    providers: [JobpostService, JobpostRepository, CompanyRepository, Logger],
 })
-export class JobpostModule { }
+export class JobpostModule {}

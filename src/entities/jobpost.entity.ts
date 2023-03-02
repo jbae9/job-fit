@@ -5,6 +5,7 @@ import {
     DeleteDateColumn,
     Entity,
     Index,
+    JoinColumn,
     ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -15,8 +16,12 @@ export class Jobpost {
     @PrimaryGeneratedColumn({ type: 'int' })
     jobPostId: number
 
-    @ManyToOne(() => Company, (company) => company.companyId)
+    @ManyToOne(() => Company)
+    @JoinColumn({ name: 'company_id' })
     company: Company
+
+    @Column('int')
+    companyId: number
 
     @Column('text')
     title: string
@@ -39,8 +44,8 @@ export class Jobpost {
     @Column('datetime', { nullable: true })
     postedDtm: Date | null
 
-    @Column('datetime')
-    deadlineDtm: Date
+    @Column('datetime', { nullable: true })
+    deadlineDtm: Date | null
 
     @Column('varchar', { length: 100, nullable: true })
     preferenceCondition: string | null
