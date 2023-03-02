@@ -1,6 +1,5 @@
 import { Controller } from '@nestjs/common'
 import { Get, Req, Res, UseGuards } from '@nestjs/common/decorators'
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { KakaoAuthGuard } from 'src/auth/guards/kakao-auth.guard'
 import { UserService } from './user.service'
 
