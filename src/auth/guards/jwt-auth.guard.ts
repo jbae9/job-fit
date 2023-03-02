@@ -93,9 +93,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
             request.authResult = {
                 success: true,
-                newAccessToken,
                 user,
             }
+
+            // 새로 발급한 Access Token 쿠키로 보내기
+            response.cookie('accessToken', newAccessToken)
 
             return true
         }

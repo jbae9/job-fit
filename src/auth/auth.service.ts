@@ -43,7 +43,7 @@ export class AuthService {
         const payload = { userId }
 
         return this.jwtService.signAsync(payload, {
-            expiresIn: '1d',
+            expiresIn: '10s',
         })
     }
 
