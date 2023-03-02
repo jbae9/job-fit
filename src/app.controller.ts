@@ -1,4 +1,4 @@
-import { Controller, Get, Render, Req, UseGuards } from '@nestjs/common'
+import { Controller, Get, Render, Req, Res, UseGuards } from '@nestjs/common'
 import { AppService } from './app.service'
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
 
@@ -20,9 +20,17 @@ export class AppController {
         return { components: 'main', user: user }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get('/login')
     @Render('index')
-    login() {
-        return { components: 'login' }
+    login(@Req() req, @Res() res) {
+        // 로그인 되어있는지 판별
+        const user = !req.authResult.hasOwnProperty('user')
+            ? null
+            : req.authResult.user
+
+        if (user) return res.redirect('/')
+
+        return { components: 'login', user: user }
     }
 }
