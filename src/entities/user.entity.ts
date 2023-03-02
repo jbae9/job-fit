@@ -8,20 +8,29 @@ import {
     UpdateDateColumn,
 } from 'typeorm'
 
-@Entity({ schema: 'JobBoard', name: 'user' })
+@Entity({ schema: 'jobfit', name: 'user' })
 export class User {
     @PrimaryGeneratedColumn({ type: 'int' })
     userId: number
 
     @Index({ unique: true })
-    @Column()
+    @Column({ type: 'varchar' })
     email: string
 
-    @Column('varchar', { length: 200, select: false })
-    password: string
+    @Column({ type: 'varchar', nullable: true })
+    nickname: string | null
 
-    @Column('varchar', { length: 50 })
+    @Column({ type: 'varchar', nullable: true })
+    profileImage: string | null
+
+    @Column({ type: 'varchar' })
     role: string
+
+    @Column({ type: 'varchar', nullable: true })
+    addressUpper: string | null
+
+    @Column({ type: 'varchar', nullable: true })
+    addressLower: string | null
 
     @CreateDateColumn()
     createdDtm: Date
