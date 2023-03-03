@@ -2,10 +2,6 @@ import axios from 'axios'
 import fs from 'fs'
 
 export async function wantedScraper() {
-    const scrapingAntHost = 'https://api.scrapingant.com/v2/general?url='
-    const scrapingAntKey =
-        '&x-api-key=b910d11bc758423ab06caf3eb3acc468&browser=false'
-
     const startDate = new Date(Date.now())
     console.log(startDate.toTimeString())
     try {
@@ -22,15 +18,8 @@ export async function wantedScraper() {
         const allJobsArr = []
         const allCompanyIdsArr = []
         const allCompanies = []
-        const jobsList = data.data
+        let jobsList = data.data
         while (nextLink !== null) {
-            const nextPage = await getAxios(
-                `https://www.wanted.co.kr${nextLink}`
-            )
-
-            nextLink = nextPage.data.links.next
-            // nextLink = null
-
             for (let i = 0; i < jobsList.length; i++) {
                 if (jobsList[i].status === 'active') {
                     const originalUrl = `https://www.wanted.co.kr/wd/${jobsList[i].id}`
@@ -44,8 +33,14 @@ export async function wantedScraper() {
 
                     const originalImgUrl = jobDetails.job.logo_img.thumb
 
-                    const address = jobDetails.job.address.full_location
-                    const [addressUpper, addressLower] = address.split(' ')
+                    let address, addressUpper, addressLower
+                    if (address) {
+                        address = jobDetails.job.address.full_location
+                        ;({ addressUpper, addressLower } = address.split(' '))
+                    } else {
+                        addressUpper = null
+                        addressLower = null
+                    }
 
                     const content = JSON.stringify(jobDetails.job.detail)
 
@@ -82,7 +77,7 @@ export async function wantedScraper() {
 
                         try {
                             const axiosKreditjobCompanyEmploymentDetails =
-                                await getAxios(
+                                await axios.get(
                                     `https://kreditjob.com/api/company/${companyKreditjobId}/summary`
                                 )
 
@@ -95,9 +90,10 @@ export async function wantedScraper() {
                                 kreditjobCompanyEmploymentDetails.salary.salary
 
                             // Kreditjob 회사 정보
-                            const axiosKreditjobCompanyDetails = await getAxios(
-                                `https://kreditjob.com/api/company/${companyKreditjobId}/info`
-                            )
+                            const axiosKreditjobCompanyDetails =
+                                await axios.get(
+                                    `https://kreditjob.com/api/company/${companyKreditjobId}/info`
+                                )
 
                             const kreditjobCompanyDetails =
                                 axiosKreditjobCompanyDetails.data
@@ -160,6 +156,14 @@ export async function wantedScraper() {
                     })
                 }
             }
+            const nextPage = await getAxios(
+                `https://www.wanted.co.kr${nextLink}`
+            )
+
+            nextLink = nextPage.data.links.next
+            // nextLink = null
+
+            jobsList = nextPage.data.data
         }
 
         // fs.writeFile(
@@ -212,8 +216,15 @@ async function getAxios(url) {
     let waitTime = 10000
     while (true) {
         try {
-            return await axios.get(url, { headers: axiosHeaders })
+            const axiosData = await axios.get(url, { headers: axiosHeaders })
+            if (axiosData.status === 404) {
+                throw Error('404')
+            }
+            return axiosData
         } catch (error) {
+            if (error.message === '404') {
+                throw Error('404')
+            }
             console.log(url)
             await new Promise((resolve) => setTimeout(resolve, waitTime))
             waitTime += 5000

@@ -27,7 +27,7 @@ export class Jobpost {
 
     @ManyToMany(() => Keyword)
     @JoinTable({
-        name: 'jobpostKeyword',
+        name: 'jobpostkeyword',
         joinColumn: {
             name: 'jobpost_id',
             referencedColumnName: 'jobpostId',
@@ -41,7 +41,7 @@ export class Jobpost {
 
     @ManyToMany(() => User)
     @JoinTable({
-        name: 'likedJobpost',
+        name: 'likedjobpost',
         joinColumn: {
             name: 'jobpost_id',
             referencedColumnName: 'jobpostId',
@@ -55,7 +55,7 @@ export class Jobpost {
 
     @ManyToMany(() => Stack)
     @JoinTable({
-        name: 'jobpostStack',
+        name: 'jobpoststack',
         joinColumn: {
             name: 'jobpost_id',
             referencedColumnName: 'jobpostId',

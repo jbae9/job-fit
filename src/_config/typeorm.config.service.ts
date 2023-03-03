@@ -13,6 +13,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     // Constructor DI
     constructor(private readonly configService: ConfigService) {}
     createTypeOrmOptions(): TypeOrmModuleOptions {
+        console.log(this.configService.get<boolean>('DATABASE_SYNCHRONIZE'))
         return {
             type: 'mysql',
             host: this.configService.get<string>('DATABASE_HOST'),
@@ -21,9 +22,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             password: this.configService.get<string>('DATABASE_PASSWORD'),
             database: this.configService.get<string>('DATABASE_NAME'),
             entities: [User, Jobpost, Company, Keyword, Stack],
-            synchronize: this.configService.get<boolean>(
-                'DATABASE_SYNCHRONIZE'
-            ),
+            synchronize:
+                this.configService.get<string>('DATABASE_SYNCHRONIZE') ==
+                'true',
             namingStrategy: new SnakeNamingStrategy(),
             timezone: '+09:00',
         }
