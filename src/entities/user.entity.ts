@@ -22,7 +22,7 @@ export class User {
 
     @ManyToMany(() => Stack, { onDelete: 'CASCADE' })
     @JoinTable({
-        name: 'userStack',
+        name: 'userstack',
         joinColumn: {
             name: 'user_id',
             referencedColumnName: 'userId',
