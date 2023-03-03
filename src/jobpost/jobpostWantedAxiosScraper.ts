@@ -166,22 +166,6 @@ export async function wantedScraper() {
             jobsList = nextPage.data.data
         }
 
-        // fs.writeFile(
-        //     'jobposts.txt',
-        //     JSON.stringify(allJobsArr),
-        //     function (err) {
-        //         console.log(err)
-        //     }
-        // )
-
-        // fs.writeFile(
-        //     'companies.txt',
-        //     JSON.stringify(allCompanies),
-        //     function (err) {
-        //         console.log(err)
-        //     }
-        // )
-
         const endDate = new Date(Date.now())
         console.log(endDate.toTimeString())
 

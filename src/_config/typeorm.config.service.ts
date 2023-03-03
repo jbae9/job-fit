@@ -13,7 +13,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     // Constructor DI
     constructor(private readonly configService: ConfigService) {}
     createTypeOrmOptions(): TypeOrmModuleOptions {
-        console.log(this.configService.get<boolean>('DATABASE_SYNCHRONIZE'))
         return {
             type: 'mysql',
             host: this.configService.get<string>('DATABASE_HOST'),

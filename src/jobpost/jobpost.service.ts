@@ -29,7 +29,6 @@ export class JobpostService {
                 select: { companyId: true },
                 where: { companyName: jobposts[i].companyName },
             })
-            this.logger.log(companyId)
 
             await this.jobpostRepository.save({
                 companyId: companyId[0].companyId,
