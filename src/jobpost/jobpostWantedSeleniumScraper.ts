@@ -78,7 +78,7 @@ const selenium = async () => {
             if (deadlineDtm !== null) deadlineDtm = new Date(deadlineDtm)
 
             allJobsArr.push({
-                originalSiteNite: '원티드',
+                originalSiteName: '원티드',
                 originalUrl: originalUrl,
                 originalImgUrl: originalImgUrl,
                 title: title,

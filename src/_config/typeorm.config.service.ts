@@ -5,12 +5,15 @@ import { User } from 'src/entities/user.entity'
 import { Jobpost } from 'src/entities/jobpost.entity'
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 import { Company } from 'src/entities/company.entity'
+import { Keyword } from 'src/entities/keyword.entity'
+import { Stack } from 'src/entities/stack.entity'
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     // Constructor DI
     constructor(private readonly configService: ConfigService) {}
     createTypeOrmOptions(): TypeOrmModuleOptions {
+        console.log(this.configService.get<boolean>('DATABASE_SYNCHRONIZE'))
         return {
             type: 'mysql',
             host: this.configService.get<string>('DATABASE_HOST'),
@@ -18,10 +21,10 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             username: this.configService.get<string>('DATABASE_USERNAME'),
             password: this.configService.get<string>('DATABASE_PASSWORD'),
             database: this.configService.get<string>('DATABASE_NAME'),
-            entities: [User, Jobpost, Company],
-            synchronize: this.configService.get<boolean>(
-                'DATABASE_SYNCHRONIZE'
-            ),
+            entities: [User, Jobpost, Company, Keyword, Stack],
+            synchronize:
+                this.configService.get<string>('DATABASE_SYNCHRONIZE') ==
+                'true',
             namingStrategy: new SnakeNamingStrategy(),
             timezone: '+09:00',
         }
