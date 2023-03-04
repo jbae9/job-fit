@@ -9,13 +9,10 @@ export async function programmersScraper() {
         // 총 페이지 수
         const totalPages: number = data.totalPages
 
-        // test count
-        let count = 0
-
         // 회사정보 객체 배열
         const companies = []
         // 채용공고 객체 배열
-        const jobPosts = []
+        const jobposts = []
 
         for (let i = 1; i <= totalPages; i++) {
             const { data } = await axios.get(
@@ -27,8 +24,6 @@ export async function programmersScraper() {
 
             // 한 페이지 채용공고들을 하나 씩 돌면서 데이터 객체 만들어서 배열에 넣기
             for (let i = 0; i < jobPositions.length; i++) {
-                count += 1
-                console.log(count)
                 // 채용공고 데이터 객체구조분해할당
                 const { id, title, minSalary, company, period, address } =
                     jobPositions[i]
@@ -103,7 +98,7 @@ export async function programmersScraper() {
                     }
 
                     // 채용공고 배열에 push
-                    jobPosts.push(jobpostData)
+                    jobposts.push(jobpostData)
                     // 회사 배열에 push
                     companies.push(companyData)
                 } catch (error) {
@@ -119,7 +114,7 @@ export async function programmersScraper() {
                 callback.findIndex((v) => v.companyName === arr.companyName)
         )
 
-        return { jobPosts, companiesSetArray }
+        return { jobposts, companiesSetArray }
     } catch (error) {
         console.log(error)
     }
