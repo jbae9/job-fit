@@ -3,6 +3,9 @@ import { CompanyRepository } from 'src/company/company.repository'
 import { JobpostRepository } from './jobpost.repository'
 import { wantedScraper } from './jobpostWantedAxiosScraper'
 import { SaraminScraper } from './jobpost.SaraminAxiosScraper'
+import { programmersScraper } from './jobpostProgrammersScraper'
+import { Company } from 'src/entities/company.entity'
+import { QueryRunner } from 'typeorm'
 
 @Injectable()
 export class JobpostService {
@@ -43,5 +46,12 @@ export class JobpostService {
                 deadlineDtm: jobposts[i].deadlineDtm,
             })
         }
+    }
+
+    async createProgrammersJobposts() {
+        const { jobPosts, companiesSetArray } = await programmersScraper()
+
+        // 회사 데이터 넣기
+        await this.companyRepository.createCompanies(companiesSetArray)
     }
 }
