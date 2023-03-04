@@ -4,8 +4,6 @@ import { JobpostRepository } from './jobpost.repository'
 import { wantedScraper } from './jobpostWantedAxiosScraper'
 import { SaraminScraper } from './jobpost.SaraminAxiosScraper'
 import { programmersScraper } from './jobpostProgrammersScraper'
-import { Company } from 'src/entities/company.entity'
-import { QueryRunner } from 'typeorm'
 
 @Injectable()
 export class JobpostService {
@@ -49,9 +47,29 @@ export class JobpostService {
     }
 
     async createProgrammersJobposts() {
-        const { jobPosts, companiesSetArray } = await programmersScraper()
+        const { jobposts, companiesSetArray } = await programmersScraper()
 
         // 회사 데이터 넣기
         await this.companyRepository.createCompanies(companiesSetArray)
+
+        // 채용공고 데이터 넣기
+        for (let i = 0; i < jobposts.length; i++) {
+            const companyId = await this.companyRepository.find({
+                where: { companyName: jobposts[i].companyName },
+                select: { companyId: true },
+            })
+
+            await this.jobpostRepository.save({
+                companyId: companyId[0].companyId,
+                title: jobposts[i].title,
+                content: jobposts[i].content,
+                salary: jobposts[i].salary,
+                originalSiteName: jobposts[i].originalSiteName,
+                originalUrl: jobposts[i].originalUrl,
+                originalImgUrl: jobposts[i].originalImgUrl,
+                postedDtm: jobposts[i].postedDtm,
+                deadlineDtm: jobposts[i].deadlineDtm,
+            })
+        }
     }
 }
