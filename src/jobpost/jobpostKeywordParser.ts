@@ -336,14 +336,15 @@ export function jobpostKeywordParser(title, content, jobpostId) {
     if (typeof content === 'object') content = JSON.stringify(content)
     content = title + content
     content = content.replace(/\s/g, '')
-    content = content.toLowerCase()
+    // content = content.toLowerCase()
 
     let keyword
     for (let i = 0; i < keywords.length; i++) {
         keyword = keywords[i].keyword.split(' ')
         for (let j = 0; j < keyword.length; j++) {
-            if (content.includes(keyword[j].toLowerCase())) {
+            if (content.includes(keyword[j])) {
                 contentKeywords.push({
+                    keyword: keywords[i].keyword,
                     keywordCode: keywords[i].keywordCode,
                     jobpostId: jobpostId,
                 })
@@ -353,7 +354,7 @@ export function jobpostKeywordParser(title, content, jobpostId) {
     }
 
     for (let i = 0; i < stacks.length; i++) {
-        if (content.includes(stacks[i].stack.toLowerCase())) {
+        if (content.includes(stacks[i].stack)) {
             contentStacks.push({
                 stack: stacks[i].stack,
                 category: stacks[i].category,
