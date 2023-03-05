@@ -19,7 +19,7 @@ export class CompanyRepository extends Repository<Company> {
 
     async createCompanies(companies) {
         // 회사 데이터 한번씩 돌면서
-        companies.map(async (company) => {
+        for (let company of companies) {
             const {
                 companyName,
                 representativeName,
@@ -27,11 +27,11 @@ export class CompanyRepository extends Repository<Company> {
                 address,
                 foundedYear,
                 imageUrl,
-                hompageUrl,
+                homepageUrl,
                 annualSales,
                 avgSalary,
-                kerditjobUrl,
-                corperateType,
+                kreditjobUrl,
+                corporateType,
             } = company
 
             const query = `INSERT INTO company (company_name, representative_name, number_employees, address, founded_year, image_url, homepage_url, annual_sales, avg_salary, kreditjob_url, corporate_type)
@@ -53,22 +53,22 @@ export class CompanyRepository extends Repository<Company> {
                 address,
                 foundedYear,
                 imageUrl,
-                hompageUrl,
+                homepageUrl,
                 annualSales,
                 avgSalary,
-                kerditjobUrl,
-                corperateType,
+                kreditjobUrl,
+                corporateType,
                 representativeName,
                 address,
                 foundedYear,
                 imageUrl,
-                hompageUrl,
+                homepageUrl,
                 annualSales,
-                kerditjobUrl,
-                corperateType,
+                kreditjobUrl,
+                corporateType,
             ]
 
             await this.query(query, values)
-        })
+        }
     }
 }
