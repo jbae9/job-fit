@@ -32,7 +32,7 @@ export class Company {
     address: string | null
 
     @Column('int', { nullable: true })
-    foundedYear: number | null
+    foundedYear: string | null
 
     @Column('text', { nullable: true })
     imageUrl: string | null
