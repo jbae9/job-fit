@@ -19,12 +19,17 @@ export class SaraminScraper {
         let allJobsArr = []
         const data = cheerio.load(html.data)
         const jobData = data('.list_body').children('div')
-        // console.log(jobData.html())
 
         jobData.each(async function (i: number, elem: any) {
             const title = data(elem).find('.job_tit a span').text()
             const url = data(elem).find('.job_tit a').attr('href')
             const deadlineDtm = data(elem).find('.deadlines').text()
+            let address = data(elem).find('.work_place').text()
+            let addressUpper = address
+            let addressLower = ''
+            if (address.indexOf('전체') == -1) {
+                addressLower = address.split(' ', 2)[1]
+            }
 
             allJobsArr.push({
                 title: title,
@@ -34,12 +39,8 @@ export class SaraminScraper {
                 originalUrl: url,
                 originalImageUrl: 'image',
                 deadlineDtm: deadlineDtm,
-                //String(deadlineDtm).substring(2)
-                // "addressUpper": addressUpper,
-                // "addressLower": addressLower,
-                // "career": career,
-                // "education": education,
-                // "worktype": worktype,
+                addressUpper: addressUpper,
+                addressLower: addressLower,
             })
         })
         return allJobsArr
