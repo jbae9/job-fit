@@ -25,10 +25,13 @@ export class SaraminScraper {
             const url = data(elem).find('.job_tit a').attr('href')
             const deadlineDtm = data(elem).find('.deadlines').text()
             let address = data(elem).find('.work_place').text()
-            let addressUpper = address
+            let addressUpper = ''
             let addressLower = ''
             if (address.indexOf('전체') == -1) {
+                addressUpper = address.split(' ', 2)[0]
                 addressLower = address.split(' ', 2)[1]
+            } else {
+                addressUpper = address
             }
 
             allJobsArr.push({
