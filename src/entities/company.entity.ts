@@ -15,7 +15,7 @@ export class Company {
     @PrimaryGeneratedColumn({ type: 'int' })
     companyId: number
 
-    @OneToMany(() => Jobpost, (jobPost) => jobPost.jobPostId)
+    @OneToMany(() => Jobpost, (jobPost) => jobPost.company)
     jobPost: Jobpost[]
 
     @Index({ unique: true })
