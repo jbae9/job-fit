@@ -26,8 +26,6 @@ export class SaraminScraper {
 			const title = data(elem).find('.job_tit a span').text();
 			const url = data(elem).find('.job_tit a').attr("href");
 			const deadlineDtm = data(elem).find('.deadlines').text()
-			let startIdx = url.indexOf('?') + 26
-			let id = url.substring(startIdx, Number(startIdx) + 8)
 
 			allJobsArr.push({
 				"title": title,
@@ -36,7 +34,7 @@ export class SaraminScraper {
 				"originalSiteName": "사람인",
 				"originalUrl": url,
 				"originalImageUrl": "image",
-				"deadlineDtm": String(deadlineDtm).substring(2, 7),
+				"deadlineDtm": deadlineDtm,
 				//String(deadlineDtm).substring(2)
 				// "addressUpper": addressUpper,
 				// "addressLower": addressLower,
