@@ -90,11 +90,11 @@ export async function programmersScraper() {
                         address: company.address,
                         foundedYear: null,
                         imageUrl: company.logoUrl,
-                        hompageUrl: company.homeUrl,
+                        homepageUrl: company.homeUrl,
                         annualSales: null,
                         avgSalary: null,
-                        kerditjobUrl: null,
-                        corperateType: null,
+                        kreditjobUrl: null,
+                        corporateType: null,
                     }
 
                     // 채용공고 배열에 push
