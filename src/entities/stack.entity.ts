@@ -25,4 +25,7 @@ export class Stack {
     @Index({ unique: true })
     @Column('varchar', { length: 100 })
     stack: string
+
+    @Column('varchar', { length: 50 })
+    category: string
 }

@@ -3,6 +3,7 @@ import { CompanyRepository } from 'src/company/company.repository'
 import { JobpostRepository } from './jobpost.repository'
 import { wantedScraper } from './jobpostWantedAxiosScraper'
 import { SaraminScraper } from './jobpost.SaraminAxiosScraper'
+import { jobpostKeywordParser } from './jobpostKeywordParser'
 
 @Injectable()
 export class JobpostService {
@@ -30,7 +31,7 @@ export class JobpostService {
                 where: { companyName: jobposts[i].companyName },
             })
 
-            await this.jobpostRepository.save({
+            const saveResult = await this.jobpostRepository.save({
                 companyId: companyId[0].companyId,
                 title: jobposts[i].title,
                 content: jobposts[i].content,
@@ -41,6 +42,10 @@ export class JobpostService {
                 postedDtm: jobposts[i].postedDtm,
                 deadlineDtm: jobposts[i].deadlineDtm,
             })
+
+            this.logger.log(saveResult)
+
+            // const {keywords, stacks} = await jobpostKeywordParser(jobposts[i].title, jobposts[i].content)
         }
     }
 }

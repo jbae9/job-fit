@@ -160,8 +160,8 @@ export async function wantedScraper() {
                 `https://www.wanted.co.kr${nextLink}`
             )
 
-            nextLink = nextPage.data.links.next
-            // nextLink = null
+            // nextLink = nextPage.data.links.next
+            nextLink = null
 
             jobsList = nextPage.data.data
         }
