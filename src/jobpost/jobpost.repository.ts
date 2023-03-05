@@ -4,15 +4,15 @@ import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class JobpostRepository extends Repository<Jobpost> {
-	constructor(private dataSource: DataSource) {
-		super(Jobpost, dataSource.createEntityManager())
-	}
+    constructor(private dataSource: DataSource) {
+        super(Jobpost, dataSource.createEntityManager())
+    }
 
-	async postJobpostsInBulk(jobposts) {
-		await this.createQueryBuilder()
-			.insert()
-			.into(Jobpost)
-			.values(jobposts)
-			.execute()
-	}
+    async postJobpostsInBulk(jobposts) {
+        await this.createQueryBuilder()
+            .insert()
+            .into(Jobpost)
+            .values(jobposts)
+            .execute()
+    }
 }
