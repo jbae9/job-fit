@@ -49,7 +49,7 @@ export class Company {
     @Column('text', { nullable: true })
     kreditjobUrl: string | null
 
-    @Column('varchar', { length: 1000, nullable: true })
+    @Column('text', { nullable: true })
     corporateType: string | null
 
     @CreateDateColumn()
