@@ -14,4 +14,9 @@ export class JobpostController {
     async getSaraminData() {
         return await this.jobpostService.createJobpost()
     }
+
+    @Get('/programmers')
+    async getProgrammersJobposts() {
+        return await this.jobpostService.createProgrammersJobposts()
+    }
 }
