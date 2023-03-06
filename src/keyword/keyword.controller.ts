@@ -1,5 +1,5 @@
-import { Controller, Post } from '@nestjs/common';
-import { KeywordService } from './keyword.service';
+import { Controller, Post } from '@nestjs/common'
+import { KeywordService } from './keyword.service'
 import { default as keywords } from '../resources/data/database/keywords.json'
 import { default as stacks } from '../resources/data/database/stacks.json'
 

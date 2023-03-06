@@ -16,10 +16,10 @@ export class Stack {
     @PrimaryGeneratedColumn({ type: 'int' })
     stackId: number
 
-    @ManyToMany(() => Jobpost)
+    @ManyToMany(() => Jobpost, (jobpost) => jobpost.stacks)
     jobposts: Jobpost[]
 
-    @ManyToMany(() => User)
+    @ManyToMany(() => User, (user) => user.stacks)
     users: User[]
 
     @Index({ unique: true })

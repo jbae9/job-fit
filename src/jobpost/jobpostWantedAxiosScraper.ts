@@ -175,7 +175,7 @@ export async function wantedScraper() {
     }
 }
 
-async function getAxios(url) {
+async function getAxios(url: string) {
     const userAgentsList = [
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/605.1.15',
         'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36',
@@ -198,9 +198,12 @@ async function getAxios(url) {
     }
 
     let waitTime = 10000
-    while (true) {
+    let tries = 1
+    while (tries <= 100) {
         try {
-            const axiosData = await axios.get(url, { headers: axiosHeaders })
+            const axiosData = await axios.get(url, {
+                headers: axiosHeaders,
+            })
             if (axiosData.status === 404) {
                 throw Error('404')
             }
@@ -212,6 +215,7 @@ async function getAxios(url) {
             console.log(url)
             await new Promise((resolve) => setTimeout(resolve, waitTime))
             waitTime += 5000
+            tries++
         }
     }
 }

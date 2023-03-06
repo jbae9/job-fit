@@ -5,8 +5,7 @@ import { default as stacks } from '../resources/data/parsing/stacksForParsing.js
 
 export async function jobpostKeywordParser(
     title: string,
-    content: string | object,
-    jobpostId: number
+    content: string | object
 ) {
     const contentKeywords = []
     const contentStacks = []
@@ -28,7 +27,6 @@ export async function jobpostKeywordParser(
                 contentKeywords.push({
                     keyword: keywords[i].keyword[j],
                     keywordCode: keywords[i].keywordCode,
-                    jobpostId: jobpostId,
                 })
                 break
             }

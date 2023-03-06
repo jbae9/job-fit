@@ -25,7 +25,7 @@ export class Jobpost {
     @JoinColumn({ name: 'company_id' })
     company: Company
 
-    @ManyToMany(() => Keyword)
+    @ManyToMany(() => Keyword, (keyword) => keyword.jobposts, { cascade: true })
     @JoinTable({
         name: 'jobpostkeyword',
         joinColumn: {
@@ -39,7 +39,7 @@ export class Jobpost {
     })
     keywords: Keyword[]
 
-    @ManyToMany(() => User)
+    @ManyToMany(() => User, { cascade: true })
     @JoinTable({
         name: 'likedjobpost',
         joinColumn: {
@@ -53,7 +53,7 @@ export class Jobpost {
     })
     users: User[]
 
-    @ManyToMany(() => Stack)
+    @ManyToMany(() => Stack, (stack) => stack.jobposts, { cascade: true })
     @JoinTable({
         name: 'jobpoststack',
         joinColumn: {

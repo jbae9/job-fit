@@ -3,14 +3,21 @@ import { CompanyRepository } from 'src/company/company.repository'
 import { JobpostRepository } from './jobpost.repository'
 import { wantedScraper } from './jobpostWantedAxiosScraper'
 import { SaraminScraper } from './jobpost.SaraminAxiosScraper'
-import { jobpostKeywordParser } from './jobpostKeywordParser'
 import { programmersScraper } from './jobpostProgrammersScraper'
-
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { Keyword } from 'src/entities/keyword.entity'
+import { Stack } from 'src/entities/stack.entity'
+import { default as keywords } from '../resources/data/parsing/keywordsForParsing.json'
+import { default as stacks } from '../resources/data/parsing/stacksForParsing.json'
 @Injectable()
 export class JobpostService {
     constructor(
         private jobpostRepository: JobpostRepository,
         private companyRepository: CompanyRepository,
+        @InjectRepository(Keyword)
+        private keywordRepository: Repository<Keyword>,
+        @InjectRepository(Stack) private stackRepository: Repository<Stack>,
         private logger: Logger
     ) {}
 
@@ -24,7 +31,7 @@ export class JobpostService {
 
     async postWantedJobposts() {
         const { companies, jobposts } = await wantedScraper()
-        await this.companyRepository.save(companies)
+        await this.companyRepository.createCompanies(companies)
 
         for (let i = 0; i < jobposts.length; i++) {
             const companyId = await this.companyRepository.find({
@@ -32,7 +39,12 @@ export class JobpostService {
                 where: { companyName: jobposts[i].companyName },
             })
 
-            const saveResult = await this.jobpostRepository.save({
+            const { keywords, stacks } = await this.keywordParser(
+                jobposts[i].title,
+                jobposts[i].content
+            )
+
+            const createdJobpost = this.jobpostRepository.create({
                 companyId: companyId[0].companyId,
                 title: jobposts[i].title,
                 content: jobposts[i].content,
@@ -44,9 +56,11 @@ export class JobpostService {
                 deadlineDtm: jobposts[i].deadlineDtm,
             })
 
-            this.logger.log(saveResult)
-
-            // const {keywords, stacks} = await jobpostKeywordParser(jobposts[i].title, jobposts[i].content)
+            await this.jobpostRepository.save({
+                ...createdJobpost,
+                keywords: keywords, // [{keyword: "a", keywordCode: 1}]
+                stacks: stacks,
+            })
         }
     }
 
@@ -75,5 +89,47 @@ export class JobpostService {
                 deadlineDtm: jobposts[i].deadlineDtm,
             })
         }
+    }
+
+    async keywordParser(title: string, content: string | object) {
+        const contentKeywords = []
+        const contentStacks = []
+
+        if (typeof content === 'object') content = JSON.stringify(content)
+        content = title + ' ' + content
+
+        for (let i = 0; i < keywords.length; i++) {
+            if (keywords[i].excludes) {
+                for (let k = 0; k < keywords[i].excludes.length; k++) {
+                    content = content.replaceAll(keywords[i].excludes[k], '')
+                }
+            }
+
+            for (let j = 0; j < keywords[i].keyword.length; j++) {
+                const re = new RegExp(`\\b${keywords[i].keyword[j]}\\b`, 'gi')
+                if (re.test(content)) {
+                    const keyword = await this.keywordRepository.findOne({
+                        where: { keywordCode: keywords[i].keywordCode },
+                    })
+                    contentKeywords.push(keyword)
+                    break
+                }
+            }
+        }
+
+        for (let i = 0; i < stacks.length; i++) {
+            for (let j = 0; j < stacks[i].stack.length; j++) {
+                const re = new RegExp(`\\b${stacks[i].stack[j]}\\b`, 'gi')
+                if (re.test(content)) {
+                    const stack = await this.stackRepository.findOne({
+                        where: { stack: stacks[i].stack[0] },
+                    })
+                    contentStacks.push(stack)
+                    break
+                }
+            }
+        }
+
+        return { keywords: contentKeywords, stacks: contentStacks }
     }
 }
