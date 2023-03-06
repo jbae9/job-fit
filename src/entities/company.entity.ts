@@ -31,8 +31,8 @@ export class Company {
     @Column('varchar', { length: 300, nullable: true })
     address: string | null
 
-    @Column('varchar', { nullable: true })
-    foundedYear: string | null
+    @Column('int', { nullable: true })
+    foundedYear: number | null
 
     @Column('text', { nullable: true })
     imageUrl: string | null

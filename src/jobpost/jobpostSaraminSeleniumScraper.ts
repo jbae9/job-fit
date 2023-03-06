@@ -90,16 +90,18 @@ export class SaraminSelenium {
                     .getText()
                 allJobsArr[i].postedDtm = new Date(postedDtm)
                 allJobsArr[i].salary = Number(salary)
-                allJobsArr[i].deadlineDtm.indexOf('채용') == -1
-                    ? null
-                    : new Date(
-                        String(new Date().getFullYear) +
+                if (allJobsArr[i].deadlineDtm.indexOf('채용') != -1) {
+                    allJobsArr[i].deadlineDtm = null
+                } else if (allJobsArr[i].deadlineDtm.indexOf('마감') != -1) {
+                    allJobsArr[i].deadlineDtm = null
+                } else {
+                    let d = new Date(Date.now())
+                    allJobsArr[i].deadlineDtm = new Date(
+                        String(d.getFullYear()) +
                         '/' +
                         String(allJobsArr[i].deadlineDtm).substring(2, 7)
                     )
-                let companyName = await allJobs
-                    .findElement(By.className('title_inner'))
-                    .findElement(By.css('.company'))
+                }
                 try {
                     const companyOptionList = await allJobs
                         .findElement(By.className('wrap_info'))
@@ -129,10 +131,10 @@ export class SaraminSelenium {
                 }
                 if (allCompanies[i]['foundedYear'] != null) {
                     allCompanies[i]['foundedYear'] =
-                        allCompanies[i]['foundedYear']?.split('(')[0]
+                        Number(allCompanies[i]['foundedYear']?.split('년', 1)[0])
                 }
 
-                allCompanies[i]['companyName'] = await companyName.getText()
+                allCompanies[i]['companyName'] = allJobsArr[i]['companyName']
                 if (i != allJobsArr.length - 1) {
                     allCompanies.push({
                         companyName: null,
@@ -152,7 +154,7 @@ export class SaraminSelenium {
         } catch (err) {
             console.log(err)
         } finally {
-            await driver.quit()
+            // await driver.quit()
             return { companies: allCompanies, jobposts: allJobsArr }
         }
     }

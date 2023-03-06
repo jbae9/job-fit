@@ -14,37 +14,10 @@ export class JobpostService {
     ) { }
 
     async postSaraminJobposts() {
-        const saraminScraper = new SaraminSelenium('1000')
+        const saraminScraper = new SaraminSelenium('10')
         const { companies, jobposts } = await saraminScraper.getSaraminScraper()
-        for (let i = 0; i < jobposts.length; i++) {
-            let companyId = await this.companyRepository.findOne({
-                where: { companyName: companies[i].companyName },
-            })
-            if (!companyId) {
-                //회사 중복 확인
-                await this.companyRepository.save(companies[i])
-                companyId = await this.companyRepository.findOne({
-                    where: { companyName: companies[i].companyName },
-                })
-            }
-            let jobpostId = await this.jobpostRepository.findOne({
-                where: { originalUrl: jobposts[i].originalUrl },
-            })
-            if (!jobpostId) {
-                //공고 중복 확인
-                await this.jobpostRepository.save({
-                    companyId: companyId.companyId,
-                    title: jobposts[i].title,
-                    content: jobposts[i].content,
-                    salary: jobposts[i].salary,
-                    originalSiteName: jobposts[i].originalSiteName,
-                    originalUrl: jobposts[i].originalUrl,
-                    originalImgUrl: jobposts[i].originalImgUrl,
-                    postedDtm: jobposts[i].postedDtm,
-                    deadlineDtm: jobposts[i].deadlineDtm,
-                })
-            }
-        }
+        await this.companyRepository.createCompanies(companies)
+        await this.jobpostRepository.createJobposts(jobposts)
         this.logger.log('사람인 크롤링 작업 완료')
     }
 

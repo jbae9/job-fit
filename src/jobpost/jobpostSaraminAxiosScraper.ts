@@ -24,6 +24,7 @@ export class SaraminScraper {
             const title = data(elem).find('.job_tit a span').text()
             const url = data(elem).find('.job_tit a').attr('href')
             const deadlineDtm = data(elem).find('.deadlines').text()
+            const companyName = data(elem).find('.company_nm a span').text()
             let address = data(elem).find('.work_place').text()
             let addressUpper = ''
             let addressLower = ''
@@ -35,6 +36,7 @@ export class SaraminScraper {
             }
 
             allJobsArr.push({
+                companyName: companyName,
                 title: title,
                 content: '',
                 salary: 0,
