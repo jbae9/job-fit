@@ -17,6 +17,13 @@ export class CompanyRepository extends Repository<Company> {
             .execute()
     }
 
+    async findCompanyId(companyName: String) {
+        const company = await this.createQueryBuilder("company")
+            .where({ companyName: companyName })
+            .getOne()
+        return company.companyId
+    }
+
     async createCompanies(companies) {
         // 회사 데이터 한번씩 돌면서
         for (let company of companies) {
