@@ -3,7 +3,11 @@
 import { default as keywords } from '../resources/data/parsing/keywordsForParsing.json'
 import { default as stacks } from '../resources/data/parsing/stacksForParsing.json'
 
-export async function jobpostKeywordParser(title: string, content: string | object, jobpostId: number) {
+export async function jobpostKeywordParser(
+    title: string,
+    content: string | object,
+    jobpostId: number
+) {
     const contentKeywords = []
     const contentStacks = []
 
@@ -14,7 +18,7 @@ export async function jobpostKeywordParser(title: string, content: string | obje
 
     for (let i = 0; i < keywords.length; i++) {
         if (keywords[i].excludes) {
-            for (let k=0; k < keywords[i].excludes.length; k++) {
+            for (let k = 0; k < keywords[i].excludes.length; k++) {
                 content = content.replaceAll(keywords[i].excludes[k], '')
             }
         }
@@ -33,7 +37,10 @@ export async function jobpostKeywordParser(title: string, content: string | obje
 
     for (let i = 0; i < stacks.length; i++) {
         for (let j = 0; j < stacks[i].stack.length; j++) {
-            if (content.includes(stacks[i].stack[j]) || content.includes(stacks[i].stack[j].toUpperCase())) {
+            if (
+                content.includes(stacks[i].stack[j]) ||
+                content.includes(stacks[i].stack[j].toUpperCase())
+            ) {
                 contentStacks.push({
                     stack: stacks[i].stack[j],
                     category: stacks[i].category,
@@ -42,7 +49,7 @@ export async function jobpostKeywordParser(title: string, content: string | obje
         }
     }
 
-    return {keywords: contentKeywords, stacks: contentStacks}
+    return { keywords: contentKeywords, stacks: contentStacks }
 }
 
 // jobpostKeywordParser(
