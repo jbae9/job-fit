@@ -11,10 +11,10 @@ export class JobpostService {
         private jobpostRepository: JobpostRepository,
         private companyRepository: CompanyRepository,
         private logger: Logger
-    ) {}
+    ) { }
 
     async postSaraminJobposts() {
-        const saraminScraper = new SaraminSelenium('10')
+        const saraminScraper = new SaraminSelenium('1000')
         const { companies, jobposts } = await saraminScraper.getSaraminScraper()
         for (let i = 0; i < jobposts.length; i++) {
             let companyId = await this.companyRepository.findOne({

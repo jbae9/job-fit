@@ -1,4 +1,4 @@
-import { Builder, By } from 'selenium-webdriver'
+import { Builder, By, until } from 'selenium-webdriver'
 import { Options } from 'selenium-webdriver/chrome'
 import { PageLoadStrategy } from 'selenium-webdriver/lib/capabilities'
 import { SaraminScraper } from './jobpostSaraminAxiosScraper'
@@ -29,8 +29,8 @@ export class SaraminSelenium {
             .build()
         const saraminScraper = new SaraminScraper(
             `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=1&cat_mcls=2&isAjaxRequest=0&page_count=` +
-                this.pageCount +
-                `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
+            this.pageCount +
+            `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
         )
         let allJobsArr = await saraminScraper.getDataAsHtml()
         let allCompanies = [
@@ -53,10 +53,10 @@ export class SaraminSelenium {
                 await driver.get(
                     `https://www.saramin.co.kr${allJobsArr[i].originalUrl}`
                 )
-                driver.sleep(500)
+                await driver.wait(until.elementLocated(By.className('wrap_jv_cont')), 3000)
                 const allJobs = await driver
                     .findElement(By.className(`wrap_jview`))
-                    .findElement(By.css('section:nth-child(1)'))
+                    .findElement(By.css('section:first-child'))
                 let salary = '0'
                 let salaryText = await allJobs
                     .findElement(By.className('jv_summary'))
@@ -93,10 +93,10 @@ export class SaraminSelenium {
                 allJobsArr[i].deadlineDtm.indexOf('채용') == -1
                     ? null
                     : new Date(
-                          String(new Date().getFullYear) +
-                              '/' +
-                              String(allJobsArr[i].deadlineDtm).substring(2, 7)
-                      )
+                        String(new Date().getFullYear) +
+                        '/' +
+                        String(allJobsArr[i].deadlineDtm).substring(2, 7)
+                    )
                 let companyName = await allJobs
                     .findElement(By.className('title_inner'))
                     .findElement(By.css('.company'))
@@ -151,9 +151,6 @@ export class SaraminSelenium {
             }
         } catch (err) {
             console.log(err)
-            //오류 시 따온 회사 정보만큼 공고 정보를 자르기
-            let length = allCompanies.length
-            allJobsArr = allJobsArr.splice(0, length)
         } finally {
             await driver.quit()
             return { companies: allCompanies, jobposts: allJobsArr }
