@@ -7,6 +7,7 @@ export async function getAddress(address: string, key: string) {
     let longitude: number | null = null
     // 위도 y
     let latitude: number | null = null
+    let addressName: string | null
     try {
         // 재택
         if (address === '재택')
@@ -29,10 +30,20 @@ export async function getAddress(address: string, key: string) {
             return { addressUpper, addressLower, longitude, latitude }
 
         // 주소가 잘 나올때
-        const addressDetail = addressData.data.documents[0].address
-        const addressName = addressDetail.address_name
+        const addressDetail = addressData.data.documents[0]
+
+        if (addressDetail.address === null) {
+            addressName = addressDetail.address_name
+        } else {
+            addressName = addressDetail.address.address_name
+        }
+
         const upper = addressName.split(' ')[0]
-        const lower = addressName.split(' ')[1]
+        let lower = addressName.split(' ')[1]
+
+        // lower 가 undefined 거나 빈 문자열일때
+        if (!lower || lower === '') lower = null
+
         longitude = addressDetail.x
         latitude = addressDetail.y
 
