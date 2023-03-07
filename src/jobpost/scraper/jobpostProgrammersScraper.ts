@@ -17,7 +17,7 @@ export async function programmersScraper() {
         // 총 페이지 수
         const totalPages: number = data.totalPages
 
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 40; i++) {
             const { data } = await axios.get(
                 `https://career.programmers.co.kr/api/job_positions?page=${i}`
             )
@@ -80,6 +80,7 @@ export async function programmersScraper() {
                         originalUrl,
                         originalImgUrl,
                         deadlineDtm,
+                        originalAddress: address,
                         addressUpper,
                         addressLower,
                         longitude,

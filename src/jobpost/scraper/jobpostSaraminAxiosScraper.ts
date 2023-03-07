@@ -1,3 +1,5 @@
+import { getAddress } from '../common/getAddress'
+
 const axios = require('axios')
 const cheerio = require('cheerio')
 
@@ -26,13 +28,31 @@ export class SaraminScraper {
             const deadlineDtm = data(elem).find('.deadlines').text()
             const companyName = data(elem).find('.company_nm a span').text()
             let address = data(elem).find('.work_place').text()
-            let addressUpper = ''
-            let addressLower = ''
-            if (address.indexOf('전체') == -1) {
-                addressUpper = address.split(' ', 2)[0]
-                addressLower = address.split(' ', 2)[1]
+
+            let addressUpper: string | null
+            let addressLower: string | null
+            let longitude: number | null
+            let latitude: number | null
+
+            if (address.includes('전체')) {
+                const addressSlice = address.split('전체')[0]
+                const getAddressResult = await getAddress(
+                    addressSlice,
+                    process.env.KAKAO_KEY
+                )
+                addressUpper = getAddressResult.addressUpper
+                addressLower = '전체'
+                longitude = getAddressResult.longitude
+                latitude = getAddressResult.latitude
             } else {
-                addressUpper = address
+                const getAddressResult = await getAddress(
+                    address,
+                    process.env.KAKAO_KEY
+                )
+                addressUpper = getAddressResult.addressUpper
+                addressLower = getAddressResult.addressLower
+                longitude = getAddressResult.longitude
+                latitude = getAddressResult.latitude
             }
 
             allJobsArr.push({
@@ -44,8 +64,11 @@ export class SaraminScraper {
                 originalUrl: url,
                 originalImageUrl: 'image',
                 deadlineDtm: deadlineDtm,
+                originalAddress: address,
                 addressUpper: addressUpper,
                 addressLower: addressLower,
+                longitude,
+                latitude,
             })
         })
         return allJobsArr
