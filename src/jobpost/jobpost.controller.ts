@@ -12,7 +12,7 @@ export class JobpostController {
 
     @Get('/saramin')
     async getSaraminData() {
-        return await this.jobpostService.createJobpost()
+        return await this.jobpostService.postSaraminJobposts()
     }
 
     @Get('/programmers')

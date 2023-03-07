@@ -22,7 +22,7 @@ export class Company {
     @Column('varchar', { length: 100 })
     companyName: string
 
-    @Column('varchar', { length: 10, nullable: true })
+    @Column('varchar', { length: 100, nullable: true })
     representativeName: string | null
 
     @Column('int', { nullable: true })
@@ -49,7 +49,7 @@ export class Company {
     @Column('text', { nullable: true })
     kreditjobUrl: string | null
 
-    @Column('varchar', { length: 100, nullable: true })
+    @Column('text', { nullable: true })
     corporateType: string | null
 
     @CreateDateColumn()
