@@ -100,6 +100,23 @@ export class Jobpost {
     @Column('int', { nullable: true })
     views: number | null
 
+    @Column({ type: 'varchar', nullable: true })
+    originalAddress: string | null
+
+    @Column({ type: 'varchar', nullable: true })
+    addressUpper: string | null
+
+    @Column({ type: 'varchar', nullable: true })
+    addressLower: string | null
+
+    // 경도
+    @Column({ type: 'double', nullable: true })
+    longitude: number | null
+
+    // 위도
+    @Column({ type: 'double', nullable: true })
+    latitude: number | null
+
     @CreateDateColumn()
     createdDtm: Date
 
