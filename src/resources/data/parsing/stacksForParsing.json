@@ -94,7 +94,11 @@
     { "stack": ["Greenplum"], "category": "데이터베이스" },
     { "stack": ["GRPC"], "category": "백엔드" },
     { "stack": ["Gulp"], "category": "데브옵스" },
-    { "stack": ["H2"], "category": "데이터베이스" },
+    {
+        "stack": ["H2"],
+        "excludes": ["<h2", "</h2>"],
+        "category": "데이터베이스"
+    },
     { "stack": ["Hadoop"], "category": "데이터" },
     { "stack": ["Harbor"], "category": "데브옵스" },
     { "stack": ["Hazelcast"], "category": "데이터" },
@@ -184,7 +188,7 @@
     { "stack": ["Pytorch"], "category": "데이터" },
     {
         "stack": ["R"],
-        "excludes": ["OKR", "Right", "Rest", "REST", "OCR", "CSSR"],
+        "excludes": ["=r", "=R", "r-", "R-", "R&", "r&"],
         "category": "언어"
     },
     { "stack": ["RabbitMQ"], "category": "백엔드" },

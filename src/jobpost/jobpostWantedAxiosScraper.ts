@@ -203,6 +203,7 @@ async function getAxios(url: string) {
         try {
             const axiosData = await axios.get(url, {
                 headers: axiosHeaders,
+                proxy: { host: '115.144.102.39', port: 10080 },
             })
             if (axiosData.status === 404) {
                 throw Error('404')
@@ -219,5 +220,3 @@ async function getAxios(url: string) {
         }
     }
 }
-
-wantedScraper()

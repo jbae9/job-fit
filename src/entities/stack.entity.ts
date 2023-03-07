@@ -28,4 +28,7 @@ export class Stack {
 
     @Column('varchar', { length: 50 })
     category: string
+
+    @Column('text')
+    stackImgUrl: string
 }

@@ -14,11 +14,12 @@ export class KeywordService {
     ) {}
 
     async postKeywords(keywords: { keyword: string; keywordCode: number }[]) {
-        this.logger.log(keywords)
         await this.keywordRepository.save(keywords)
     }
 
-    async postStacks(stacks: { stack: string; category: string }[]) {
+    async postStacks(
+        stacks: { stack: string; category: string; stackImgUrl: string }[]
+    ) {
         await this.stackRepository.save(stacks)
     }
 }

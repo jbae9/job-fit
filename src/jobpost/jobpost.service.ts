@@ -58,7 +58,7 @@ export class JobpostService {
 
             await this.jobpostRepository.save({
                 ...createdJobpost,
-                keywords: keywords, // [{keyword: "a", keywordCode: 1}]
+                keywords: keywords,
                 stacks: stacks,
             })
         }
@@ -77,7 +77,12 @@ export class JobpostService {
                 select: { companyId: true },
             })
 
-            await this.jobpostRepository.save({
+            const { keywords, stacks } = await this.keywordParser(
+                jobposts[i].title,
+                jobposts[i].content
+            )
+
+            const createdJobpost = this.jobpostRepository.create({
                 companyId: companyId[0].companyId,
                 title: jobposts[i].title,
                 content: jobposts[i].content,
@@ -87,6 +92,12 @@ export class JobpostService {
                 originalImgUrl: jobposts[i].originalImgUrl,
                 postedDtm: jobposts[i].postedDtm,
                 deadlineDtm: jobposts[i].deadlineDtm,
+            })
+
+            await this.jobpostRepository.save({
+                ...createdJobpost,
+                keywords: keywords,
+                stacks: stacks,
             })
         }
     }
@@ -119,7 +130,17 @@ export class JobpostService {
 
         for (let i = 0; i < stacks.length; i++) {
             for (let j = 0; j < stacks[i].stack.length; j++) {
-                const re = new RegExp(`\\b${stacks[i].stack[j]}\\b`, 'gi')
+                if (stacks[i].excludes) {
+                    for (let k = 0; k < stacks[i].excludes.length; k++) {
+                        content = content.replaceAll(stacks[i].excludes[k], '')
+                    }
+                }
+
+                const regExVar = stacks[i].stack[j].replace(
+                    /[.*+?^${}()|[\]\\]/g,
+                    '\\$&'
+                )
+                const re = new RegExp(`\\b${regExVar}\\b`, 'gi')
                 if (re.test(content)) {
                     const stack = await this.stackRepository.findOne({
                         where: { stack: stacks[i].stack[0] },
