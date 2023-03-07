@@ -19,7 +19,7 @@ export class JobpostService {
         private keywordRepository: Repository<Keyword>,
         @InjectRepository(Stack) private stackRepository: Repository<Stack>,
         private logger: Logger
-    ) { }
+    ) {}
 
     async postSaraminJobposts() {
         const saraminScraper = new SaraminSelenium('10')

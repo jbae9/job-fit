@@ -5,11 +5,12 @@ import { CompanyRepository } from 'src/company/company.repository'
 
 @Injectable()
 export class JobpostRepository extends Repository<Jobpost> {
-    constructor(private dataSource: DataSource,
-        private companyRepository: CompanyRepository) {
+    constructor(
+        private dataSource: DataSource,
+        private companyRepository: CompanyRepository
+    ) {
         super(Jobpost, dataSource.createEntityManager())
     }
-
 
     async postJobpostsInBulk(jobposts) {
         await this.createQueryBuilder()
@@ -33,7 +34,9 @@ export class JobpostRepository extends Repository<Jobpost> {
                 deadlineDtm,
             } = jobpost
 
-            const companyId = await this.companyRepository.findCompanyId(companyName)
+            const companyId = await this.companyRepository.findCompanyId(
+                companyName
+            )
 
             const query = `INSERT INTO jobpost (company_id, title, content, salary, original_site_name, original_url, original_img_url, posted_dtm, deadline_dtm)
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -46,7 +49,6 @@ export class JobpostRepository extends Repository<Jobpost> {
                            original_img_url = COALESCE(?, original_img_url),
                            posted_dtm = COALESCE(?, posted_dtm),
                            deadline_dtm = COALESCE(?, deadline_dtm)`
-
 
             const values = [
                 companyId,
