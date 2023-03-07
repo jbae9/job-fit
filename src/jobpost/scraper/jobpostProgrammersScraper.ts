@@ -1,5 +1,6 @@
 import axios from 'axios'
 import dotenv from 'dotenv'
+import { getAddress } from '../common/getAddress'
 
 dotenv.config({ path: '../../../.env' })
 
@@ -16,7 +17,7 @@ export async function programmersScraper() {
         // 총 페이지 수
         const totalPages: number = data.totalPages
 
-        for (let i = 1; i <= totalPages; i++) {
+        for (let i = 1; i <= 5; i++) {
             const { data } = await axios.get(
                 `https://career.programmers.co.kr/api/job_positions?page=${i}`
             )
@@ -64,11 +65,8 @@ export async function programmersScraper() {
                               )
 
                     // 채용공고 주소
-                    const { addressUpper, addressLower } = await getAddress(
-                        address,
-                        process.env.KAKAO_KEY
-                    )
-                    // console.log(addressUpper, addressLower)
+                    const { addressUpper, addressLower, longitude, latitude } =
+                        await getAddress(address, process.env.KAKAO_KEY)
 
                     // 회사 이름
                     const companyName = company.name
@@ -84,6 +82,8 @@ export async function programmersScraper() {
                         deadlineDtm,
                         addressUpper,
                         addressLower,
+                        longitude,
+                        latitude,
                         companyName,
                     }
 
@@ -124,88 +124,5 @@ export async function programmersScraper() {
         console.log(error)
     } finally {
         return { jobposts, companies }
-    }
-}
-
-async function getAddress(address: string, key: string) {
-    // 카카오 주소 API
-
-    // 재택
-    if (address === '재택') return { addressUpper: null, addressLower: null }
-
-    const addressData = await axios.get(
-        `https://dapi.kakao.com/v2/local/search/address.json?query=${
-            address.split(',')[0]
-        }&analyze_type=similar`,
-        {
-            headers: {
-                Authorization: `KakaoAK ${key}`,
-            },
-        }
-    )
-
-    //잘못된 주소로 인해서 주소가 나오지 않을 때
-    if (addressData.data.documents.length === 0)
-        return { addressUpper: null, addressLower: null }
-
-    const addressName = addressData.data.documents[0].address.address_name
-    const upper = addressName.split(' ')[0]
-    const lower = addressName.split(' ')[1]
-
-    // '서울', '부산', '대구', '인천', '광주', '대전', '울산'
-    if (
-        ['서울', '부산', '대구', '인천', '광주', '대전', '울산'].includes(upper)
-    ) {
-        return {
-            addressUpper: upper + '시',
-            addressLower: lower,
-        }
-    }
-
-    // '세종'
-    if (upper.includes('세종')) {
-        return {
-            addressUpper: '세종시',
-            addressLower: '전체',
-        }
-    }
-
-    // '도'
-    if (
-        [
-            '경기',
-            '강원',
-            '충북',
-            '충남',
-            '전북',
-            '전남',
-            '경북',
-            '경남',
-        ].includes(upper)
-    ) {
-        switch (upper) {
-            case '충북':
-                return { addressUpper: '충청북도', addressLower: lower }
-            case '충남':
-                return { addressUpper: '충청북도', addressLower: lower }
-            case '전북':
-                return { addressUpper: '충청북도', addressLower: lower }
-            case '전남':
-                return { addressUpper: '충청북도', addressLower: lower }
-            case '경북':
-                return { addressUpper: '충청북도', addressLower: lower }
-            case '경남':
-                return { addressUpper: '충청북도', addressLower: lower }
-            default:
-                return { addressUpper: upper + '도', addressLower: lower }
-        }
-    }
-
-    // '제주'
-    if (upper.includes('제주')) {
-        return {
-            addressUpper: '제주특별자치도',
-            addressLower: lower,
-        }
     }
 }
