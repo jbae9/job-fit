@@ -29,13 +29,16 @@ export class SaraminScraper {
             const title = data(jobpost).find('.job_tit a span').text()
             const url = data(jobpost).find('.job_tit a').attr('href')
             const deadlineDtm = data(jobpost).find('.deadlines').text()
-            const companyName = data(jobpost).find('.company_nm a span').text()
+            let companyName = data(jobpost).find('.company_nm a span').text()
             let address = data(jobpost).find('.work_place').text()
 
             let addressUpper: string | null
             let addressLower: string | null
             let longitude: number | null
             let latitude: number | null
+            if (companyName.indexOf('(주)') != -1) {
+                companyName = companyName.replace('(주)', '')
+            }
 
             if (address.includes('전체')) {
                 const addressSlice = address.split('전체')[0]
