@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
 
+@font-face {
+    font-family: 'EliceDigitalBaeum-Bd';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     font-family: 'Noto Sans KR', sans-serif;
     min-height: 100vh;
@@ -12,4 +19,71 @@ body::-webkit-scrollbar {
 a {
     text-decoration: none !important;
     color: #000000 !important;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: 500;
+    font-family: 'EliceDigitalBaeum-Bd';
+}
+
+.muted {
+    color: rgb(69, 87, 117, 0.8)
+}
+
+.card-title {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.card-text {
+    color: rgb(69, 87, 117, 0.8);
+    padding: 5px 0;
+}
+
+.card-text img {
+    height: 35px;
+    padding-right: 3px;
+}
+
+.card-text.row {
+    display: flex;
+    align-items: center;
+}
+
+.card-text.companyName {
+    font-size: 18px;
+}
+
+.card-img-top {
+    max-height: 150px;
+    max-width: 250px;
+    height: auto;
+    width: auto;
+    margin: auto;
+    padding: 10px 0;
+    position: relative;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48;
+    color: rgb(69, 87, 117, 0.8);
+    font-size: 18px
+}
+
+.material-symbols-outlined.likeIcon {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48;
+    color: rgb(69, 87, 117, 0.8);
+    font-size: 30px;
+    position: absolute;
+    padding: 10px;
+    right: 0;
 }

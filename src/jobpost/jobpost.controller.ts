@@ -1,4 +1,4 @@
-import { Controller, Post, Get } from '@nestjs/common'
+import { Controller, Post, Get, Query } from '@nestjs/common'
 import { JobpostService } from './jobpost.service'
 
 @Controller('api/jobpost')
@@ -18,5 +18,17 @@ export class JobpostController {
     @Get('/programmers')
     async getProgrammersJobposts() {
         return await this.jobpostService.createProgrammersJobposts()
+    }
+
+    @Get('/recent')
+    async getRecentJobposts() {
+        return await this.jobpostService.getRecentJobposts()
+    }
+
+    @Get('/filter')
+    async getFilteredJobposts(
+        @Query() query: { order?: string; limit?: string; offset?: string }
+    ) {
+        return await this.jobpostService.getFilteredJobposts(query)
     }
 }

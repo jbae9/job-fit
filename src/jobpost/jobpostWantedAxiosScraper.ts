@@ -53,7 +53,10 @@ export async function wantedScraper() {
                         deadlineDtm = new Date(`${deadlineDtm} 23:59:59.999`)
 
                     const companyId = jobsList[i].company.id
-                    const companyName = jobsList[i].company.name
+                    let companyName = jobsList[i].company.name
+                    if (companyName.includes('(주)')) {
+                        companyName = companyName.split('(주)').join('')
+                    }
 
                     // 회사 정보가 이미 저장되어있는지 확인
                     if (!allCompanyIdsArr.includes(companyId)) {

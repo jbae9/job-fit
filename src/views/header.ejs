@@ -3,25 +3,36 @@
         <div class="header-logo-wrap">
             <a class="logo" href="/"><img src="/images/logo.png" /></a>
         </div>
+        <div class="input-group m-2" id="searchBar">
+            <input type="text" class="form-control" id="searchInput" placeholder="검색" aria-label="검색"
+                aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="searchButton">
+                    <span class="material-icons">
+                        search
+                    </span>
+                </button>
+            </div>
+        </div>
         <% if (!user) { %>
-        <div class="header-menu-wrap">
-            <ul>
-                <li>
-                    <a class="login-link" href="/login">회원가입/로그인</a>
-                </li>
-            </ul>
-        </div>
-        <% } else { %>
-        <div class="header-menu-wrap">
-            <ul>
-                <li>
-                    <a class="login-link" href="/mypage">마이페이지</a>
-                </li>
-                <li>
-                    <a class="login-link" href="/logout">로그아웃</a>
-                </li>
-            </ul>
-        </div>
-        <% } %>
+            <div class="header-menu-wrap">
+                <ul>
+                    <li>
+                        <a class="login-link" href="/login">회원가입/로그인</a>
+                    </li>
+                </ul>
+            </div>
+            <% } else { %>
+                <div class="header-menu-wrap">
+                    <ul>
+                        <li>
+                            <a class="login-link" href="/mypage">마이페이지</a>
+                        </li>
+                        <li>
+                            <a class="login-link" href="/logout">로그아웃</a>
+                        </li>
+                    </ul>
+                </div>
+                <% } %>
     </div>
 </div>

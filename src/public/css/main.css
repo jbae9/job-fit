@@ -1,0 +1,31 @@
+#mainContainer {
+    background-color: antiquewhite
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    justify-content: none;
+    width: auto;
+}
+
+.carousel-inner {
+    padding: 0 30px
+}
+
+.carousel {
+    margin: 10px 0 20px
+}
+
+.mainHeader {
+    justify-content: space-between;
+    align-items: center;
+    display: flex;
+}
+
+.mainHeader p {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    color: #F0723D;
+    font-family: 'EliceDigitalBaeum-Bd';
+}

@@ -54,3 +54,31 @@
         padding: 0 1rem;
     }
 }
+
+.form-control {
+    border-color: rgb(69, 87, 117, 0.3);
+}
+
+.form-control:focus {
+    border-color: rgb(69, 87, 117, 0.3);
+    box-shadow: 0 0 0 0.2rem rgb(69, 87, 117, 0.3);
+}
+
+#searchBar {
+    max-width: 30%;
+}
+
+#searchInput {
+    border-right: none;
+}
+
+#searchButton {
+    border-left: none;
+    border-color: rgb(69, 87, 117, 0.3);
+    border-radius: 0 6px 6px 0;
+    --bs-btn-hover-bg: none
+}
+
+.material-icons {
+    color: #F0723D
+}
