@@ -82,10 +82,10 @@ export async function programmersScraper() {
                         await getAddress(address, process.env.KAKAO_KEY)
 
                     // 연봉
-                    // minSalary 가 null 이면 null, 아니라면 1,000,000 미만이면 10,000을 곱하고 아니라면 그대로
+                    // minSalary 가 null 이면 null, 아니라면 100,000,000 미만이면 10,000을 곱하고 아니라면 그대로
                     const salary = !minSalary
                         ? null
-                        : minSalary < 1000000
+                        : minSalary < 100000000
                         ? minSalary * 10000
                         : minSalary
 
