@@ -29,10 +29,11 @@ export class SaraminSelenium {
             .build()
         const saraminScraper = new SaraminScraper(
             `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=1&cat_mcls=2&isAjaxRequest=0&page_count=` +
-            this.pageCount +
-            `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
+                this.pageCount +
+                `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
         )
         let allJobsArr = await saraminScraper.getDataAsHtml()
+
         let allCompanies = [
             {
                 companyName: null,
@@ -53,7 +54,10 @@ export class SaraminSelenium {
                 await driver.get(
                     `https://www.saramin.co.kr${allJobsArr[i].originalUrl}`
                 )
-                await driver.wait(until.elementLocated(By.className('wrap_jv_cont')), 3000)
+                await driver.wait(
+                    until.elementLocated(By.className('wrap_jv_cont')),
+                    3000
+                )
                 const allJobs = await driver
                     .findElement(By.className(`wrap_jview`))
                     .findElement(By.css('section:first-child'))
@@ -84,6 +88,13 @@ export class SaraminSelenium {
                         salary = salary.split(' ', 2)[1].replace(',', '')
                     }
                 }
+                const content = await allJobs
+                    .findElement(By.css('div.wrap_jv_cont'))
+                    .findElement(By.css('div.jv_detail'))
+                    .findElement(By.css('div.cont'))
+                    .getAttribute('innerHTML')
+
+                allJobsArr[i].content = content
                 const postedDtm = await allJobs
                     .findElement(By.className('info_period'))
                     .findElement(By.css('dd'))
@@ -98,8 +109,8 @@ export class SaraminSelenium {
                     let d = new Date(Date.now())
                     allJobsArr[i].deadlineDtm = new Date(
                         String(d.getFullYear()) +
-                        '/' +
-                        String(allJobsArr[i].deadlineDtm).substring(2, 7)
+                            '/' +
+                            String(allJobsArr[i].deadlineDtm).substring(2, 7)
                     )
                 }
                 try {
@@ -130,8 +141,9 @@ export class SaraminSelenium {
                     )
                 }
                 if (allCompanies[i]['foundedYear'] != null) {
-                    allCompanies[i]['foundedYear'] =
-                        Number(allCompanies[i]['foundedYear']?.split('년', 1)[0])
+                    allCompanies[i]['foundedYear'] = Number(
+                        allCompanies[i]['foundedYear']?.split('년', 1)[0]
+                    )
                 }
 
                 allCompanies[i]['companyName'] = allJobsArr[i]['companyName']

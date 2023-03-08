@@ -5,18 +5,18 @@ import { JobpostService } from './jobpost.service'
 export class JobpostController {
     constructor(private readonly jobpostService: JobpostService) {}
 
-    @Post('/wanted')
-    async postWantedJobposts() {
-        return this.jobpostService.postWantedJobposts()
-    }
-
     @Get('/saramin')
     async getSaraminData() {
-        return await this.jobpostService.postSaraminJobposts()
+        return await this.jobpostService.getSaraminJobposts()
+    }
+
+    @Get('/wanted')
+    async getWantedJobposts() {
+        return await this.jobpostService.getWantedJobposts()
     }
 
     @Get('/programmers')
     async getProgrammersJobposts() {
-        return await this.jobpostService.createProgrammersJobposts()
+        return await this.jobpostService.getProgrammersJobposts()
     }
 }
