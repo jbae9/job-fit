@@ -16,6 +16,7 @@ import { Keyword } from './keyword.entity'
 import { Stack } from './stack.entity'
 import { User } from './user.entity'
 
+@Index(['companyId', 'title'], { unique: true })
 @Entity({ schema: 'jobfit', name: 'jobpost' })
 export class Jobpost {
     @PrimaryGeneratedColumn({ type: 'int' })
@@ -70,10 +71,10 @@ export class Jobpost {
     @Column('int')
     companyId: number
 
-    @Column('text')
+    @Column('varchar')
     title: string
 
-    @Column('mediumtext')
+    @Column('text')
     content: string
 
     @Column('int', { nullable: true })
@@ -82,10 +83,10 @@ export class Jobpost {
     @Column('varchar', { length: 100 })
     originalSiteName: string
 
-    @Column('text')
+    @Column('varchar')
     originalUrl: string
 
-    @Column('text', { nullable: true })
+    @Column('varchar', { nullable: true })
     originalImgUrl: string | null
 
     @Column('datetime', { nullable: true })
@@ -93,9 +94,6 @@ export class Jobpost {
 
     @Column('datetime', { nullable: true })
     deadlineDtm: Date | null
-
-    @Column('varchar', { length: 100, nullable: true })
-    preferenceCondition: string | null
 
     @Column('int', { nullable: true })
     views: number | null
