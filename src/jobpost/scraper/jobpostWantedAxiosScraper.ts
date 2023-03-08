@@ -74,7 +74,10 @@ export async function wantedScraper() {
                         deadlineDtm = new Date(`${deadlineDtm} 23:59:59.999`)
 
                     const companyId = jobsList[i].company.id
-                    const companyName = jobsList[i].company.name
+                    let companyName = jobsList[i].company.name
+                    if (companyName.includes('(주)')) {
+                        companyName = companyName.split('(주)').join('')
+                    }
 
                     // 회사 정보가 이미 저장되어있는지 확인
                     if (!allCompanyIdsArr.includes(companyId)) {
@@ -184,8 +187,8 @@ export async function wantedScraper() {
                 `https://www.wanted.co.kr${nextLink}`
             )
 
-            nextLink = nextPage.data.links.next
-            // nextLink = null
+            // nextLink = nextPage.data.links.next
+            nextLink = null
 
             jobsList = nextPage.data.data
         }
@@ -199,7 +202,7 @@ export async function wantedScraper() {
     }
 }
 
-async function getAxios(url) {
+async function getAxios(url: string) {
     const userAgentsList = [
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/605.1.15',
         'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.53 Safari/537.36',
@@ -222,9 +225,12 @@ async function getAxios(url) {
     }
 
     let waitTime = 10000
-    while (true) {
+    let tries = 1
+    while (tries <= 100) {
         try {
-            const axiosData = await axios.get(url, { headers: axiosHeaders })
+            const axiosData = await axios.get(url, {
+                headers: axiosHeaders,
+            })
             if (axiosData.status === 404) {
                 throw Error('404')
             }
@@ -236,6 +242,7 @@ async function getAxios(url) {
             console.log(url)
             await new Promise((resolve) => setTimeout(resolve, waitTime))
             waitTime += 5000
+            tries++
         }
     }
 }

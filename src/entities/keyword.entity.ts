@@ -15,7 +15,7 @@ export class Keyword {
     @PrimaryGeneratedColumn({ type: 'int' })
     keywordId: number
 
-    @ManyToMany(() => Jobpost)
+    @ManyToMany(() => Jobpost, (jobpost) => jobpost.keywords)
     jobposts: Jobpost[]
 
     @Index({ unique: true })

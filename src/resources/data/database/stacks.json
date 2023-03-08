@@ -1,0 +1,1242 @@
+[
+    {
+        "stack": "Agit",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/agit.png"
+    },
+    {
+        "stack": "Airflow",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/airflow.png"
+    },
+    {
+        "stack": "Alamofire",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/alamofire.png"
+    },
+    {
+        "stack": "Angular",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/angular.png"
+    },
+    {
+        "stack": "Ansible",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/ansible.png"
+    },
+    {
+        "stack": "Apollo",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/apollo.png"
+    },
+    {
+        "stack": "Appium",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/appium.png"
+    },
+    {
+        "stack": "ArangoDB",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/arangodb.png"
+    },
+    {
+        "stack": "Arcus",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/arcus.png"
+    },
+    {
+        "stack": "Argo CD",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/argocd.png"
+    },
+    {
+        "stack": "Armeria",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/armeria.png"
+    },
+    {
+        "stack": "Asana",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/asana.png"
+    },
+    {
+        "stack": "ASP.NET",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/aspnet.png"
+    },
+    {
+        "stack": "AWS Athena",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awsathena.png"
+    },
+    {
+        "stack": "AWS AuroraDB",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awsauroradb.png"
+    },
+    {
+        "stack": "AWS CodeBuild",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awscodebuild.png"
+    },
+    {
+        "stack": "AWS CodeDeploy",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awscodedeploy.png"
+    },
+    {
+        "stack": "AWS CodePipeline",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awscodepipeline.png"
+    },
+    {
+        "stack": "AWS DocumentDB",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awsdocumentdb.png"
+    },
+    {
+        "stack": "AWS DynamoDB",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awsdynamodb.png"
+    },
+    {
+        "stack": "AWS Kinesis",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awskinesis.png"
+    },
+    {
+        "stack": "AWS MariaDB",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awsmariadb.png"
+    },
+    {
+        "stack": "AWS Redshift",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awsredshift.png"
+    },
+    {
+        "stack": "AWS SES",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awsses.png"
+    },
+    {
+        "stack": "AWS SNS",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awssns.png"
+    },
+    {
+        "stack": "AWS SQS",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/awssqs.png"
+    },
+    {
+        "stack": "Azure DevOps",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/azuredevops.png"
+    },
+    {
+        "stack": "BackboneJS",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/backbonejs.png"
+    },
+    {
+        "stack": "Bazel",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/bazel.png"
+    },
+    {
+        "stack": "Bitbucket",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/bitbucket.png"
+    },
+    {
+        "stack": "Bitrise",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/bitrise.png"
+    },
+    {
+        "stack": "Capistrano",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/capistrano.png"
+    },
+    {
+        "stack": "CassandraDB",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/cassandra.png"
+    },
+    {
+        "stack": "Celery",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/celery.png"
+    },
+    {
+        "stack": "Central Dogma",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/centraldogma.png"
+    },
+    {
+        "stack": "Ceph",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/ceph.png"
+    },
+    {
+        "stack": "Circle CI",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/circleci.png"
+    },
+    {
+        "stack": "Clickhouse",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/clickhouse.png"
+    },
+    {
+        "stack": "Clojure",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/clojure.png"
+    },
+    {
+        "stack": "CockroachDB",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/cockroachdb.png"
+    },
+    {
+        "stack": "CodeIgniter",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/codeigniter.png"
+    },
+    {
+        "stack": "Confluence",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/confluence.png"
+    },
+    {
+        "stack": "Couchbase",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/couchbase.png"
+    },
+    {
+        "stack": "C++",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/cplusplus.png"
+    },
+    {
+        "stack": "C#",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/csharp.png"
+    },
+    {
+        "stack": "Cubrid",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/cubrid.png"
+    },
+    {
+        "stack": "Cucumber",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/cucumber.png"
+    },
+    {
+        "stack": "Cypress",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/cypress.png"
+    },
+    {
+        "stack": "Dagger",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/dagger.png"
+    },
+    {
+        "stack": "Dart",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/dart.png"
+    },
+    {
+        "stack": "Discord",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/discord.png"
+    },
+    {
+        "stack": "Django",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/django.png"
+    },
+    {
+        "stack": "Docker",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/docker.png"
+    },
+    {
+        "stack": "Docusaurus",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/docusaurus.png"
+    },
+    {
+        "stack": "Dooray",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/dooray.png"
+    },
+    {
+        "stack": "Drone",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/drone.png"
+    },
+    {
+        "stack": "Dropwizard",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/dropwizard.png"
+    },
+    {
+        "stack": "Druid",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/druid.png"
+    },
+    {
+        "stack": "ElasticSearch",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/elasticsearch.png"
+    },
+    {
+        "stack": "Electron",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/electron.png"
+    },
+    {
+        "stack": "Elixir",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/elixir.png"
+    },
+    {
+        "stack": "EmberJS",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/emberjs.png"
+    },
+    {
+        "stack": "Emotion",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/emotion.png"
+    },
+    {
+        "stack": "Envoy",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/envoy.png"
+    },
+    {
+        "stack": "Enzyme",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/enzyme.png"
+    },
+    {
+        "stack": "ExoPlayer",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/exoplayer.png"
+    },
+    {
+        "stack": "ExpressJS",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/expressjs.png"
+    },
+    {
+        "stack": "Falcon",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/falcon.png"
+    },
+    {
+        "stack": "FastAPI",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/fastapi.png"
+    },
+    {
+        "stack": "Fastify",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/fastify.png"
+    },
+    {
+        "stack": "Fastlane",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/fastlane.png"
+    },
+    {
+        "stack": "Fiber",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/fiber.png"
+    },
+    {
+        "stack": "Flask",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/flask.png"
+    },
+    {
+        "stack": "Flink",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/flink.png"
+    },
+    {
+        "stack": "Flow",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/flow.png"
+    },
+    {
+        "stack": "Fluentd",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/fluentd.png"
+    },
+    {
+        "stack": "Flutter",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/flutter.png"
+    },
+    {
+        "stack": "Gatsby",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/gatsby.png"
+    },
+    {
+        "stack": "Gin",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/gin.png"
+    },
+    {
+        "stack": "Github",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/github.png"
+    },
+    {
+        "stack": "Github Action",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/githubaction.png"
+    },
+    {
+        "stack": "Gitlab",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/gitlab.png"
+    },
+    {
+        "stack": "Glide",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/glide.png"
+    },
+    {
+        "stack": "Go",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/go.png"
+    },
+    {
+        "stack": "Go CD",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/gocd.png"
+    },
+    {
+        "stack": "Google BigQuery",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/googlebigquery.png"
+    },
+    {
+        "stack": "Google Cloud Build",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/googlecodebuild.png"
+    },
+    {
+        "stack": "Google Data Studio",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/googledatastudio.png"
+    },
+    {
+        "stack": "Google Firebase",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/googlefirebase.png"
+    },
+    {
+        "stack": "Google Firestore",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/googlefirestore.png"
+    },
+    {
+        "stack": "Grafana",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/grafana.png"
+    },
+    {
+        "stack": "GraphQL",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/graphql.png"
+    },
+    {
+        "stack": "Greenplum",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/greenplum.png"
+    },
+    {
+        "stack": "GRPC",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/grpc.png"
+    },
+    {
+        "stack": "Gulp",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/gulp.png"
+    },
+    {
+        "stack": "H2",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/h2.png"
+    },
+    {
+        "stack": "Hadoop",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/hadoop.png"
+    },
+    {
+        "stack": "Harbor",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/harbor.png"
+    },
+    {
+        "stack": "Hazelcast",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/hazelcast.png"
+    },
+    {
+        "stack": "HBase",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/hbase.png"
+    },
+    {
+        "stack": "Helm",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/helm.png"
+    },
+    {
+        "stack": "Hibernate",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/hibernate.png"
+    },
+    {
+        "stack": "Hive",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/hive.png"
+    },
+    {
+        "stack": "Hugo",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/hugo.png"
+    },
+    {
+        "stack": "Immer",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/immer.png"
+    },
+    {
+        "stack": "Impala",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/impala.png"
+    },
+    {
+        "stack": "InfluxDB",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/influxdb.png"
+    },
+    {
+        "stack": "Istio",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/istio.png"
+    },
+    {
+        "stack": "Jaeger",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/jaeger.png"
+    },
+    {
+        "stack": "Jandi",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/jandi.png"
+    },
+    {
+        "stack": "Jasmine",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/jasmine.png"
+    },
+    {
+        "stack": "Java",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/java.png"
+    },
+    {
+        "stack": "Javascript",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/javascript.png"
+    },
+    {
+        "stack": "Jenkins",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/jenkins.png"
+    },
+    {
+        "stack": "Jest",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/jest.png"
+    },
+    {
+        "stack": "Jira",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/jira.png"
+    },
+    {
+        "stack": "Jotai",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/jotai.png"
+    },
+    {
+        "stack": "JUnit",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/junit.png"
+    },
+    {
+        "stack": "Kafka",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/kafka.png"
+    },
+    {
+        "stack": "Kakaotalk",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/kakaotalk.png"
+    },
+    {
+        "stack": "KakaoWork",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/kakaowork.png"
+    },
+    {
+        "stack": "Karma",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/karma.png"
+    },
+    {
+        "stack": "Karpenter",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/karpenter.png"
+    },
+    {
+        "stack": "Keras",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/keras.png"
+    },
+    {
+        "stack": "Kibana",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/kibana.png"
+    },
+    {
+        "stack": "Koa",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/koa.png"
+    },
+    {
+        "stack": "Kotlin",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/kotlin.png"
+    },
+    {
+        "stack": "Ktor",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/ktor.png"
+    },
+    {
+        "stack": "Kube-Bench",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/kubebench.png"
+    },
+    {
+        "stack": "Kubeflow",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/kubeflow.png"
+    },
+    {
+        "stack": "Kubernetes",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/kubernetes.png"
+    },
+    {
+        "stack": "Kudu",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/kudu.png"
+    },
+    {
+        "stack": "Laravel",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/laravel.png"
+    },
+    {
+        "stack": "Linkerd",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/linkerd.png"
+    },
+    {
+        "stack": "Liquibase",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/liquibase.png"
+    },
+    {
+        "stack": "Locust",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/locust.png"
+    },
+    {
+        "stack": "Looker",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/looker.png"
+    },
+    {
+        "stack": "Lottie",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/lottie.png"
+    },
+    {
+        "stack": "Lua",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/lua.png"
+    },
+    {
+        "stack": "Luigi",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/luigi.png"
+    },
+    {
+        "stack": "Memcached",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/memcached.png"
+    },
+    {
+        "stack": "Metabase",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/metabase.png"
+    },
+    {
+        "stack": "Meteor",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/meteor.png"
+    },
+    {
+        "stack": "Microsoft-Teams",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/microsoftteams.png"
+    },
+    {
+        "stack": "MLflow",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/mlflow.png"
+    },
+    {
+        "stack": "MobX",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/mobx.png"
+    },
+    {
+        "stack": "Mocha",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/mocha.png"
+    },
+    {
+        "stack": "Mockito",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/mockito.png"
+    },
+    {
+        "stack": "Monday",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/monday.png"
+    },
+    {
+        "stack": "MongoDB",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/mongodb.png"
+    },
+    {
+        "stack": "Moya",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/moya.png"
+    },
+    {
+        "stack": "MSSQL",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/mssql.png"
+    },
+    {
+        "stack": "MyBatis",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/mybatis.png"
+    },
+    {
+        "stack": "MySQL",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/mysql.png"
+    },
+    {
+        "stack": "Naver Works",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/naverworks.png"
+    },
+    {
+        "stack": "Neo4j",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/neo4j.png"
+    },
+    {
+        "stack": "NestJS",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/nestjs.png"
+    },
+    {
+        "stack": "Netty",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/netty.png"
+    },
+    {
+        "stack": "NextJS",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/nextjs.png"
+    },
+    {
+        "stack": "Nexus",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/nexus.png"
+    },
+    {
+        "stack": "nGrinder",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/ngrinder.png"
+    },
+    {
+        "stack": "NIFI",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/nifi.png"
+    },
+    {
+        "stack": "NodeJS",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/nodejs.png"
+    },
+    {
+        "stack": "Notion",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/notion.png"
+    },
+    {
+        "stack": "NuxtJS",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/nuxtjs.png"
+    },
+    {
+        "stack": "Objective-C",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/objectivec.png"
+    },
+    {
+        "stack": "OpenEBS",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/openebs.png"
+    },
+    {
+        "stack": "OpenGL",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/opengl.png"
+    },
+    {
+        "stack": "OracleDB",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/oracledb.png"
+    },
+    {
+        "stack": "Packer",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/packer.png"
+    },
+    {
+        "stack": "Perl",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/perl.png"
+    },
+    {
+        "stack": "Phoenix",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/phoenix.png"
+    },
+    {
+        "stack": "PHP",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/php.png"
+    },
+    {
+        "stack": "Playwright",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/playwright.png"
+    },
+    {
+        "stack": "PostgreSQL",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/postgresql.png"
+    },
+    {
+        "stack": "Presto",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/presto.png"
+    },
+    {
+        "stack": "Prometheus",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/prometheus.png"
+    },
+    {
+        "stack": "Puppeteer",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/puppeteer.png"
+    },
+    {
+        "stack": "Python",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/python.png"
+    },
+    {
+        "stack": "Pytorch",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/pytorch.png"
+    },
+    {
+        "stack": "R",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/r.png"
+    },
+    {
+        "stack": "RabbitMQ",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/rabbitmq.png"
+    },
+    {
+        "stack": "Rancher",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/rancher.png"
+    },
+    {
+        "stack": "Ranger",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/ranger.png"
+    },
+    {
+        "stack": "Ray",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/ray.png"
+    },
+    {
+        "stack": "React Context",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/reactcontext.png"
+    },
+    {
+        "stack": "ReactiveX",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/reactivex.png"
+    },
+    {
+        "stack": "ReactJS",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/reactjs.png"
+    },
+    {
+        "stack": "React Native",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/reactnative.png"
+    },
+    {
+        "stack": "ReactorKit",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/reactorkit.png"
+    },
+    {
+        "stack": "React Query",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/reactquery.png"
+    },
+    {
+        "stack": "Realm",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/realm.png"
+    },
+    {
+        "stack": "Recoil",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/recoil.png"
+    },
+    {
+        "stack": "Redash",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/redash.png"
+    },
+    {
+        "stack": "Redis",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/redis.png"
+    },
+    {
+        "stack": "Redux",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/redux.png"
+    },
+    {
+        "stack": "Relay",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/relay.png"
+    },
+    {
+        "stack": "ReScript",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/rescript.png"
+    },
+    {
+        "stack": "Rest-Assured",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/restassured.png"
+    },
+    {
+        "stack": "Retrofit",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/retrofit.png"
+    },
+    {
+        "stack": "RIBs",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/ribs.png"
+    },
+    {
+        "stack": "RocksDB",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/rocksdb.png"
+    },
+    {
+        "stack": "Ruby",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/ruby.png"
+    },
+    {
+        "stack": "Ruby on Rails",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/rubyonrails.png"
+    },
+    {
+        "stack": "Rundeck",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/rundeck.png"
+    },
+    {
+        "stack": "Rust",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/rust.png"
+    },
+    {
+        "stack": "Saltstack",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/saltstack.png"
+    },
+    {
+        "stack": "Sanic",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/sanic.png"
+    },
+    {
+        "stack": "Scala",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/scala.png"
+    },
+    {
+        "stack": "Selenium",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/selenium.png"
+    },
+    {
+        "stack": "Sinon",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/sinon.png"
+    },
+    {
+        "stack": "Slack",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/slack.png"
+    },
+    {
+        "stack": "SnapKit",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/snapkit.png"
+    },
+    {
+        "stack": "Snowflake",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/snowflake.png"
+    },
+    {
+        "stack": "Solr",
+        "category": "데이터베이스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/solr.png"
+    },
+    {
+        "stack": "Sonarqube",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/sonarqube.png"
+    },
+    {
+        "stack": "Spark",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/spark.png"
+    },
+    {
+        "stack": "Spinnaker",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/spinnaker.png"
+    },
+    {
+        "stack": "Spring",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/spring.png"
+    },
+    {
+        "stack": "SpringBoot",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/springboot.png"
+    },
+    {
+        "stack": "Storybook",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/storybook.png"
+    },
+    {
+        "stack": "Styled-Components",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/styledcomponents.png"
+    },
+    {
+        "stack": "Superset",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/superset.png"
+    },
+    {
+        "stack": "Svelte",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/svelte.png"
+    },
+    {
+        "stack": "Swagger",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/swagger.png"
+    },
+    {
+        "stack": "Swift",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/swift.png"
+    },
+    {
+        "stack": "Tableau",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/tableau.png"
+    },
+    {
+        "stack": "Tailwind",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/tailwind.png"
+    },
+    {
+        "stack": "Telegram",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/telegram.png"
+    },
+    {
+        "stack": "Tensorflow",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/tensorflow.png"
+    },
+    {
+        "stack": "Terraform",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/terraform.png"
+    },
+    {
+        "stack": "Testing Library",
+        "category": "테스팅툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/testinglibrary.png"
+    },
+    {
+        "stack": "Thrift",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/thrift.png"
+    },
+    {
+        "stack": "Traefik",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/traefik.png"
+    },
+    {
+        "stack": "Travis CI",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/travisci.png"
+    },
+    {
+        "stack": "Trello",
+        "category": "협업툴",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/trello.png"
+    },
+    {
+        "stack": "Trino",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/trino.png"
+    },
+    {
+        "stack": "Tuist",
+        "category": "모바일",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/tuist.png"
+    },
+    {
+        "stack": "Typescript",
+        "category": "언어",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/typescript.png"
+    },
+    {
+        "stack": "Unity",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/unity.png"
+    },
+    {
+        "stack": "Vault",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/vault.png"
+    },
+    {
+        "stack": "VueJS",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/vuejs.png"
+    },
+    {
+        "stack": "Vuex",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/vuex.png"
+    },
+    {
+        "stack": "WebRTC",
+        "category": "백엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/webrtc.png"
+    },
+    {
+        "stack": "Zabbix",
+        "category": "데브옵스",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/zabbix.png"
+    },
+    {
+        "stack": "Zeppelin",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/zeppelin.png"
+    },
+    {
+        "stack": "Zipkin",
+        "category": "데이터",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/zipkin.png"
+    },
+    {
+        "stack": "Zustand",
+        "category": "프론트엔드",
+        "stackImgUrl": "https://static.codenary.co.kr/framework_logo/zustand.png"
+    }
+]

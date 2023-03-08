@@ -34,22 +34,22 @@ export class Company {
     @Column('int', { nullable: true })
     foundedYear: number | null
 
-    @Column('text', { nullable: true })
+    @Column('varchar', { length: 1000, nullable: true })
     imageUrl: string | null
 
-    @Column('text', { nullable: true })
+    @Column('varchar', { length: 1000, nullable: true })
     homepageUrl: string | null
 
-    @Column('text', { nullable: true })
+    @Column('varchar', { nullable: true })
     annualSales: string | null
 
     @Column('int', { nullable: true })
     avgSalary: number | null
 
-    @Column('text', { nullable: true })
+    @Column('varchar', { length: 1000, nullable: true })
     kreditjobUrl: string | null
 
-    @Column('text', { nullable: true })
+    @Column('varchar', { length: 300, nullable: true })
     corporateType: string | null
 
     @CreateDateColumn()

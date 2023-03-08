@@ -11,6 +11,7 @@ import { JwtConfigService } from './_config/jwt.config.service'
 import { TypeOrmConfigService } from './_config/typeorm.config.service'
 import { CompanyModule } from './company/company.module'
 import { AuthModule } from './auth/auth.module'
+import { KeywordModule } from './keyword/keyword.module'
 import redisStore from 'cache-manager-redis-store'
 
 @Module({
@@ -45,6 +46,7 @@ import redisStore from 'cache-manager-redis-store'
         JobpostModule,
         CompanyModule,
         AuthModule,
+        KeywordModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -26,7 +26,7 @@ export class Jobpost {
     @JoinColumn({ name: 'company_id' })
     company: Company
 
-    @ManyToMany(() => Keyword)
+    @ManyToMany(() => Keyword, (keyword) => keyword.jobposts, { cascade: true })
     @JoinTable({
         name: 'jobpostkeyword',
         joinColumn: {
@@ -40,7 +40,7 @@ export class Jobpost {
     })
     keywords: Keyword[]
 
-    @ManyToMany(() => User)
+    @ManyToMany(() => User, { cascade: true })
     @JoinTable({
         name: 'likedjobpost',
         joinColumn: {
@@ -54,7 +54,7 @@ export class Jobpost {
     })
     users: User[]
 
-    @ManyToMany(() => Stack)
+    @ManyToMany(() => Stack, (stack) => stack.jobposts, { cascade: true })
     @JoinTable({
         name: 'jobpoststack',
         joinColumn: {
@@ -83,10 +83,10 @@ export class Jobpost {
     @Column('varchar', { length: 100 })
     originalSiteName: string
 
-    @Column('varchar')
+    @Column('varchar', { length: 1000 })
     originalUrl: string
 
-    @Column('varchar', { nullable: true })
+    @Column('varchar', { length: 1000, nullable: true })
     originalImgUrl: string | null
 
     @Column('datetime', { nullable: true })
@@ -98,7 +98,7 @@ export class Jobpost {
     @Column('int', { nullable: true })
     views: number | null
 
-    @Column({ type: 'varchar', nullable: true })
+    @Column({ type: 'varchar', length: 1000, nullable: true })
     originalAddress: string | null
 
     @Column({ type: 'varchar', nullable: true })

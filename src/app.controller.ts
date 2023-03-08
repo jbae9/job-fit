@@ -1,4 +1,12 @@
-import { Controller, Get, Render, Req, Res, UseGuards } from '@nestjs/common'
+import {
+    Controller,
+    Get,
+    Param,
+    Render,
+    Req,
+    Res,
+    UseGuards,
+} from '@nestjs/common'
 import { AppService } from './app.service'
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
 
@@ -32,5 +40,18 @@ export class AppController {
         if (user) return res.redirect('/')
 
         return { components: 'login', user: user }
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('/jobposts')
+    @Render('index')
+    jobposts(@Req() req, @Res() res) {
+        const user = !req.authResult.hasOwnProperty('user')
+            ? null
+            : req.authResult.user
+
+        if (user) return res.redirect('/')
+
+        return { components: 'jobposts', user: user }
     }
 }

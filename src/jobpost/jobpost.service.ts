@@ -43,4 +43,24 @@ export class JobpostService {
         // 채용공고 데이터 넣기
         await this.jobpostRepository.createJobposts(jobposts)
     }
+
+    async getFilteredJobposts(query: {
+        order?: string
+        limit?: string
+        offset?: string
+    }) {
+        let [order, orderBy] = query.order.split('-')
+        order = order || 'recent'
+        orderBy = orderBy || 'desc'
+        const limit = parseInt(query.limit) || 10
+        const offset = parseInt(query.offset) || 0
+
+        // this.logger.log([order, orderBy, limit, offset])
+        return await this.jobpostRepository.getFilteredJobposts(
+            order,
+            orderBy,
+            limit,
+            offset
+        )
+    }
 }
