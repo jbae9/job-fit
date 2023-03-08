@@ -1,7 +1,10 @@
 import { getAddress } from '../common/getAddress'
+import dotenv from 'dotenv'
 
 const axios = require('axios')
 const cheerio = require('cheerio')
+
+dotenv.config({ path: '../../../.env' })
 
 export class SaraminScraper {
     url: string
@@ -22,12 +25,12 @@ export class SaraminScraper {
         const data = cheerio.load(html.data)
         const jobData = data('.list_body').children('div')
 
-        jobData.each(async function (i: number, elem: any) {
-            const title = data(elem).find('.job_tit a span').text()
-            const url = data(elem).find('.job_tit a').attr('href')
-            const deadlineDtm = data(elem).find('.deadlines').text()
-            const companyName = data(elem).find('.company_nm a span').text()
-            let address = data(elem).find('.work_place').text()
+        for (let jobpost of jobData) {
+            const title = data(jobpost).find('.job_tit a span').text()
+            const url = data(jobpost).find('.job_tit a').attr('href')
+            const deadlineDtm = data(jobpost).find('.deadlines').text()
+            const companyName = data(jobpost).find('.company_nm a span').text()
+            let address = data(jobpost).find('.work_place').text()
 
             let addressUpper: string | null
             let addressLower: string | null
@@ -70,7 +73,8 @@ export class SaraminScraper {
                 longitude,
                 latitude,
             })
-        })
+        }
+
         return allJobsArr
     }
 }
