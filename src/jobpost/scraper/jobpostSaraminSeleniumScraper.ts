@@ -29,8 +29,8 @@ export class SaraminSelenium {
             .build()
         const saraminScraper = new SaraminScraper(
             `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=1&cat_mcls=2&isAjaxRequest=0&page_count=` +
-                this.pageCount +
-                `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
+            this.pageCount +
+            `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
         )
         let allJobsArr = await saraminScraper.getDataAsHtml()
 
@@ -100,7 +100,7 @@ export class SaraminSelenium {
                     .findElement(By.css('dd'))
                     .getText()
                 allJobsArr[i].postedDtm = new Date(postedDtm)
-                allJobsArr[i].salary = Number(salary)
+                allJobsArr[i].salary = Number(salary) * 10000
                 if (allJobsArr[i].deadlineDtm.indexOf('채용') != -1) {
                     allJobsArr[i].deadlineDtm = null
                 } else if (allJobsArr[i].deadlineDtm.indexOf('마감') != -1) {
@@ -109,8 +109,8 @@ export class SaraminSelenium {
                     let d = new Date(Date.now())
                     allJobsArr[i].deadlineDtm = new Date(
                         String(d.getFullYear()) +
-                            '/' +
-                            String(allJobsArr[i].deadlineDtm).substring(2, 7)
+                        '/' +
+                        String(allJobsArr[i].deadlineDtm).substring(2, 7)
                     )
                 }
                 try {
@@ -166,7 +166,7 @@ export class SaraminSelenium {
         } catch (err) {
             console.log(err)
         } finally {
-            // await driver.quit()
+            await driver.quit()
             return { companies: allCompanies, jobposts: allJobsArr }
         }
     }
