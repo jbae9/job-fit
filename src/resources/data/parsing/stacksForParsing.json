@@ -197,7 +197,7 @@
     { "stack": ["Ray"], "category": "데이터" },
     { "stack": ["React Context"], "category": "프론트엔드" },
     { "stack": ["ReactiveX"], "category": "프론트엔드" },
-    { "stack": ["React", "ReactJS"], "category": "프론트엔드" },
+    { "stack": ["ReactJS", "React"], "category": "프론트엔드" },
     { "stack": ["React Native"], "category": "모바일" },
     { "stack": ["ReactorKit"], "category": "모바일" },
     { "stack": ["React Query"], "category": "프론트엔드" },

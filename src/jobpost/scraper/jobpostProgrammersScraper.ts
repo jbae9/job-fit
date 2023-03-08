@@ -1,6 +1,14 @@
 import axios from 'axios'
+import dotenv from 'dotenv'
+import { getAddress } from '../common/getAddress'
+
+dotenv.config({ path: '../../../.env' })
 
 export async function programmersScraper() {
+    // 회사정보 객체 배열
+    const companies = []
+    // 채용공고 객체 배열
+    const jobposts = []
     try {
         const { data } = await axios.get(
             'https://career.programmers.co.kr/api/job_positions'
@@ -8,11 +16,6 @@ export async function programmersScraper() {
 
         // 총 페이지 수
         const totalPages: number = data.totalPages
-
-        // 회사정보 객체 배열
-        const companies = []
-        // 채용공고 객체 배열
-        const jobposts = []
 
         for (let i = 1; i <= totalPages; i++) {
             const { data } = await axios.get(
@@ -25,15 +28,25 @@ export async function programmersScraper() {
             // 한 페이지 채용공고들을 하나 씩 돌면서 데이터 객체 만들어서 배열에 넣기
             for (let i = 0; i < jobPositions.length; i++) {
                 // 채용공고 데이터 객체구조분해할당
-                const { id, title, minSalary, company, period, address } =
-                    jobPositions[i]
+                const {
+                    id,
+                    title,
+                    minSalary,
+                    company,
+                    startAt,
+                    period,
+                    address,
+                } = jobPositions[i]
 
                 try {
                     // 채용공고 상세페이지 URL
-                    const originalUrl = `https://career.programmers.co.kr/api/job_positions/${id}`
+                    const originalUrl = `https://career.programmers.co.kr/job_positions/${id}`
+
+                    // 채용공고 상세페이지 API URL
+                    const apiUrl = `https://career.programmers.co.kr/api/job_positions/${id}`
 
                     // 채용공고 상세페이지 접근
-                    const jobPostDetail = await axios.get(originalUrl)
+                    const jobPostDetail = await axios.get(apiUrl)
 
                     // 채용공고 상세페이지 데이터 객체구조분해할당
                     const {
@@ -53,6 +66,9 @@ export async function programmersScraper() {
                     // 채용공고 이미지 URL
                     const originalImgUrl = company.logoUrl
 
+                    // 채용공고 게시일
+                    const postedDtm = startAt
+
                     // 채용공고 마감일 '상시 채용'은 null
                     const deadlineDtm =
                         period === '상시 채용'
@@ -62,11 +78,11 @@ export async function programmersScraper() {
                               )
 
                     // 채용공고 주소
-                    const addressUpper = null
-                    const addressLower = null
+                    const { addressUpper, addressLower, longitude, latitude } =
+                        await getAddress(address, process.env.KAKAO_KEY)
 
                     // 회사 이름
-                    const companyName = company.name
+                    const companyName = company.name.replace('(주)', '')
 
                     // 채용공고 객체 데이터
                     const jobpostData = {
@@ -76,9 +92,13 @@ export async function programmersScraper() {
                         originalSiteName: '프로그래머스',
                         originalUrl,
                         originalImgUrl,
+                        postedDtm,
                         deadlineDtm,
+                        originalAddress: address,
                         addressUpper,
                         addressLower,
+                        longitude,
+                        latitude,
                         companyName,
                     }
 
@@ -107,6 +127,8 @@ export async function programmersScraper() {
             }
         }
 
+        // console.log(companies)
+
         // 회사 데이터 중복 제거
         const companiesSetArray = companies.filter(
             (arr, index, callback) =>
@@ -116,8 +138,6 @@ export async function programmersScraper() {
 
         return { jobposts, companiesSetArray }
     } catch (error) {
-        console.log(error)
+        return { jobposts, companiesSetArray: companies }
     }
 }
-
-// programmersScraper()

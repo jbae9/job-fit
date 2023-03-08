@@ -3,22 +3,22 @@ import { Jobpost } from 'src/entities/jobpost.entity'
 import { Injectable } from '@nestjs/common'
 import { CompanyRepository } from 'src/company/company.repository'
 import { off } from 'process'
+import { default as keywords } from '../resources/data/parsing/keywordsForParsing.json'
+import { default as stacks } from '../resources/data/parsing/stacksForParsing.json'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Keyword } from 'src/entities/keyword.entity'
+import { Stack } from 'src/entities/stack.entity'
 
 @Injectable()
 export class JobpostRepository extends Repository<Jobpost> {
     constructor(
         private dataSource: DataSource,
-        private companyRepository: CompanyRepository
+        private companyRepository: CompanyRepository,
+        @InjectRepository(Keyword)
+        private keywordRepository: Repository<Keyword>,
+        @InjectRepository(Stack) private stackRepository: Repository<Stack>
     ) {
         super(Jobpost, dataSource.createEntityManager())
-    }
-
-    async postJobpostsInBulk(jobposts) {
-        await this.createQueryBuilder()
-            .insert()
-            .into(Jobpost)
-            .values(jobposts)
-            .execute()
     }
 
     async createJobposts(jobposts) {
@@ -34,61 +34,117 @@ export class JobpostRepository extends Repository<Jobpost> {
                 originalImgUrl,
                 postedDtm,
                 deadlineDtm,
+                originalAddress,
+                addressUpper,
+                addressLower,
+                longitude,
+                latitude,
             } = jobpost
 
+            // 회사 id 들고오는 쿼리
             const companyId = await this.companyRepository.findCompanyId(
                 companyName
             )
 
-            const query = `INSERT INTO jobpost (company_id, title, content, salary, original_site_name, original_url, original_img_url, posted_dtm, deadline_dtm)
-                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                           ON DUPLICATE KEY UPDATE
-                           title = COALESCE(?, title),
-                           content = COALESCE(?, content),
-                           salary = COALESCE(?, salary),
-                           original_site_name = COALESCE(?, original_site_name),
-                           original_url = COALESCE(?, original_url),
-                           original_img_url = COALESCE(?, original_img_url),
-                           posted_dtm = COALESCE(?, posted_dtm),
-                           deadline_dtm = COALESCE(?, deadline_dtm)`
-
-            const values = [
-                companyId,
+            const { keywords, stacks } = await this.keywordParser(
                 title,
-                content,
-                salary,
-                originalSiteName,
-                originalUrl,
-                originalImgUrl,
-                postedDtm,
-                deadlineDtm,
-                title,
-                content,
-                salary,
-                originalSiteName,
-                originalUrl,
-                originalImgUrl,
-                postedDtm,
-                deadlineDtm,
-            ]
+                content
+            )
 
-            await this.query(query, values)
+            const createdJobpost = await this.createQueryBuilder('jobpost')
+                .insert()
+                .into('jobpost')
+                .values({
+                    companyId,
+                    title,
+                    content,
+                    salary,
+                    originalSiteName,
+                    originalUrl,
+                    originalImgUrl,
+                    postedDtm,
+                    deadlineDtm,
+                    originalAddress,
+                    addressUpper,
+                    addressLower,
+                    longitude,
+                    latitude,
+                })
+                .orUpdate(
+                    ['salary', 'original_img_url', 'deadline_dtm'],
+                    ['company_id', 'title']
+                )
+                .updateEntity(false)
+                .execute()
+
+            // console.log(createdJobpost)
+            // console.log(stacks)
+
+            if (createdJobpost.raw.insertId !== 0) {
+                await this.createQueryBuilder()
+                    .relation(Jobpost, 'keywords')
+                    .of({ jobpostId: createdJobpost.raw.insertId })
+                    .add(keywords)
+
+                await this.createQueryBuilder()
+                    .relation(Jobpost, 'stacks')
+                    .of({ jobpostId: createdJobpost.raw.insertId })
+                    .add(stacks)
+            }
         }
     }
 
-    async getRecentJobposts() {
-        const query = `select j.jobpost_id, company_name, original_img_url, title, keywords, stacks, stackimgurls from jobpost j 
-                        inner join (select jobpost_id, j.keyword_code, group_concat(keyword) as keywords from jobpostkeyword j 
-                        inner join keyword k on j.keyword_code = k.keyword_code 
-                        group by j.jobpost_id ) j2 on j.jobpost_id = j2.jobpost_id
-                        inner join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
-                        inner join stack s  on j.stack_id = s.stack_id  
-                        group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
-                        inner join company c on j.company_id = c.company_id 
-                        order by j.updated_dtm
-                        limit 15 offset 0`
+    async keywordParser(title: string, content: string | object) {
+        const contentKeywords = []
+        const contentStacks = []
 
-        return await this.query(query)
+        if (typeof content === 'object') content = JSON.stringify(content)
+        content = title + ' ' + content
+
+        for (let i = 0; i < keywords.length; i++) {
+            if (keywords[i].excludes) {
+                for (let k = 0; k < keywords[i].excludes.length; k++) {
+                    content = content.replaceAll(keywords[i].excludes[k], '')
+                }
+            }
+
+            for (let j = 0; j < keywords[i].keyword.length; j++) {
+                const re = new RegExp(`\\b${keywords[i].keyword[j]}\\b`, 'gi')
+                if (re.test(content)) {
+                    const keyword = await this.keywordRepository.findOne({
+                        where: { keywordCode: keywords[i].keywordCode },
+                    })
+                    contentKeywords.push(keyword)
+                    break
+                }
+            }
+        }
+
+        for (let i = 0; i < stacks.length; i++) {
+            for (let j = 0; j < stacks[i].stack.length; j++) {
+                if (stacks[i].excludes) {
+                    for (let k = 0; k < stacks[i].excludes.length; k++) {
+                        content = content.replaceAll(stacks[i].excludes[k], '')
+                    }
+                }
+
+                const regExVar = stacks[i].stack[j].replace(
+                    /[.*+?^${}()|[\]\\]/g,
+                    '\\$&'
+                )
+                const re = new RegExp(`\\b${regExVar}\\b`, 'gi')
+                if (re.test(content)) {
+                    const stack = await this.stackRepository.findOne({
+                        where: { stack: stacks[i].stack[0] },
+                    })
+                    if (stack === null) console.warn(stacks[i])
+                    contentStacks.push(stack)
+                    break
+                }
+            }
+        }
+
+        return { keywords: contentKeywords, stacks: contentStacks }
     }
 
     async getFilteredJobposts(

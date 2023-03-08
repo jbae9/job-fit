@@ -26,8 +26,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
                 'true',
             namingStrategy: new SnakeNamingStrategy(),
             timezone: '+09:00',
-            logging: 'all',
-            logger: 'advanced-console',
+            // logging: 'all',
+            // logger: 'advanced-console',
         }
     }
 }

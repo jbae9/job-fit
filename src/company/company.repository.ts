@@ -8,17 +8,9 @@ export class CompanyRepository extends Repository<Company> {
         super(Company, dataSource.createEntityManager())
     }
 
-    async postCompaniesInBulk(companies) {
-        await this.createQueryBuilder()
-            .insert()
-            .into(Company)
-            .values(companies)
-            .orIgnore()
-            .execute()
-    }
-
+    // 회사 번호 가지고 오는 함수
     async findCompanyId(companyName: String) {
-        const company = await this.createQueryBuilder("company")
+        const company = await this.createQueryBuilder('company')
             .where({ companyName: companyName })
             .getOne()
         return company.companyId
@@ -44,14 +36,16 @@ export class CompanyRepository extends Repository<Company> {
             const query = `INSERT INTO company (company_name, representative_name, number_employees, address, founded_year, image_url, homepage_url, annual_sales, avg_salary, kreditjob_url, corporate_type)
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                            ON DUPLICATE KEY UPDATE
-                           representative_name = COALESCE(?, representative_name),
-                           address = COALESCE(?, address),
-                           founded_year = COALESCE(?, founded_year),
-                           image_url = COALESCE(?, image_url),
-                           homepage_url = COALESCE(?, homepage_url),
-                           annual_sales = COALESCE(?, annual_sales),
-                           kreditjob_url = COALESCE(?, kreditjob_url),
-                           corporate_type = COALESCE(?, corporate_type)`
+                            number_employees = ?,
+                            avg_salary = ?,
+                            representative_name = COALESCE(representative_name, ?),
+                            address = COALESCE(address, ?),
+                            founded_year = COALESCE(founded_year, ?),
+                            image_url = COALESCE(image_url, ?),
+                            homepage_url = COALESCE(homepage_url, ?),
+                            annual_sales = COALESCE(annual_sales, ?),
+                            kreditjob_url = COALESCE(kreditjob_url, ?),
+                            corporate_type = COALESCE(corporate_type, ?)`
 
             const values = [
                 companyName,
@@ -65,6 +59,8 @@ export class CompanyRepository extends Repository<Company> {
                 avgSalary,
                 kreditjobUrl,
                 corporateType,
+                numberEmployees,
+                avgSalary,
                 representativeName,
                 address,
                 foundedYear,

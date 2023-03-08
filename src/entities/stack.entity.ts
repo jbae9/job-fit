@@ -29,6 +29,6 @@ export class Stack {
     @Column('varchar', { length: 50 })
     category: string
 
-    @Column('text')
+    @Column('varchar', { length: 500 })
     stackImgUrl: string
 }
