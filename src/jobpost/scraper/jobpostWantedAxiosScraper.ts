@@ -1,5 +1,8 @@
 import axios from 'axios'
-import fs from 'fs'
+import { getAddress } from '../common/getAddress'
+
+import dotenv from 'dotenv'
+dotenv.config({ path: '../../../.env' })
 
 export async function wantedScraper() {
     const startDate = new Date(Date.now())
@@ -33,13 +36,31 @@ export async function wantedScraper() {
 
                     const originalImgUrl = jobDetails.job.logo_img.thumb
 
-                    let address, addressUpper, addressLower
+                    const address = jobDetails.job.address
+                    let originalAddress: string | null
+                    let addressUpper: string | null
+                    let addressLower: string | null
+                    let longitude: number | null
+                    let latitude: number | null
+
                     if (address) {
-                        address = jobDetails.job.address.full_location
-                        ;({ addressUpper, addressLower } = address.split(' '))
+                        const addressDetail = address.geo_location.n_location
+                        const addressName = addressDetail.address
+                        const getAddressResult = await getAddress(
+                            addressName,
+                            process.env.KAKAO_KEY
+                        )
+                        originalAddress = address.full_location
+                        addressUpper = getAddressResult.addressUpper
+                        addressLower = getAddressResult.addressLower
+                        longitude = getAddressResult.longitude
+                        latitude = getAddressResult.latitude
                     } else {
+                        originalAddress = null
                         addressUpper = null
                         addressLower = null
+                        longitude = null
+                        latitude = null
                     }
 
                     const content = JSON.stringify(jobDetails.job.detail)
@@ -150,8 +171,11 @@ export async function wantedScraper() {
                         originalImgUrl: originalImgUrl,
                         postedDtm: null,
                         deadlineDtm: deadlineDtm,
+                        originalAddress,
                         addressUpper: addressUpper,
                         addressLower: addressLower,
+                        longitude,
+                        latitude,
                         companyName: companyName,
                     })
                 }
@@ -165,22 +189,6 @@ export async function wantedScraper() {
 
             jobsList = nextPage.data.data
         }
-
-        // fs.writeFile(
-        //     'jobposts.txt',
-        //     JSON.stringify(allJobsArr),
-        //     function (err) {
-        //         console.log(err)
-        //     }
-        // )
-
-        // fs.writeFile(
-        //     'companies.txt',
-        //     JSON.stringify(allCompanies),
-        //     function (err) {
-        //         console.log(err)
-        //     }
-        // )
 
         const endDate = new Date(Date.now())
         console.log(endDate.toTimeString())
@@ -231,5 +239,3 @@ async function getAxios(url) {
         }
     }
 }
-
-wantedScraper()
