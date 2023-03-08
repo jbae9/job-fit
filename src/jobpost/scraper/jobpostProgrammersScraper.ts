@@ -81,6 +81,14 @@ export async function programmersScraper() {
                     const { addressUpper, addressLower, longitude, latitude } =
                         await getAddress(address, process.env.KAKAO_KEY)
 
+                    // 연봉
+                    // minSalary 가 null 이면 null, 아니라면 1,000,000 미만이면 10,000을 곱하고 아니라면 그대로
+                    const salary = !minSalary
+                        ? null
+                        : minSalary < 1000000
+                        ? minSalary * 10000
+                        : minSalary
+
                     // 회사 이름
                     const companyName = company.name.replace('(주)', '')
 
@@ -88,7 +96,7 @@ export async function programmersScraper() {
                     const jobpostData = {
                         title,
                         content,
-                        salary: minSalary,
+                        salary,
                         originalSiteName: '프로그래머스',
                         originalUrl,
                         originalImgUrl,
