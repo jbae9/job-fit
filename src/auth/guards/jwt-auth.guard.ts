@@ -46,6 +46,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
             // Redis 에 Refresh Token 이 존재하지 않음
             if (!redisRefreshToken) {
+                response.clearCookie('accessToken')
+                response.clearCookie('refreshToken')
                 request.authResult = {
                     success: false,
                     message: 'Redis Refresh Token not found',
@@ -55,6 +57,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
             // Redis의 Refresh Token 과 Cookie의 Refresh Token 이 일치하지 않음
             if (redisRefreshToken !== refreshToken) {
+                response.clearCookie('accessToken')
+                response.clearCookie('refreshToken')
                 request.authResult = {
                     success: false,
                     message: 'Refresh Token not matched',
@@ -68,6 +72,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
             //  Refresh Token 만료
             if (verifyRefreshTokenResult.message === 'jwt expired') {
+                response.clearCookie('accessToken')
+                response.clearCookie('refreshToken')
                 request.authResult = {
                     success: false,
                     message: 'Refresh Token expired',
@@ -85,10 +91,13 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
             // 일치하는 회원이 없으면
             if (!user) {
+                response.clearCookie('accessToken')
+                response.clearCookie('refreshToken')
                 request.authResult = {
                     success: false,
                     message: 'User not found',
                 }
+                return true
             }
 
             request.authResult = {
@@ -109,6 +118,8 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
         // 일치하는 회원이 없으면
         if (!user) {
+            response.clearCookie('accessToken')
+            response.clearCookie('refreshToken')
             request.authResult = {
                 success: false,
                 message: 'User not found',
