@@ -67,7 +67,7 @@ export class SaraminScraper {
                 content: '',
                 salary: 0,
                 originalSiteName: '사람인',
-                originalUrl: url,
+                originalUrl: 'https://www.saramin.co.kr' + url,
                 originalImageUrl: 'image',
                 deadlineDtm: deadlineDtm,
                 originalAddress: address,

@@ -2,6 +2,8 @@ import { Builder, By, until } from 'selenium-webdriver'
 import { Options } from 'selenium-webdriver/chrome'
 import { PageLoadStrategy } from 'selenium-webdriver/lib/capabilities'
 import { SaraminScraper } from './jobpostSaraminAxiosScraper'
+const axios = require('axios')
+const cheerio = require('cheerio')
 require('chromedriver')
 const companyOption = {
     기업형태: 'corporateType',
@@ -52,7 +54,7 @@ export class SaraminSelenium {
         try {
             for (let i = 0; i < allJobsArr.length; i++) {
                 await driver.get(
-                    `https://www.saramin.co.kr${allJobsArr[i].originalUrl}`
+                    `${allJobsArr[i].originalUrl}`
                 )
                 await driver.wait(
                     until.elementLocated(By.className('wrap_jv_cont')),
@@ -89,12 +91,16 @@ export class SaraminSelenium {
                     }
                 }
                 allJobsArr[i].salary = Number(salary) * 10000
-                const content = await allJobs
+                const iframe = await allJobs
                     .findElement(By.css('div.wrap_jv_cont'))
                     .findElement(By.css('div.jv_detail'))
                     .findElement(By.css('div.cont'))
                     .getAttribute('innerHTML')
-
+                const iframeUrl = iframe.split('"', 21)[17]
+                const iframeData = await axios.get('https://www.saramin.co.kr' + iframeUrl)
+                const data = cheerio.load(iframeData.data)
+                const jobData = data('.user_content').html()
+                const content = jobData
                 allJobsArr[i].content = content
                 const postedDtm = await allJobs
                     .findElement(By.className('info_period'))
@@ -166,7 +172,7 @@ export class SaraminSelenium {
         } catch (err) {
             console.log(err)
         } finally {
-            await driver.quit()
+            // await driver.quit()
             return { companies: allCompanies, jobposts: allJobsArr }
         }
     }
