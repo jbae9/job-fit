@@ -243,7 +243,7 @@
 
             <div class="mainHeader">
                 <h1>🔥 관심 주목! 인기 공고</h1>
-                <a href="/jobposts?order=popular-desc">
+                <a href="/jobposts?sort=popular&order=desc">
                     <p>인기순 공고 전체보기 →</p>
                 </a>
             </div>
@@ -274,7 +274,7 @@
 
             <div class="mainHeader">
                 <h1>✨ 따뜬따뜬한 최신 공고</h1>
-                <a href="/jobposts?order=recent-desc">
+                <a href="/jobposts?sort=recent&order=desc">
                     <p>최신순 공고 전체보기 →</p>
                 </a>
             </div>
@@ -334,7 +334,7 @@
     $(document).ready(function () {
         $.ajax({
             type: "GET",
-            url: '/api/jobpost/filter?order=recent-desc&limit=12',
+            url: '/api/jobpost/filter?sort=recent&order=desc&limit=12',
             async: false,
             success: function (response) {
                 showCarouselJobposts('carouselRecent', response)
@@ -343,7 +343,7 @@
 
         $.ajax({
             type: "GET",
-            url: '/api/jobpost/filter?order=popular-desc&limit=12',
+            url: '/api/jobpost/filter?sort=popular&order=desc&limit=12',
             async: false,
             success: function (response) {
                 showCarouselJobposts('carouselPopular', response)
@@ -352,7 +352,7 @@
 
         $.ajax({
             type: "GET",
-            url: '/api/jobpost/filter?order=ending-asc&limit=12',
+            url: '/api/jobpost/filter?sort=ending&order=asc&limit=12',
             async: false,
             success: function (response) {
                 console.log(response)

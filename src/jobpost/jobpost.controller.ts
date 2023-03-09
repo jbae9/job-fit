@@ -22,7 +22,13 @@ export class JobpostController {
 
     @Get('/filter')
     async getFilteredJobposts(
-        @Query() query: { order?: string; limit?: string; offset?: string }
+        @Query()
+        query: {
+            sort?: string
+            order?: string
+            limit?: string
+            offset?: string
+        }
     ) {
         return await this.jobpostService.getFilteredJobposts(query)
     }
