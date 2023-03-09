@@ -172,7 +172,7 @@ export class SaraminSelenium {
         } catch (err) {
             console.log(err)
         } finally {
-            // await driver.quit()
+            await driver.quit()
             return { companies: allCompanies, jobposts: allJobsArr }
         }
     }
