@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { UnauthorizedException } from '@nestjs/common/exceptions'
 import { ExecutionContext } from '@nestjs/common/interfaces'
 import { JwtService } from '@nestjs/jwt'
 import { AuthGuard } from '@nestjs/passport'
