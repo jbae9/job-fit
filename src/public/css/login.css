@@ -11,7 +11,7 @@
 
 .login-form-wrap {
     width: 100%;
-    padding: 1rem 0;
+    padding: 5rem 0;
 
     display: flex;
     align-items: center;
@@ -20,7 +20,7 @@
 
 .login-form {
     width: 40rem;
-    padding: 2rem 0;
+    padding: 5rem 0;
 
     border-radius: 10px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -28,19 +28,27 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3rem;
+    gap: 5rem;
 }
 
 .login-form-title {
     width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
 .login-form-title p {
-    font-size: 2rem;
-    font-weight: bold;
     text-align: center;
 }
 
-.muted {
+.login-form-title .title {
+    font-size: 2.25rem;
+    font-weight: bold;
+}
+
+.login-form-title .subtitle {
     color: gray;
 }
