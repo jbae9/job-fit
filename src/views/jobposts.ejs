@@ -22,25 +22,31 @@
 <script>
     $(document).ready(function () {
         let url = new URL(window.location.href)
-        let order = url.searchParams.get('order') || 'recent-desc'
+        let sort = url.searchParams.get('sort') || 'recent'
+        let order = url.searchParams.get('order') || 'desc'
         let limit = url.searchParams.get('limit')
         let offset = url.searchParams.get('offset')
 
-        if (order.includes('recent')) {
-            $('#currentOrder').html('최신순')
-            $('#recent').addClass('active')
-        } else if (order.includes('popular')) {
-            $('#currentOrder').html('인기순')
-            $('#popular').addClass('active')
-        } else if (order.includes('ending')) {
-            $('#currentOrder').html('마감순')
-            $('#ending').addClass('active')
+        switch (sort) {
+            case 'popular':
+                $('#currentOrder').html('인기순')
+                $('#popular').addClass('active')
+                break
+            case 'ending':
+                $('#currentOrder').html('마감순')
+                $('#ending').addClass('active')
+                break
+            case 'recent':
+            case 'recommended':
+            default:
+                $('#currentOrder').html('최신순')
+                $('#recent').addClass('active')
+                break
         }
-        // 추천순 추가 필요
 
         $.ajax({
             type: "GET",
-            url: `/api/jobpost/filter?order=${order}`,
+            url: `/api/jobpost/filter?sort=${sort}&order=${order}`,
             async: false,
             success: function (response) {
                 showJobposts(response)

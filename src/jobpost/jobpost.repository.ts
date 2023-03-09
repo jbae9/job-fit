@@ -145,33 +145,31 @@ export class JobpostRepository extends Repository<Jobpost> {
     }
 
     async getFilteredJobposts(
+        sort: string,
         order: string,
-        orderBy: string,
         limit: number,
         offset: number
     ) {
         let where = ''
 
-        switch (order) {
+        switch (sort) {
             case 'recent':
-                order = 'j.updated_dtm'
+                sort = 'j.updated_dtm'
                 break
             case 'popular':
-                order = 'likes, views'
+                sort = 'likes, views'
                 break
             case 'ending':
-                if (orderBy === 'asc') {
+                if (order === 'asc') {
                     where = 'where deadline_dtm is not null'
                     break
                 } else {
-                    order = 'deadline_dtm'
+                    sort = 'deadline_dtm'
                     break
                 }
             default:
-                order = 'j.updated_dtm'
+                sort = 'j.updated_dtm'
         }
-
-        order += ' ' + orderBy
 
         const query = `select j.jobpost_id, company_name, original_img_url, title, keywords, stacks, stackimgurls, likes, views, deadline_dtm, address_upper, address_lower from jobpost j 
                         inner join (select jobpost_id, j.keyword_code, group_concat(keyword) as keywords from jobpostkeyword j 
@@ -188,7 +186,7 @@ export class JobpostRepository extends Repository<Jobpost> {
                         order by ?
                         limit ? offset ?`
 
-        const values = [order, limit, offset]
+        const values = [sort + order, limit, offset]
 
         // const test = await this.createQueryBuilder('jobpost')
         //     .leftJoin('jobpost.keywords', 'keyword')

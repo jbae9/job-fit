@@ -71,9 +71,7 @@ button .muted {
 
 .card-img-top {
     max-height: 150px;
-    max-width: 250px;
-    height: auto;
-    width: auto;
+    width: 100%;
     margin: auto;
     padding: 10px 0;
     position: relative;

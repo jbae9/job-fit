@@ -45,20 +45,20 @@ export class JobpostService {
     }
 
     async getFilteredJobposts(query: {
+        sort?: string
         order?: string
         limit?: string
         offset?: string
     }) {
-        let [order, orderBy] = query.order.split('-')
-        order = order || 'recent'
-        orderBy = orderBy || 'desc'
+        const sort = query.sort || 'recent'
+        const order = query.order || 'desc'
         const limit = parseInt(query.limit) || 16
         const offset = parseInt(query.offset) || 0
 
         // this.logger.log([order, orderBy, limit, offset])
         return await this.jobpostRepository.getFilteredJobposts(
+            sort,
             order,
-            orderBy,
             limit,
             offset
         )
