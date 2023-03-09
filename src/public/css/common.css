@@ -27,7 +27,21 @@ h1 {
     font-family: 'EliceDigitalBaeum-Bd';
 }
 
-.muted {
+button {
+    border-color: rgb(69, 87, 117, 0.3) !important;
+    color: rgb(69, 87, 117) !important;
+    --bs-btn-active-bg: rgb(69, 87, 117, 0.8) !important;
+    --bs-btn-active-border-color: rgb(69, 87, 117, 0.3) !important;
+    --bs-btn-hover-bg: rgb(69, 87, 117, 0.8) !important;
+    --bs-btn-hover-border-color: rgb(69, 87, 117, 0.3) !important;
+}
+
+button:hover,
+button:focus {
+    color: white !important;
+}
+
+button .muted {
     color: rgb(69, 87, 117, 0.8)
 }
 
@@ -86,4 +100,5 @@ h1 {
     position: absolute;
     padding: 10px;
     right: 0;
+    z-index: 2;
 }

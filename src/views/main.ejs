@@ -243,7 +243,7 @@
 
             <div class="mainHeader">
                 <h1>🔥 관심 주목! 인기 공고</h1>
-                <a href="">
+                <a href="/jobposts?order=popular-desc">
                     <p>인기순 공고 전체보기 →</p>
                 </a>
             </div>
@@ -274,7 +274,7 @@
 
             <div class="mainHeader">
                 <h1>✨ 따뜬따뜬한 최신 공고</h1>
-                <a href="/jobposts?order=recent">
+                <a href="/jobposts?order=recent-desc">
                     <p>최신순 공고 전체보기 →</p>
                 </a>
             </div>
@@ -366,7 +366,8 @@
             const title = response[i].title
             const companyName = response[i].company_name
             const jobpostImgUrl = response[i].original_img_url
-            // const address
+            const addressUpper = response[i].address_upper
+            const addressLower = response[i].address_lower
             const stackImgUrlArr = response[i].stackimgurls.split(',')
             const stackArr = response[i].stacks.split(',')
 
@@ -401,7 +402,7 @@
                                                         <span class="material-symbols-outlined">
                                                             location_on
                                                         </span>
-                                                        서울시 동작구
+                                                        ${addressUpper} ${addressLower}
                                                     </div>
                                                     <div class="col-8">
                                                         <span class="material-symbols-outlined">

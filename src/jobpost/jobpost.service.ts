@@ -52,7 +52,7 @@ export class JobpostService {
         let [order, orderBy] = query.order.split('-')
         order = order || 'recent'
         orderBy = orderBy || 'desc'
-        const limit = parseInt(query.limit) || 10
+        const limit = parseInt(query.limit) || 16
         const offset = parseInt(query.offset) || 0
 
         // this.logger.log([order, orderBy, limit, offset])
