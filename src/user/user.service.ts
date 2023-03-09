@@ -11,4 +11,8 @@ export class UserService {
         @InjectRepository(User) private userRepository: Repository<User>,
         @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) {}
+
+    async removeRedisRefreshToken(userId: number): Promise<boolean> {
+        return this.cacheManager.del(userId.toString())
+    }
 }

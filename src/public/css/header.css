@@ -48,6 +48,13 @@
     font-size: 15px;
 }
 
+.logout-btn {
+    border: none;
+    background: none;
+    font-size: 15px;
+    font-weight: bold;
+}
+
 @media (max-width: 1060px) {
     .header-wrap {
         width: 100%;
@@ -76,9 +83,9 @@
     border-left: none;
     border-color: rgb(69, 87, 117, 0.3);
     border-radius: 0 6px 6px 0;
-    --bs-btn-hover-bg: none
+    --bs-btn-hover-bg: none;
 }
 
 .material-icons {
-    color: #F0723D
+    color: #f0723d;
 }
