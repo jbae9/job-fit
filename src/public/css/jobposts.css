@@ -7,3 +7,15 @@
     background-color: rgb(240, 115, 61, 0.9);
     color: white !important;
 }
+
+.dropdown-item.disabled {
+    background-color: rgb(69, 87, 117, 0.2) !important;
+}
+
+.keyword-text {
+    align-items: center;
+}
+
+#keyword-card {
+    color: rgb(69, 87, 117)
+}

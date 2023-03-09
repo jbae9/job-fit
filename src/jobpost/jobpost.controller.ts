@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Query } from '@nestjs/common'
+import { Controller, Get, Query } from '@nestjs/common'
 import { JobpostService } from './jobpost.service'
 
 @Controller('api/jobpost')
