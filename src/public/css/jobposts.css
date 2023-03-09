@@ -1,0 +1,9 @@
+.dropdown-item {
+    color: rgb(69, 87, 117) !important;
+    padding-bottom: 8px;
+}
+
+.dropdown-item.active {
+    background-color: rgb(240, 115, 61, 0.9);
+    color: white !important;
+}

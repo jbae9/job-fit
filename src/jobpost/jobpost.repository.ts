@@ -77,9 +77,6 @@ export class JobpostRepository extends Repository<Jobpost> {
                 .updateEntity(false)
                 .execute()
 
-            // console.log(createdJobpost)
-            // console.log(stacks)
-
             if (createdJobpost.raw.insertId !== 0) {
                 await this.createQueryBuilder()
                     .relation(Jobpost, 'keywords')
@@ -176,7 +173,7 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         order += ' ' + orderBy
 
-        const query = `select j.jobpost_id, company_name, original_img_url, title, keywords, stacks, stackimgurls, likes, views, deadline_dtm from jobpost j 
+        const query = `select j.jobpost_id, company_name, original_img_url, title, keywords, stacks, stackimgurls, likes, views, deadline_dtm, address_upper, address_lower from jobpost j 
                         inner join (select jobpost_id, j.keyword_code, group_concat(keyword) as keywords from jobpostkeyword j 
                         inner join keyword k on j.keyword_code = k.keyword_code 
                         group by j.jobpost_id ) j2 on j.jobpost_id = j2.jobpost_id
