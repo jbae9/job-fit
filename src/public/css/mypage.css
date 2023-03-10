@@ -1,0 +1,71 @@
+.mypage-wrap {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f9fafb;
+
+    display: flex;
+    justify-content: center;
+}
+
+.mypage-container {
+    width: 1200px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    gap: 3rem;
+}
+
+.mypage-category-wrap {
+    flex-basis: 11rem;
+    margin-top: 3rem;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.mypage-content-wrap {
+    flex-grow: 1;
+    margin-top: 3rem;
+}
+
+.mypage-category-container {
+    width: 15rem;
+    border: 0.75px solid lightblue;
+    border-radius: 10px;
+    background-color: #ffffff;
+
+    padding: 2rem 1rem;
+}
+
+.mypage-category {
+    padding: 1rem 0;
+    border-bottom: 0.75px solid lightblue;
+}
+
+.mypage-category:last-child {
+    border-bottom: none;
+}
+
+.mypage-category a {
+    /* font-weight: bold; */
+    font-size: 1.25rem;
+    color: gray !important;
+}
+
+.mypage-content-title {
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+}
+
+.mypage-content-subtitle {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: gray;
+    margin-bottom: 1rem;
+}
+
+.mypage-content-myinfo {
+}
