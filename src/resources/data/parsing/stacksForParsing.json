@@ -206,7 +206,7 @@
     { "stack": ["Redash"], "category": "데이터" },
     { "stack": ["Redis"], "category": "데이터베이스" },
     { "stack": ["Redux"], "category": "프론트엔드" },
-    { "stack": ["Relay"], "category": "프론트엔드" },
+    { "stack": ["Relay"], "excludes": ["relay/"], "category": "프론트엔드" },
     { "stack": ["ReScript"], "category": "언어" },
     { "stack": ["Rest-Assured"], "category": "테스팅툴" },
     { "stack": ["Retrofit"], "category": "모바일" },

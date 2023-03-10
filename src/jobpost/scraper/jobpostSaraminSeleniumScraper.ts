@@ -31,8 +31,8 @@ export class SaraminSelenium {
             .build()
         const saraminScraper = new SaraminScraper(
             `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=1&cat_mcls=2&isAjaxRequest=0&page_count=` +
-            this.pageCount +
-            `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
+                this.pageCount +
+                `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
         )
         let allJobsArr = await saraminScraper.getDataAsHtml()
 
@@ -115,8 +115,8 @@ export class SaraminSelenium {
                     let d = new Date(Date.now())
                     allJobsArr[i].deadlineDtm = new Date(
                         String(d.getFullYear()) +
-                        '/' +
-                        String(allJobsArr[i].deadlineDtm).substring(2, 7)
+                            '/' +
+                            String(allJobsArr[i].deadlineDtm).substring(2, 7)
                     )
                 }
                 try {
