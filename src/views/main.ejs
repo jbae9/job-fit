@@ -431,4 +431,18 @@
             $(`#${carouselId}${carouselNum}`).append(tempHtml)
         }
     }
+    function postLike(user, jobpostId) {
+        if (!user) {
+            return
+        }
+        $.ajax({
+            type: "POST",
+            url: '/api/jobpost/like',
+            async: false,
+            data: { "userId": user.user_id, "jobpostId": jobpostId },
+            success: function (response) {
+                console.log(response)
+            }
+        })
+    }
 </script>
