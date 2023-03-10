@@ -227,23 +227,4 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         return await this.query(query, values)
     }
-    async postLike(userId: number, jobpostId: number) {
-        const like = await this.createQueryBuilder('likedjobpost')
-            .where("userId = :userId AND jobpostId = :userId", { userId: userId, jobpostId: jobpostId })
-            .getOne()
-        if (like) {
-            await this.createQueryBuilder('likedjobpost')
-                .delete()
-                .where("userId = :userId AND jobpostId = :userId", { userId: userId, jobpostId: jobpostId })
-                .execute()
-        } else {
-            await this.createQueryBuilder('likedjobpost')
-                .insert()
-                .into('likedjobpost')
-                .values({
-                    jobpostId,
-                    userId
-                })
-        }
-    }
 }

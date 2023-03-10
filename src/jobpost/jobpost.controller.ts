@@ -1,10 +1,10 @@
-import { Controller, Post, Get, Query, Body, Res } from '@nestjs/common'
+import { Controller, Post, Get, Query } from '@nestjs/common'
 import { Cron } from '@nestjs/schedule'
 import { JobpostService } from './jobpost.service'
 
 @Controller('api/jobpost')
 export class JobpostController {
-    constructor(private readonly jobpostService: JobpostService) { }
+    constructor(private readonly jobpostService: JobpostService) {}
 
     @Cron('0 0 9,19 * * *') // 매일 오전 9시, 오후 7시
     @Get('/saramin')
@@ -35,12 +35,5 @@ export class JobpostController {
         }
     ) {
         return await this.jobpostService.getFilteredJobposts(query)
-    }
-
-    @Post('/like')
-    async postLike(@Body() userId: number, @Body() jobpostId: number, @Res() res) {
-        await this.jobpostService.postLike(userId, jobpostId)
-
-        return "success"
     }
 }

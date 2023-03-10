@@ -7,11 +7,11 @@ import { UserService } from './user.service'
 
 @Controller('api/user')
 export class UserController {
-    constructor(private readonly userService: UserService) { }
+    constructor(private readonly userService: UserService) {}
 
     @UseGuards(KakaoAuthGuard)
     @Get('/auth/kakao')
-    async kakaoLogin() { }
+    async kakaoLogin() {}
 
     @UseGuards(KakaoAuthGuard)
     @Get('/auth/kakao/callback')

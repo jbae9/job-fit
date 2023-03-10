@@ -11,7 +11,7 @@ export class JobpostService {
         private jobpostRepository: JobpostRepository,
         private companyRepository: CompanyRepository,
         private logger: Logger
-    ) { }
+    ) {}
 
     async getSaraminJobposts() {
         const saraminScraper = new SaraminSelenium('10')
@@ -62,8 +62,5 @@ export class JobpostService {
             limit,
             offset
         )
-    }
-    async postLike(userId: number, jobpostId: number) {
-        await this.jobpostRepository.postLike(userId, jobpostId)
     }
 }
