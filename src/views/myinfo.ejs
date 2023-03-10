@@ -1,5 +1,42 @@
 <div class="mypage-content-wrap">
     <div class="mypage-content-title">내 정보 관리</div>
     <div class="mypage-content-subtitle">내 정보</div>
-    <div class="mypage-content-myinfo"></div>
+    <div class="mypage-content-myinfo">
+        <img
+            id="profile-image"
+            class="mypage-content-myinfo-profile-image"
+            src=""
+        />
+        <div id="nickname" class="mypage-content-myinfo-nickname"></div>
+        <div id="email" class="mypage-content-myinfo-email"></div>
+    </div>
+    <div class="mypage-content-subtitle">내 주소</div>
 </div>
+
+<script>
+    // 회원 고유번호
+    const userId = '<%- JSON.stringify(user.userId) %>'
+
+    // 회원 정보 가져오기
+    axios
+        .get(`/api/user/myinfo/${userId}`)
+        .then((res) => {
+            const {
+                profileImage,
+                nickname,
+                email,
+                addressUpper,
+                addressLower,
+            } = res.data
+
+            document
+                .querySelector('.mypage-content-myinfo img')
+                .setAttribute('src', `${profileImage}`)
+            document.getElementById('nickname').innerHTML = `${nickname}`
+            document.getElementById('email').innerHTML = `${email}`
+        })
+        .catch((err) => {
+            alert('회원의 정보를 찾을 수 없습니다.')
+            window.location.href = '/'
+        })
+</script>

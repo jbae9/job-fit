@@ -68,4 +68,31 @@
 }
 
 .mypage-content-myinfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+
+    padding: 2rem;
+    border: 0.75px solid lightblue;
+    border-radius: 10px;
+    background-color: #ffffff;
+    margin-bottom: 2.5rem;
+}
+
+.mypage-content-myinfo img {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 10px;
+}
+
+.mypage-content-myinfo-nickname {
+    color: #263747;
+    font-size: 1.375rem;
+    font-weight: bold;
+}
+
+.mypage-content-myinfo-email {
+    color: gray;
 }
