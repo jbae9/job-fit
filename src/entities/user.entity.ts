@@ -17,7 +17,18 @@ export class User {
     @PrimaryGeneratedColumn({ type: 'int' })
     userId: number
 
-    @ManyToMany(() => Jobpost)
+    @ManyToMany(() => Jobpost, (jobpost) => jobpost.users)
+    @JoinTable({
+        name: 'likedjobpost',
+        inverseJoinColumn: {
+            name: 'jobpost_id',
+            referencedColumnName: 'jobpostId',
+        },
+        joinColumn: {
+            name: 'user_id',
+            referencedColumnName: 'userId',
+        },
+    })
     jobposts: Jobpost[]
 
     @ManyToMany(() => Stack, { onDelete: 'CASCADE' })
