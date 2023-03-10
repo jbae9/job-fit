@@ -4,6 +4,15 @@
             <div class="card">
                 <div class="row">
                     <p class="keyword-text">
+                        필터
+                        <a title="초기화" onclick="resetKeywords()" style="cursor: pointer;">
+                            <span class="material-symbols-outlined" id="resetButton">
+                                restart_alt
+                            </span></a>
+                    </p>
+                </div>
+                <div class="row">
+                    <p class="keyword-text">
                         <span class="material-symbols-outlined">
                             location_on
                         </span>
@@ -16,13 +25,7 @@
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="">최신순</a>
-                                </li>
-                                <li><a class="dropdown-item" href="">인기순</a>
-                                </li>
-                                <li><a class=" dropdown-item" href="">마감순</a>
-                                </li>
+                            <ul class="dropdown-menu" id="addressUpperDropdown">
                             </ul>
                         </div>
                     </div>
@@ -31,13 +34,7 @@
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                             </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="">최신순</a>
-                                </li>
-                                <li><a class="dropdown-item" href="">인기순</a>
-                                </li>
-                                <li><a class="dropdown-item" href="">마감순</a>
-                                </li>
+                            <ul class="dropdown-menu" id="addressLowerDropdown">
                             </ul>
                         </div>
                     </div>
@@ -53,20 +50,31 @@
                     <ul class="dropdown-menu">
                         <% if (!user) { %>
                             <li title="기술스택에 딱 맞는 현재 공고를 보고싶으면 로그인해주세요!"><a class="dropdown-item disabled"
-                                    href="/jobposts?order=recent-desc">추천순</a></li>
+                                    href="/jobposts?sort=recent&order=desc">추천순</a></li>
                             <% } else { %>
-                                <li><a class="dropdown-item" href="/jobposts?order=recent-desc" id="recommend">추천순</a>
+                                <li><a class="dropdown-item"
+                                        onclick="appendQueryParameter({sort: 'recent', order: 'desc'})"
+                                        id="recommend">추천순</a>
                                 </li>
                                 <% } %>
-                                    <li><a class="dropdown-item" href="/jobposts?order=recent-desc" id="recent">최신순</a>
+                                    <li><a class="dropdown-item"
+                                            onclick="appendQueryParameter({sort: 'recent', order: 'desc'})"
+                                            id="recent">최신순</a>
                                     </li>
-                                    <li><a class="dropdown-item" href="/jobposts?order=popular-desc"
+                                    <li><a class="dropdown-item"
+                                            onclick="appendQueryParameter({sort: 'popular', order: 'desc'})"
                                             id="popular">인기순</a></li>
-                                    <li><a class="dropdown-item" href="/jobposts?order=ending-asc" id="ending">마감순</a>
+                                    <li><a class="dropdown-item"
+                                            onclick="appendQueryParameter({sort: 'ending', order: 'asc'})"
+                                            id="ending">마감순</a>
                                     </li>
                     </ul>
                 </div>
             </div>
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow1"></div>
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow2"></div>
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow3"></div>
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow4"></div>
         </div>
     </div>
 </div>
@@ -98,39 +106,69 @@
 
         $.ajax({
             type: "GET",
-            url: `/api/jobpost/filter?sort=${sort}&order=${order}`,
+            url: `/api/jobpost/filter${url.search}`,
             async: false,
             success: function (response) {
                 showJobposts(response)
             }
         })
 
+        $.ajax({
+            type: "GET",
+            url: `/api/jobpost/addresses`,
+            async: false,
+            success: function (response) {
+                console.log(response)
+                const { addressUpper, addressLower } = response
+                for (let i = 0; i < addressUpper.length; i++) {
+                    let tempHtml = `<li><a class="dropdown-item" onclick="$('#addressLowerDropDown > li').hide(); $('#addressLowerDropDown > li.${addressUpper[i].address_upper}').show()">${addressUpper[i].address_upper}</a>
+                                </li>`
+                    $('#addressUpperDropdown').append(tempHtml)
+
+                    tempHtml = `<li class="${addressUpper[i].address_upper}"><a class="dropdown-item" onclick="appendQueryParameter({address_upper: '${addressUpper[i].address_upper}', address_lower: null})">전체</a>
+                                </li>`
+                    $('#addressLowerDropdown').append(tempHtml)
+                }
+
+                for (let i = 0; i < addressLower.length; i++) {
+                    if (addressLower[i].address_lower === '전체') continue
+                    const tempHtml = `<li class="${addressLower[i].address_upper}"><a class="dropdown-item" onclick="appendQueryParameter({address_upper: '${addressLower[i].address_upper}', address_lower: '${addressLower[i].address_lower}'})">${addressLower[i].address_lower}</a>
+                                </li>`
+                    $('#addressLowerDropdown').append(tempHtml)
+                }
+            }
+        })
+
+        $.ajax({
+            type: "GET",
+            url: `/api/jobpost/stacks`,
+            async: false,
+            success: function (response) {
+                console.log(response)
+            }
+        })
     })
 
     function showJobposts(response) {
-        const row = 4
-        const col = 4
+        for (let i = 0; i < response.length; i++) {
+            const title = response[i].title
+            const companyName = response[i].company_name
+            const jobpostImgUrl = response[i].original_img_url
+            const addressUpper = response[i].address_upper
+            const addressLower = response[i].address_lower
+            const stackImgUrlArr = response[i].stackimgurls === null ? null : response[i].stackimgurls.split(',')
+            const stackArr = response[i].stacks === null ? null : response[i].stacks.split(',')
 
-        for (let i = 0; i < row; i++) {
-            let tempHtml = `<div class="row row-cols-1 row-cols-md-4 g-4">`
-            for (let j = 0; j < col; j++) {
-                const title = response[i + j].title
-                const companyName = response[i + j].company_name
-                const jobpostImgUrl = response[i + j].original_img_url
-                const addressUpper = response[i + j].address_upper
-                const addressLower = response[i + j].address_lower
-                const stackImgUrlArr = response[i + j].stackimgurls.split(',')
-                const stackArr = response[i + j].stacks.split(',')
+            let deadlineDtm
+            if (response[i].deadline_dtm) {
+                const date = new Date(response[i].deadline_dtm)
+                deadlineDtm = date.toLocaleDateString('ko-KR', { dateStyle: 'long' })
+            } else {
+                deadlineDtm = '상시 채용'
+            }
 
-                let deadlineDtm
-                if (response[i + j].deadline_dtm) {
-                    const date = new Date(response[i + j].deadline_dtm)
-                    deadlineDtm = date.toLocaleDateString('ko-KR', { dateStyle: 'long' })
-                } else {
-                    deadlineDtm = '상시 채용'
-                }
-
-                tempHtml += `<div class="col">
+            let tempHtml = ``
+            tempHtml += `<div class="col">
                                         <div class="card">
                                             <span class="material-symbols-outlined likeIcon">
                                                 star
@@ -167,20 +205,47 @@
                                                 </p>
                                                 <p class="card-text">
                                                     `
-
+            if (stackImgUrlArr !== null) {
                 for (let j = 0; j < stackImgUrlArr.length; j++) {
                     const imgTag = `<img src="${stackImgUrlArr[j]}" alt="${stackArr[j]}" title="${stackArr[j]}">`
                     tempHtml += imgTag
                 }
+            }
 
-                tempHtml += `              </p>
+            tempHtml += `              </p>
                                             </div>
                                         </div>
                                     </div>`
-            }
-            tempHtml += `</div>`
-            $('#mainContainer').append(tempHtml)
-            tempHtml = ``
+
+            $(`#jobpostRow${Math.floor(i / 4) + 1}`).append(tempHtml)
         }
+    }
+
+    function appendQueryParameter(queries) {
+        const params = Object.keys(queries)
+        let url = new URL(window.location.href)
+
+        for (let i = 0; i < params.length; i++) {
+            if (queries[params[i]] === null) {
+                url.searchParams.delete(params[i])
+            } else {
+                url.searchParams.set(params[i], queries[params[i]])
+            }
+        }
+
+        window.location.href = url.href
+    }
+
+    function resetKeywords() {
+        let url = new URL(window.location.href)
+        const keys = Array.from(url.searchParams.keys())
+
+        for (const key of keys) {
+            if (key === 'sort' || key === 'order') { continue }
+            console.log(key)
+            url.searchParams.delete(key)
+        }
+
+        window.location.href = url.href
     }
 </script>

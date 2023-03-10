@@ -32,4 +32,14 @@ export class JobpostController {
     ) {
         return await this.jobpostService.getFilteredJobposts(query)
     }
+
+    @Get('/addresses')
+    async getAddresses() {
+        return await this.jobpostService.getAddresses()
+    }
+
+    @Get('/stacks')
+    async getStacks() {
+        return await this.jobpostService.getStacks()
+    }
 }

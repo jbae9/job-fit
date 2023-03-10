@@ -77,7 +77,10 @@ export class JobpostRepository extends Repository<Jobpost> {
                 .updateEntity(false)
                 .execute()
 
-            if (createdJobpost.raw.insertId !== 0) {
+            if (
+                createdJobpost.raw.insertId !== 0 &&
+                createdJobpost.raw.affectedRows === 1
+            ) {
                 await this.createQueryBuilder()
                     .relation(Jobpost, 'keywords')
                     .of({ jobpostId: createdJobpost.raw.insertId })
@@ -148,7 +151,8 @@ export class JobpostRepository extends Repository<Jobpost> {
         sort: string,
         order: string,
         limit: number,
-        offset: number
+        offset: number,
+        others: object
     ) {
         let where = ''
 
@@ -161,7 +165,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                 break
             case 'ending':
                 if (order === 'asc') {
-                    where = 'where deadline_dtm is not null'
+                    sort = 'deadline_dtm'
+                    // where = 'where deadline_dtm is not null'
                     break
                 } else {
                     sort = 'deadline_dtm'
@@ -171,22 +176,32 @@ export class JobpostRepository extends Repository<Jobpost> {
                 sort = 'j.updated_dtm'
         }
 
+        if (others) {
+            const othersKeys = Object.keys(others)
+            for (let i = 0; i < othersKeys.length; i++) {
+                if (where.length === 0) {
+                    where += `where ${othersKeys[i]}='${others[othersKeys[i]]}'`
+                } else {
+                    where += ` and ${othersKeys[i]}='${others[othersKeys[i]]}'`
+                }
+            }
+        }
+
         const query = `select j.jobpost_id, company_name, original_img_url, title, keywords, stacks, stackimgurls, likes, views, deadline_dtm, address_upper, address_lower from jobpost j 
-                        inner join (select jobpost_id, j.keyword_code, group_concat(keyword) as keywords from jobpostkeyword j 
-                        inner join keyword k on j.keyword_code = k.keyword_code 
+                        left join (select jobpost_id, j.keyword_code, group_concat(keyword) as keywords from jobpostkeyword j 
+                        left join keyword k on j.keyword_code = k.keyword_code 
                         group by j.jobpost_id ) j2 on j.jobpost_id = j2.jobpost_id
-                        inner join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
-                        inner join stack s  on j.stack_id = s.stack_id  
+                        left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
+                        left join stack s  on j.stack_id = s.stack_id  
                         group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
-                        inner join company c on j.company_id = c.company_id 
-                        inner join (select j.jobpost_id, count(user_id) as likes from jobfit.jobpost j 
+                        left join company c on j.company_id = c.company_id 
+                        left join (select j.jobpost_id, count(user_id) as likes from jobfit.jobpost j 
                         left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
-                        group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id
-                        ${where}
-                        order by ?
+                        group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
+                        order by ${sort} ${order}
                         limit ? offset ?`
 
-        const values = [sort + order, limit, offset]
+        const values = [limit, offset]
 
         // const test = await this.createQueryBuilder('jobpost')
         //     .leftJoin('jobpost.keywords', 'keyword')
@@ -217,14 +232,57 @@ export class JobpostRepository extends Repository<Jobpost> {
         //     .getMany()
 
         // const test = await this.createQueryBuilder('jobpost')
-        //     .leftJoinAndMapMany('jobpost.keywords', 'keyword')
+        //     .select([
+        //         'jobpost.jobpostId',
+        //         'jobpost.originalImgUrl',
+        //         'jobpost.title',
+        //         'jobpost.views',
+        //         'jobpost.deadlineDtm',
+        //     ])
+        //     .loadRelationCountAndMap('jobpost.likes', 'jobpost.users')
+        //     .leftJoin('jobpost.company', 'company')
+        //     .leftJoinAndMapMany('jobpost.stacks', Stack, 'stacks')
+        //     .leftJoin('jobpost.users', 'likedjobpost')
+        //     .leftJoin('jobpost.keywords', 'keyword')
+        //     .addSelect(['company.companyName', 'keyword', 'stacks'])
+        //     // .groupBy('jobpost.jobpostId')
+        //     .orderBy('jobpost.updatedDtm', 'ASC')
         //     .take(10)
         //     .getMany()
 
         // if (order.includes('ending')) {
         //     return test
         // }
+        // console.log(test)
 
         return await this.query(query, values)
+    }
+
+    async getAddresses() {
+        const addressUpper = await this.query(`select address_upper
+                                                from jobpost j
+                                                where address_upper is not null
+                                                group by address_upper 
+                                                order by address_upper asc`)
+
+        const addressLower = await this
+            .query(`select address_upper, address_lower
+                    from jobpost j 
+                    where address_lower is not null and address_upper is not null
+                    group by address_lower 
+                    order by address_upper asc, address_lower asc`)
+
+        return { addressUpper, addressLower }
+    }
+
+    async getStacks() {
+        return await this.query(`select j2.stack, j2.category
+                                from jobpost j
+                                left join (select j.stack_id, j.jobpost_id, stack, category
+                                from jobpoststack j 
+                                left join stack s on j.stack_id = s.stack_id) j2 on j.jobpost_id = j2.jobpost_id
+                                where j2.stack is not null
+                                group by j2.stack
+                                order by j2.category asc, j2.stack asc`)
     }
 }

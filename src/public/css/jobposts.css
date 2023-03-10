@@ -12,10 +12,24 @@
     background-color: rgb(69, 87, 117, 0.2) !important;
 }
 
-.keyword-text {
+#keyword-card .row {
     align-items: center;
+    padding: 10px;
 }
 
 #keyword-card {
     color: rgb(69, 87, 117)
+}
+
+#resetButton {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 700,
+        'GRAD' 0,
+        'opsz' 48;
+    color: rgb(206, 0, 0);
+    font-size: 25px;
+    position: absolute;
+    right: 0;
+    padding: 0 10px;
 }

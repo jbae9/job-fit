@@ -337,6 +337,7 @@
             url: '/api/jobpost/filter?sort=recent&order=desc&limit=12',
             async: false,
             success: function (response) {
+                console.log(response)
                 showCarouselJobposts('carouselRecent', response)
             }
         })
@@ -368,8 +369,8 @@
             const jobpostImgUrl = response[i].original_img_url
             const addressUpper = response[i].address_upper
             const addressLower = response[i].address_lower
-            const stackImgUrlArr = response[i].stackimgurls.split(',')
-            const stackArr = response[i].stacks.split(',')
+            const stackImgUrlArr = response[i].stackimgurls === null ? null : response[i].stackimgurls.split(',')
+            const stackArr = response[i].stacks === null ? null : response[i].stacks.split(',')
 
             let deadlineDtm
             if (response[i].deadline_dtm) {
@@ -417,9 +418,11 @@
                                                 <p class="card-text">
                                                     `
 
-            for (let j = 0; j < stackImgUrlArr.length; j++) {
-                const imgTag = `<img src="${stackImgUrlArr[j]}" alt="${stackArr[j]}" title="${stackArr[j]}">`
-                tempHtml += imgTag
+            if (stackImgUrlArr !== null) {
+                for (let j = 0; j < stackImgUrlArr.length; j++) {
+                    const imgTag = `<img src="${stackImgUrlArr[j]}" alt="${stackArr[j]}" title="${stackArr[j]}">`
+                    tempHtml += imgTag
+                }
             }
 
             tempHtml += `              </p>
