@@ -57,7 +57,7 @@ export class JobpostService {
         const limitNum = parseInt(limit) || 16
         const offsetNum = parseInt(offset) || 0
 
-        this.logger.log(sort, order, limitNum, offsetNum, others)
+        // this.logger.log(sort, order, limitNum, offsetNum, others)
 
         let orderObj: { [keys: string]: string }
         if (sort === 'recent') {
