@@ -2,7 +2,6 @@ import { DataSource, Repository } from 'typeorm'
 import { Jobpost } from 'src/entities/jobpost.entity'
 import { Injectable } from '@nestjs/common'
 import { CompanyRepository } from 'src/company/company.repository'
-import { off } from 'process'
 import { default as keywords } from '../resources/data/parsing/keywordsForParsing.json'
 import { default as stacks } from '../resources/data/parsing/stacksForParsing.json'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -208,7 +207,7 @@ export class JobpostRepository extends Repository<Jobpost> {
                         left join (select jobpost_id, j.keyword_code, keyword, group_concat(keyword) as keywords from jobpostkeyword j 
                         left join keyword k on j.keyword_code = k.keyword_code 
                         group by j.jobpost_id ) j2 on j.jobpost_id = j2.jobpost_id
-                        left join (select jobpost_id, stack, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
+                        left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
                         left join stack s on j.stack_id = s.stack_id  
                         group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
                         left join company c on j.company_id = c.company_id 
@@ -301,5 +300,32 @@ export class JobpostRepository extends Repository<Jobpost> {
                                 where j2.stack is not null
                                 group by j2.stack
                                 order by j2.category asc, j2.stack asc`)
+    }
+    async postLike(userId: number, jobpostId: number) {
+        const like = await this.find({
+            relations: ['users'],
+            where: {
+                jobpostId: jobpostId,
+            },
+        })
+        let query = 'insert'
+        like[0]?.users.forEach((user) => {
+            if (user.userId == userId) {
+                query = 'delete'
+            }
+        })
+        if (query === 'insert') {
+            query += ` into likedjobpost values (?, ?)`
+        } else {
+            query += ` from likedjobpost where jobpost_id = ? and user_id=  ?`
+        }
+        const values = [jobpostId, userId]
+        try {
+            await this.query(query, values)
+            return 'success'
+        } catch (err) {
+            console.log(err)
+            return 'fail'
+        }
     }
 }

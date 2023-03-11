@@ -1,5 +1,14 @@
 import { Controller } from '@nestjs/common'
-import { Get, Post, Req, Res, UseGuards } from '@nestjs/common/decorators'
+import {
+    Body,
+    Get,
+    Param,
+    Post,
+    Put,
+    Req,
+    Res,
+    UseGuards,
+} from '@nestjs/common/decorators'
 import { HttpException, UnauthorizedException } from '@nestjs/common/exceptions'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { KakaoAuthGuard } from 'src/auth/guards/kakao-auth.guard'
@@ -51,5 +60,19 @@ export class UserController {
                 400
             )
         }
+    }
+
+    @Get('/myinfo/:userId')
+    async getMyInfo(@Param('userId') userId: number) {
+        return await this.userService.getMyInfo(userId)
+    }
+
+    @Put('/myinfo/:userId/address')
+    async updateMyAddress(
+        @Param('userId') userId: number,
+        @Body('address') address: string
+    ) {
+        console.log(address)
+        return await this.userService.updateMyAddress(userId, address)
     }
 }

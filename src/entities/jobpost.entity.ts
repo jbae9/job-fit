@@ -40,18 +40,7 @@ export class Jobpost {
     })
     keywords: Keyword[]
 
-    @ManyToMany(() => User, { cascade: true })
-    @JoinTable({
-        name: 'likedjobpost',
-        joinColumn: {
-            name: 'jobpost_id',
-            referencedColumnName: 'jobpostId',
-        },
-        inverseJoinColumn: {
-            name: 'user_id',
-            referencedColumnName: 'userId',
-        },
-    })
+    @ManyToMany(() => User, (user) => user.jobposts, { cascade: true })
     users: User[]
 
     @ManyToMany(() => Stack, (stack) => stack.jobposts, { cascade: true })
