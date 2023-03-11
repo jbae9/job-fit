@@ -372,7 +372,20 @@
             const addressLower = response[i].address_lower
             const stackImgUrlArr = response[i].stackimgurls === null ? null : response[i].stackimgurls.split(',')
             const stackArr = response[i].stacks === null ? null : response[i].stacks.split(',')
+            const likedUsers = response[i].likedUsers
+            let likedSpan = `<span class="material-symbols-outlined likeIcon" id="${jobpostId}">
+                                star
+                            </span>`
 
+            if (likedUsers) {
+                for (const user of likedUsers) {
+                    if (user === '<%- user.userId %>') {
+                        likedSpan = `<span class="material-symbols-outlined likeIcon" style="color:#FFEA00" id="${jobpostId}">
+                                        star
+                                    </span>`
+                    }
+                }
+            }
             let deadlineDtm
             if (response[i].deadline_dtm) {
                 const date = new Date(response[i].deadline_dtm)
@@ -385,9 +398,7 @@
                                         <div class="card">
                                             <%if(user) {%>
                                             <a style="cursor:pointer" onclick="postLike(<%-(user.userId)%>, ${jobpostId})">
-                                                <span class="material-symbols-outlined likeIcon" id="${jobpostId}">
-                                                    star
-                                                </span>
+                                                ${likedSpan}
                                             </a>
                                             <% }else { %>
                                             <span class="material-symbols-outlined likeIcon">
