@@ -379,7 +379,7 @@
 
             if (likedUsers) {
                 for (const user of likedUsers) {
-                    if (user === '<%- user.userId %>') {
+                    if (user === '<%- user?.userId %>') {
                         likedSpan = `<span class="material-symbols-outlined likeIcon" style="color:#FFEA00" id="${jobpostId}">
                                         star
                                     </span>`
