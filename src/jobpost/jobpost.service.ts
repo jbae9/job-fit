@@ -11,7 +11,7 @@ export class JobpostService {
         private jobpostRepository: JobpostRepository,
         private companyRepository: CompanyRepository,
         private logger: Logger
-    ) { }
+    ) {}
 
     async getSaraminJobposts() {
         const saraminScraper = new SaraminSelenium('10')
@@ -111,6 +111,11 @@ export class JobpostService {
     async getStacks() {
         return await this.jobpostRepository.getStacks()
     }
+
+    async getKeywords() {
+        return await this.jobpostRepository.getKeywords()
+    }
+
     async postLike(userId: number, jobpostId: number) {
         return await this.jobpostRepository.postLike(userId, jobpostId)
     }

@@ -155,8 +155,6 @@
             url: `/api/jobpost/stacks`,
             async: false,
             success: function (response) {
-                console.log(response)
-
                 let categories = []
                 let tempHtml = ``
                 for (let i = 0; i < response.length; i++) {
@@ -172,9 +170,26 @@
                         $('#stackList').append(tempHtml)
                     }
 
-                    tempHtml = `<button class="btn btn-outline-secondary filterButton" type="button" data-bs-toggle="button" onclick="appendStackQueryParameter($(this).hasClass('active'),'${response[i].stack}')">${response[i].stack}</button>`
+                    tempHtml = `<button class="btn btn-outline-secondary filterButton" id="${response[i].stack.replaceAll(/\s/g, '')}" type="button" data-bs-toggle="button" onclick="appendStackQueryParameter($(this).hasClass('active'),'${response[i].stack}')">${response[i].stack}</button>`
                     $(`#${response[i].category}`).append(tempHtml)
                 }
+            }
+        })
+
+        let stacks = url.searchParams.get('stack')
+        stacks = stacks.split(',')
+        for (let i = 0; i < stacks.length; i++) {
+            const stack = stacks[i].replaceAll(/\s/g, '')
+            console.log(`$(\`#${stack}\`).addClass('active')`)
+            $(`#${stack}`).addClass('active')
+        }
+
+        $.ajax({
+            type: "GET",
+            url: `/api/jobpost/keywords`,
+            async: false,
+            success: function (response) {
+                console.log(keywords)
             }
         })
     })

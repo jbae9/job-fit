@@ -154,6 +154,7 @@ export class JobpostRepository extends Repository<Jobpost> {
         others: object
     ) {
         let where = ''
+        let having = ''
         switch (sort) {
             case 'recent':
                 sort = 'j.updated_dtm'
@@ -175,16 +176,15 @@ export class JobpostRepository extends Repository<Jobpost> {
         }
 
         if (others) {
-            console.log(others)
             const othersKeys = Object.keys(others)
             for (let i = 0; i < othersKeys.length; i++) {
                 if (othersKeys[i] === 'stack') {
                     const stacks = others[othersKeys[i]].split(',')
                     for (let j = 0; j < stacks.length; j++) {
-                        if (where.length === 0) {
-                            where += `where ${othersKeys[i]}='${stacks[j]}'`
+                        if (having.length === 0) {
+                            having += `having stacks like '%${stacks[j]}%'`
                         } else {
-                            where += ` and ${othersKeys[i]}='${stacks[j]}'`
+                            having += ` and stacks like '%${stacks[j]}%'`
                         }
                     }
                 } else {
@@ -201,12 +201,10 @@ export class JobpostRepository extends Repository<Jobpost> {
             }
         }
 
-        console.log(where)
-
         const query = `select j.jobpost_id, company_name, original_img_url, title, keywords, stacks, stackimgurls, likesCount, likedUsers, views, deadline_dtm, address_upper, address_lower from jobpost j 
-                        left join (select jobpost_id, j.keyword_code, keyword, group_concat(keyword) as keywords from jobpostkeyword j 
+                        left join (select jobpost_id, j.keyword_code, group_concat(keyword) as keywords from jobpostkeyword j 
                         left join keyword k on j.keyword_code = k.keyword_code 
-                        group by j.jobpost_id ) j2 on j.jobpost_id = j2.jobpost_id
+                        group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
                         left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
                         left join stack s on j.stack_id = s.stack_id  
                         group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
@@ -214,6 +212,7 @@ export class JobpostRepository extends Repository<Jobpost> {
                         left join (select j.jobpost_id, count(user_id) as likesCount, group_concat(user_id) as likedUsers from jobfit.jobpost j 
                         left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
                         group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
+                        ${having}
                         order by ${sort} ${order}
                         limit ? offset ?`
 
@@ -301,6 +300,15 @@ export class JobpostRepository extends Repository<Jobpost> {
                                 group by j2.stack
                                 order by j2.category asc, j2.stack asc`)
     }
+
+    async getKeywords() {
+        return await this
+            .query(`select jobpost_id, j.keyword_code, keyword from jobpostkeyword j 
+                    left join keyword k on j.keyword_code = k.keyword_code 
+                    group by keyword_code
+                    order by keyword asc`)
+    }
+
     async postLike(userId: number, jobpostId: number) {
         const like = await this.find({
             relations: ['users'],
