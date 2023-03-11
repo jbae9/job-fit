@@ -1,0 +1,165 @@
+<div class="mypage-content-wrap">
+    <div class="mypage-content-title">내 정보 관리</div>
+    <div class="mypage-content-subtitle">내 정보</div>
+    <div class="mypage-content-myinfo">
+        <img
+            id="profile-image"
+            class="mypage-content-myinfo-profile-image"
+            src=""
+        />
+        <div id="nickname" class="mypage-content-myinfo-nickname"></div>
+        <div id="email" class="mypage-content-myinfo-email"></div>
+    </div>
+    <div class="mypage-content-subtitle">
+        내 주소
+        <span class="content-desc">( 시/도, 시/군/구 까지 표시됩니다. )</span>
+    </div>
+    <div class="mypage-content-myaddress">
+        <div id="address-wrap" class="mypage-content-myaddress-wrap">
+            <div
+                id="address-upper"
+                class="mypage-content-myaddress-upper"
+            ></div>
+            <div
+                id="address-lower"
+                class="mypage-content-myaddress-lower"
+            ></div>
+        </div>
+        <button
+            type="button"
+            class="mypage-content-myaddress-btn"
+            data-bs-toggle="modal"
+            data-bs-target="#address-modal"
+        >
+            수정
+        </button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div
+    class="modal fade"
+    id="address-modal"
+    tabindex="-1"
+    aria-labelledby="address-modal-label"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">내 주소 수정</div>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-address-wrap">
+                    <div class="modal-address-title">내 주소 :</div>
+                    <input
+                        id="modal-address-input"
+                        class="modal-address-input"
+                        disabled
+                    />
+                </div>
+                <div class="modal-address-search-wrap">
+                    <button
+                        id="modal-address-search-btn"
+                        type="button"
+                        class="modal-address-search-btn"
+                    >
+                        주소 검색
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="modal-close"
+                    data-bs-dismiss="modal"
+                >
+                    취소
+                </button>
+                <button
+                    type="button"
+                    class="address-update-btn"
+                    onclick="addressUpdate()"
+                >
+                    수정
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    // 회원 고유번호
+    const userId = '<%- JSON.stringify(user.userId) %>'
+
+    // 회원 정보 가져오기
+    axios
+        .get(`/api/user/myinfo/${userId}`)
+        .then((res) => {
+            const {
+                profileImage,
+                nickname,
+                email,
+                addressUpper,
+                addressLower,
+            } = res.data
+
+            document
+                .querySelector('.mypage-content-myinfo img')
+                .setAttribute('src', `${profileImage}`)
+            document.getElementById('nickname').innerHTML = `${nickname}`
+            document.getElementById('email').innerHTML = `${email}`
+
+            if (addressUpper)
+                document.getElementById(
+                    'address-upper'
+                ).innerHTML = `${addressUpper}`
+
+            if (addressLower)
+                document.getElementById(
+                    'address-lower'
+                ).innerHTML = `${addressLower}`
+
+            if (!addressUpper && !addressLower)
+                document.getElementById('address-wrap').innerHTML = '선택없음'
+        })
+        .catch((err) => {
+            alert('회원의 정보를 찾을 수 없습니다.')
+            window.location.href = '/'
+        })
+
+    document
+        .getElementById('modal-address-search-btn')
+        .addEventListener('click', function () {
+            // 다음 주소검색 API
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    document.getElementById('modal-address-input').value =
+                        data.address
+                },
+            }).open()
+        })
+
+    function addressUpdate() {
+        const address = document.getElementById('modal-address-input').value
+
+        const body = { address }
+        axios
+            .put(`/api/user/myinfo/${userId}/address`, body)
+            .then((res) => {
+                alert(res.data.message)
+                window.location.reload()
+            })
+            .catch((err) => {
+                alert(err.response.data.message)
+                window.location.reload()
+            })
+    }
+</script>
