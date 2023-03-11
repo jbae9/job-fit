@@ -42,14 +42,21 @@
                 <div class="row">
                     <p class="keyword-text">
                         <span class="material-symbols-outlined">
+                            format_list_bulleted
+                        </span>
+                        키워드
+                    </p>
+                </div>
+                <div id="keywordList"></div>
+                <div class="row">
+                    <p class="keyword-text">
+                        <span class="material-symbols-outlined">
                             code_blocks
                         </span>
                         기술 스택
                     </p>
                 </div>
-                <div id="stackList">
-
-                </div>
+                <div id="stackList"></div>
             </div>
         </div>
         <div class="col-8" id="mainContainer">
@@ -176,22 +183,34 @@
             }
         })
 
-        let stacks = url.searchParams.get('stack')
-        stacks = stacks.split(',')
-        for (let i = 0; i < stacks.length; i++) {
-            const stack = stacks[i].replaceAll(/\s/g, '')
-            console.log(`$(\`#${stack}\`).addClass('active')`)
-            $(`#${stack}`).addClass('active')
-        }
-
         $.ajax({
             type: "GET",
             url: `/api/jobpost/keywords`,
             async: false,
             success: function (response) {
-                console.log(keywords)
+                for (let i = 0; i < response.length; i++) {
+                    const tempHtml = `<button class="btn btn-outline-secondary filterButton" id="keywordCode${response[i].keyword_code}" type="button" data-bs-toggle="button" onclick="appendKeywordQueryParameter($(this).hasClass('active'),'${response[i].keyword_code}')">${response[i].keyword}</button>`
+                    $('#keywordList').append(tempHtml)
+                }
             }
         })
+
+        let stacks = url.searchParams.get('stack')
+        if (stacks) {
+            stacks = stacks.split(',')
+            for (let i = 0; i < stacks.length; i++) {
+                const stack = stacks[i].replaceAll(/\s/g, '')
+                $(`#${stack}`).addClass('active')
+            }
+        }
+
+        let keywordCode = url.searchParams.get('keywordCode')
+        if (keywordCode) {
+            keywordCode = keywordCode.split(',')
+            for (let i = 0; i < keywordCode.length; i++) {
+                $(`#keywordCode${keywordCode[i]}`).addClass('active')
+            }
+        }
     })
 
     function showJobposts(response) {
@@ -285,7 +304,6 @@
     }
 
     function appendStackQueryParameter(hasClassActive, stack) {
-        console.log(hasClassActive, stack)
         let url = new URL(window.location.href)
         let stackParam = url.searchParams.get('stack')
 
@@ -311,7 +329,33 @@
             }
         }
 
-        console.log(url)
+        window.location.href = url.href
+    }
+
+    function appendKeywordQueryParameter(hasClassActive, keywordCode) {
+        let url = new URL(window.location.href)
+        let keywordCodeParam = url.searchParams.get('keywordCode')
+
+        // hasClassActive = true => 버튼 선택
+        if (hasClassActive) {
+            if (!keywordCodeParam) {
+                url.searchParams.append('keywordCode', keywordCode)
+            } else {
+                keywordCodeParam += `,${keywordCode}`
+                url.searchParams.set('keywordCode', keywordCodeParam)
+            }
+        }
+
+        // hasClassActive = false => 버튼 선택 취소
+        if (!hasClassActive) {
+            const newKeywordCodeParam = keywordCodeParam.split(',').filter((value, _i, _a) => { return value !== keywordCode }).join(',')
+            if (newKeywordCodeParam.length === 0) {
+                url.searchParams.delete('keywordCode')
+            } else {
+                url.searchParams.set('keywordCode', [newKeywordCodeParam])
+            }
+        }
+
         window.location.href = url.href
     }
 

@@ -45,3 +45,8 @@
 .filterButton.active {
     color: white !important;
 }
+
+.row .keyword-text {
+    display: flex;
+    align-items: center;
+}

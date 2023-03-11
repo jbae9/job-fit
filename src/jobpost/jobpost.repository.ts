@@ -187,6 +187,15 @@ export class JobpostRepository extends Repository<Jobpost> {
                             having += ` and stacks like '%${stacks[j]}%'`
                         }
                     }
+                } else if (othersKeys[i] === 'keywordCode') {
+                    const keywordCodes = others[othersKeys[i]].split(',')
+                    for (let j = 0; j < keywordCodes.length; j++) {
+                        if (having.length === 0) {
+                            having += `having keywordCodes like '%${keywordCodes[j]}%'`
+                        } else {
+                            having += ` and keywordCodes like '%${keywordCodes[j]}%'`
+                        }
+                    }
                 } else {
                     if (where.length === 0) {
                         where += `where ${othersKeys[i]}='${
@@ -201,8 +210,8 @@ export class JobpostRepository extends Repository<Jobpost> {
             }
         }
 
-        const query = `select j.jobpost_id, company_name, original_img_url, title, keywords, stacks, stackimgurls, likesCount, likedUsers, views, deadline_dtm, address_upper, address_lower from jobpost j 
-                        left join (select jobpost_id, j.keyword_code, group_concat(keyword) as keywords from jobpostkeyword j 
+        const query = `select j.jobpost_id, company_name, original_img_url, title, keywords, keywordCodes, stacks, stackimgurls, likesCount, likedUsers, views, deadline_dtm, address_upper, address_lower from jobpost j 
+                        left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
                         left join keyword k on j.keyword_code = k.keyword_code 
                         group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
                         left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
