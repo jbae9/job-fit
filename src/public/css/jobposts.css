@@ -33,3 +33,15 @@
     right: 0;
     padding: 0 10px;
 }
+
+.filterButton {
+    border-radius: 50px;
+    width: auto;
+    --bs-btn-active-bg: rgb(240, 115, 61, 0.9) !important;
+    --bs-btn-hover-bg: rgb(240, 115, 61, 0.9) !important;
+    --bs-btn-hover-border-color: rgb(240, 115, 61, 0.9) !important;
+}
+
+.filterButton .active {
+    color: white
+}
