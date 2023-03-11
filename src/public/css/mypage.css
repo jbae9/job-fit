@@ -32,7 +32,7 @@
 
 .mypage-category-container {
     width: 15rem;
-    border: 0.75px solid lightblue;
+    border: 0.75px solid #bfc0c0;
     border-radius: 10px;
     background-color: #ffffff;
 
@@ -41,7 +41,7 @@
 
 .mypage-category {
     padding: 1rem 0;
-    border-bottom: 0.75px solid lightblue;
+    border-bottom: 0.75px solid #bfc0c0;
 }
 
 .mypage-category:last-child {
@@ -49,9 +49,8 @@
 }
 
 .mypage-category a {
-    /* font-weight: bold; */
     font-size: 1.25rem;
-    color: gray !important;
+    color: #4f5d75 !important;
 }
 
 .mypage-content-title {
@@ -63,7 +62,7 @@
 .mypage-content-subtitle {
     font-weight: bold;
     font-size: 1.25rem;
-    color: gray;
+    color: #4f5d75;
     margin-bottom: 1rem;
 }
 
@@ -75,7 +74,7 @@
     gap: 1.5rem;
 
     padding: 2rem;
-    border: 0.75px solid lightblue;
+    border: 0.75px solid #bfc0c0;
     border-radius: 10px;
     background-color: #ffffff;
     margin-bottom: 2.5rem;
@@ -94,5 +93,77 @@
 }
 
 .mypage-content-myinfo-email {
-    color: gray;
+    color: #4f5d75;
+}
+
+.mypage-content-myaddress {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+
+    padding: 2rem;
+    border: 0.75px solid #bfc0c0;
+    border-radius: 10px;
+    background-color: #ffffff;
+    margin-bottom: 2.5rem;
+}
+
+.mypage-content-myaddress-btn {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: #1f7a8c;
+    font-weight: bold;
+    color: #ffffff !important;
+    border-radius: 5px;
+}
+
+.modal-address-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 3rem;
+}
+
+.modaal-address-title {
+    flex-basis: 3rem;
+}
+
+.modal-address-input {
+    flex-grow: 1;
+}
+
+.modal-address-search-wrap {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.modal-address-search-btn {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: #4f5d75;
+    font-weight: bold;
+    color: #ffffff !important;
+    border-radius: 5px;
+}
+
+.modal-close {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: red;
+    font-weight: bold;
+    color: #ffffff !important;
+    border-radius: 5px;
+}
+
+.address-update-btn {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: #1f7a8c;
+    font-weight: bold;
+    color: #ffffff !important;
+    border-radius: 5px;
 }
