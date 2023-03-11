@@ -1,8 +1,10 @@
 import { Controller } from '@nestjs/common'
 import {
+    Body,
     Get,
     Param,
     Post,
+    Put,
     Req,
     Res,
     UseGuards,
@@ -63,5 +65,14 @@ export class UserController {
     @Get('/myinfo/:userId')
     async getMyInfo(@Param('userId') userId: number) {
         return await this.userService.getMyInfo(userId)
+    }
+
+    @Put('/myinfo/:userId/address')
+    async updateMyAddress(
+        @Param('userId') userId: number,
+        @Body('address') address: string
+    ) {
+        console.log(address)
+        return await this.userService.updateMyAddress(userId, address)
     }
 }

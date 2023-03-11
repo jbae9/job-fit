@@ -66,6 +66,12 @@
     margin-bottom: 1rem;
 }
 
+.content-desc {
+    margin-left: 1rem;
+    font-weight: normal;
+    font-size: 1rem;
+}
+
 .mypage-content-myinfo {
     display: flex;
     flex-direction: column;
@@ -108,6 +114,13 @@
     border-radius: 10px;
     background-color: #ffffff;
     margin-bottom: 2.5rem;
+}
+
+.mypage-content-myaddress-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
 }
 
 .mypage-content-myaddress-btn {

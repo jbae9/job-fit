@@ -1,8 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common'
+import {
+    HttpException,
+    Inject,
+    Injectable,
+    InternalServerErrorException,
+} from '@nestjs/common'
 import { CACHE_MANAGER } from '@nestjs/common/cache'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Cache } from 'cache-manager'
 import { User } from 'src/entities/user.entity'
+import { getAddress } from 'src/jobpost/common/getAddress'
 import { Repository } from 'typeorm'
 import { GetUserInfoDto } from './dto/get-userInfo.dto'
 
@@ -35,5 +41,22 @@ export class UserService {
         } catch (error) {
             throw error
         }
+    }
+
+    async updateMyAddress(userId: number, address: string) {
+        const { addressUpper, addressLower, longitude, latitude } =
+            await getAddress(address, process.env.KAKAO_KEY)
+
+        const updateResult = await this.userRepository.update(
+            { userId },
+            { addressUpper, addressLower, longitude, latitude }
+        )
+
+        if (!updateResult.affected)
+            throw new InternalServerErrorException(
+                '주소 수정을 실패하였습니다.'
+            )
+
+        return { message: '주소를 수정하였습니다.' }
     }
 }

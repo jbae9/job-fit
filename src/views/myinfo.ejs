@@ -10,7 +10,10 @@
         <div id="nickname" class="mypage-content-myinfo-nickname"></div>
         <div id="email" class="mypage-content-myinfo-email"></div>
     </div>
-    <div class="mypage-content-subtitle">내 주소</div>
+    <div class="mypage-content-subtitle">
+        내 주소
+        <span class="content-desc">( 시/도, 시/군/구 까지 표시됩니다. )</span>
+    </div>
     <div class="mypage-content-myaddress">
         <div id="address-wrap" class="mypage-content-myaddress-wrap">
             <div
@@ -79,7 +82,13 @@
                 >
                     취소
                 </button>
-                <button type="button" class="address-update-btn">수정</button>
+                <button
+                    type="button"
+                    class="address-update-btn"
+                    onclick="addressUpdate()"
+                >
+                    수정
+                </button>
             </div>
         </div>
     </div>
@@ -137,4 +146,20 @@
                 },
             }).open()
         })
+
+    function addressUpdate() {
+        const address = document.getElementById('modal-address-input').value
+
+        const body = { address }
+        axios
+            .put(`/api/user/myinfo/${userId}/address`, body)
+            .then((res) => {
+                alert(res.data.message)
+                window.location.reload()
+            })
+            .catch((err) => {
+                alert(err.response.data.message)
+                window.location.reload()
+            })
+    }
 </script>
