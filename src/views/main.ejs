@@ -364,6 +364,7 @@
 
     function showCarouselJobposts(carouselId, response) {
         for (let i = 0; i < 12; i++) {
+            const jobpostId = response[i].jobpost_id
             const title = response[i].title
             const companyName = response[i].company_name
             const jobpostImgUrl = response[i].original_img_url
@@ -382,9 +383,17 @@
 
             let tempHtml = `<div class="col">
                                         <div class="card">
+                                            <%if(user) {%>
+                                            <a style="cursor:pointer" onclick="postLike(<%-(user.userId)%>, ${jobpostId})">
+                                                <span class="material-symbols-outlined likeIcon" id="${jobpostId}">
+                                                    star
+                                                </span>
+                                            </a>
+                                            <% }else { %>
                                             <span class="material-symbols-outlined likeIcon">
                                                 star
                                             </span>
+                                            <% } %>
                                             <img src="${jobpostImgUrl}"
                                                 class="card-img-top" alt="${companyName}" title="${companyName}">
                                             <div class="card-body">
@@ -433,5 +442,23 @@
             const carouselNum = Math.floor(i / 4) + 1
             $(`#${carouselId}${carouselNum}`).append(tempHtml)
         }
+    }
+    function postLike(userId, jobpostId) {
+        $.ajax({
+            type: "POST",
+            url: '/api/jobpost/like',
+            async: false,
+            data: { "userId": userId, "jobpostId": jobpostId },
+            success: function (response) {
+                if (response['message'] === 'success') {
+                    let starTag = $(`#${jobpostId}`)
+                    if (starTag.css('color') === 'rgb(255, 234, 0)') {
+                        starTag.css('color', 'rgba(69, 87, 117, 0.8)')
+                    } else {
+                        starTag.css('color', '#FFEA00')
+                    }
+                }
+            }
+        })
     }
 </script>
