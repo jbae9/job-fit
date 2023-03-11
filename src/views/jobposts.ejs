@@ -60,6 +60,7 @@
             </div>
         </div>
         <div class="col-8" id="mainContainer">
+            <div id="searchResult"></div>
             <div class="order">
                 <div class="dropdown">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
@@ -104,6 +105,11 @@
         let order = url.searchParams.get('order') || 'desc'
         let limit = url.searchParams.get('limit')
         let offset = url.searchParams.get('offset')
+        let search = url.searchParams.get('search')
+
+        if (search) {
+            $('#searchResult').html(`"${search}"의 검색 결과입니다.`)
+        }
 
         switch (sort) {
             case 'popular':

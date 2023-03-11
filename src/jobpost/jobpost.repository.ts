@@ -196,6 +196,27 @@ export class JobpostRepository extends Repository<Jobpost> {
                             having += ` and keywordCodes like '%${keywordCodes[j]}%'`
                         }
                     }
+                } else if (othersKeys[i] === 'search') {
+                    const searchWords = others[othersKeys[i]].split(' ')
+                    for (let j = 0; j < searchWords.length; j++) {
+                        if (where.length === 0) {
+                            where += `where company_name like '%${searchWords[j]}%'
+                            or title like '%${searchWords[j]}%'
+                            or keywords like '%${searchWords[j]}%'
+                            or stacks like '%${searchWords[j]}%'
+                            or address_upper like '%${searchWords[j]}%'
+                            or address_lower like '%${searchWords[j]}%'
+                            or content like '%${searchWords[j]}%'`
+                        } else {
+                            where += ` and company_name like '%${searchWords[j]}%'
+                            or title like '%${searchWords[j]}%'
+                            or keywords like '%${searchWords[j]}%'
+                            or stacks like '%${searchWords[j]}%'
+                            or address_upper like '%${searchWords[j]}%'
+                            or address_lower like '%${searchWords[j]}%'
+                            or content like '%${searchWords[j]}%'`
+                        }
+                    }
                 } else {
                     if (where.length === 0) {
                         where += `where ${othersKeys[i]}='${
