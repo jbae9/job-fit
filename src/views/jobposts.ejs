@@ -39,6 +39,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <p class="keyword-text">
+                        <span class="material-symbols-outlined">
+                            code_blocks
+                        </span>
+                        기술 스택
+                    </p>
+                </div>
+                <div id="stackList">
+
+                </div>
             </div>
         </div>
         <div class="col-8" id="mainContainer">
@@ -109,6 +120,7 @@
             url: `/api/jobpost/filter${url.search}`,
             async: false,
             success: function (response) {
+                console.log(response)
                 showJobposts(response)
             }
         })
@@ -118,7 +130,6 @@
             url: `/api/jobpost/addresses`,
             async: false,
             success: function (response) {
-                console.log(response)
                 const { addressUpper, addressLower } = response
                 for (let i = 0; i < addressUpper.length; i++) {
                     let tempHtml = `<li><a class="dropdown-item" onclick="$('#addressLowerDropDown > li').hide(); $('#addressLowerDropDown > li.${addressUpper[i].address_upper}').show()">${addressUpper[i].address_upper}</a>
@@ -145,6 +156,25 @@
             async: false,
             success: function (response) {
                 console.log(response)
+
+                let categories = []
+                let tempHtml = ``
+                for (let i = 0; i < response.length; i++) {
+                    if (!categories.includes(response[i].category)) {
+                        categories.push(response[i].category)
+                        tempHtml = `<div class="row">
+                                            <p class="keyword-text">
+                                                ${response[i].category}
+                                            </p>
+                                        </div>
+                                        <div class="row" id="${response[i].category}"></div>`
+
+                        $('#stackList').append(tempHtml)
+                    }
+
+                    tempHtml = `<button class="btn btn-outline-secondary filterButton" type="button" data-bs-toggle="button" onclick="appendStackQueryParameter($(this).hasClass('active'),'${response[i].stack}')">${response[i].stack}</button>`
+                    $(`#${response[i].category}`).append(tempHtml)
+                }
             }
         })
     })
@@ -182,27 +212,30 @@
                                                 </p>
                                                 <div class="card-text row">
                                                     <div class="col">
+                                                        <a class="card-col">
                                                         <span class="material-symbols-outlined">
                                                             work
                                                         </span>
                                                         신입
+                                                        </a>
                                                     </div>
                                                     <div class="col-8">
+                                                        <a class="card-col">
                                                         <span class="material-symbols-outlined">
                                                             location_on
                                                         </span>
                                                         ${addressUpper} ${addressLower}
+                                                        </a>
                                                     </div>
                                                     <div class="col-8">
+                                                        <a class="card-col">
                                                         <span class="material-symbols-outlined">
                                                             calendar_month
                                                         </span>
                                                         ${deadlineDtm}
+                                                        </a>
                                                     </div>
                                                 </div>
-                                                <p class="card-text">
-
-                                                </p>
                                                 <p class="card-text">
                                                     `
             if (stackImgUrlArr !== null) {
@@ -233,6 +266,37 @@
             }
         }
 
+        window.location.href = url.href
+    }
+
+    function appendStackQueryParameter(hasClassActive, stack) {
+        console.log(hasClassActive, stack)
+        let url = new URL(window.location.href)
+        let stackParam = url.searchParams.get('stack')
+
+        // hasClassActive = true => 버튼 선택
+        if (hasClassActive) {
+            // If there is no 'stack' query parameter
+            if (!stackParam) {
+                url.searchParams.append('stack', stack)
+            } else {
+                // If there is the 'stack' query parameter
+                stackParam += `,${stack}`
+                url.searchParams.set('stack', stackParam)
+            }
+        }
+
+        // hasClassActive = false => 버튼 선택 취소
+        if (!hasClassActive) {
+            const newStackParam = stackParam.split(',').filter((value, _i, _a) => { return value !== stack }).join(',')
+            if (newStackParam.length === 0) {
+                url.searchParams.delete('stack')
+            } else {
+                url.searchParams.set('stack', [newStackParam])
+            }
+        }
+
+        console.log(url)
         window.location.href = url.href
     }
 

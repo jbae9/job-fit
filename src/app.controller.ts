@@ -50,8 +50,6 @@ export class AppController {
             ? null
             : req.authResult.user
 
-        if (user) return res.redirect('/')
-
         return { components: 'jobposts', user: user }
     }
 }
