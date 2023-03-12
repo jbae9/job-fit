@@ -62,7 +62,7 @@
         <div class="col-8" id="mainContainer">
             <div id="searchResult"></div>
             <div class="order">
-                <div class="dropdown">
+                <div class="dropdown" id="orderDropdown">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false" id="currentOrder">
                     </button>
@@ -89,11 +89,16 @@
                                     </li>
                     </ul>
                 </div>
+                <div id="searchCount"></div>
             </div>
             <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow1"></div>
             <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow2"></div>
             <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow3"></div>
             <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow4"></div>
+            <nav aria-label="Page navigation">
+                <ul class="pagination" id="pagination">
+                </ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -106,6 +111,7 @@
         let limit = url.searchParams.get('limit')
         let offset = url.searchParams.get('offset')
         let search = url.searchParams.get('search')
+        let page = url.searchParams.get('page') || 1
 
         if (search) {
             $('#searchResult').html(`"${search}"의 검색 결과입니다.`)
@@ -133,8 +139,9 @@
             url: `/api/jobpost/filter${url.search}`,
             async: false,
             success: function (response) {
-                console.log(response)
-                showJobposts(response)
+                $('#searchCount').html(`${response.totalCount}개의 공고를 찾았습니다`)
+                showJobposts(response.data)
+                showPagination(response.totalCount, page)
             }
         })
 
@@ -250,6 +257,8 @@
 
     function showJobposts(response) {
         for (let i = 0; i < response.length; i++) {
+            const jobpostId = response[i].jobpost_id
+            const likedUsers = response[i].likedUsers
             const title = response[i].title
             const companyName = response[i].company_name
             const jobpostImgUrl = response[i].original_img_url
@@ -266,12 +275,23 @@
                 deadlineDtm = '상시 채용'
             }
 
+            let likedSpan = `<span class="material-symbols-outlined likeIcon" id="${jobpostId}">
+                                star
+                            </span>`
+
+            if (likedUsers) {
+                const userId = '<%- user?.userId %>'
+                if (likedUsers.split(',').includes(userId.toString())) {
+                    likedSpan = `<span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
+                                star
+                            </span>`
+                }
+            }
+
             let tempHtml = ``
             tempHtml += `<div class="col">
                                         <div class="card">
-                                            <span class="material-symbols-outlined likeIcon">
-                                                star
-                                            </span>
+                                            ${likedSpan}
                                             <img src="${jobpostImgUrl}"
                                                 class="card-img-top" alt="${companyName}" title="${companyName}">
                                             <div class="card-body">
@@ -405,5 +425,54 @@
         }
 
         window.location.href = url.href
+    }
+
+    function showPagination(totalCount, currentPage) {
+        const lastPage = Math.ceil(totalCount / 16)
+        const pagesInPageGroup = 5
+
+        // 1~2페이지는 그룹1, 3~4페이지는 그룹2
+        const pageGroup = Math.ceil(currentPage / pagesInPageGroup)
+
+        // 페이지 그룹1의 마지막 페이지는 2
+        const pageGroupLast = pageGroup * pagesInPageGroup > lastPage ? lastPage : pageGroup * pagesInPageGroup
+
+        // 페이지 그룹1의 첫번째 페이지는 1
+        // => 마지막 페이지 숫자(2) - 한 페이지 그룹에 들어가는 페이지 수(2) - 1
+        // const pageGroupFirst = pageGroupLast - (pagesInPageGroup - 1) < 1 ? 1 : pageGroupLast - (pagesInPageGroup -1)
+        const pageGroupFirst = pageGroup === 1 ? 1 : (pageGroup - 1) * pagesInPageGroup + 1
+
+        const pages = [];
+
+        // 전 페이지 그룹으로 가기
+        if (pageGroup > 1) {
+            // 이전 페이지 그룹 - 1 => 이전 페이지 그룹의 마지막 페이지는 (pageGroup-1)*2
+            pages.push(`<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${(pageGroup - 1) * pagesInPageGroup}})"><<</a></li>`)
+        }
+
+        // 페이지 그룹의 첫번 째 페이지가 1보다 크면 이전 화살 만들기
+        if (currentPage > 1) {
+            pages.push(`<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${currentPage - 1}})"><</a></li>`)
+        }
+
+        // 페이지 그룹의 마지막 페이지까지 페이지 숫자 렌더링 하기
+        for (i = pageGroupFirst; i <= pageGroupLast; i++) {
+            pages.push(`<li class="page-item" id="page${i}"><a class="page-link" onclick="appendQueryParameter({page:${i}})">${i}</a></li>`);
+        }
+
+        // 페이지 그룹의 마지막 페이지가 총 마지막 페이지보다 작을 때 다음 화살 만들기
+        if (currentPage < lastPage) {
+            pages.push(`<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${currentPage + 1}})">></a></li>`);
+        }
+
+        // 다음 페이지 그룹으로 가기
+        if (pageGroupLast < lastPage) {
+            // 다음 페이지 그룹 + 2 => 다음 페이지 그룹의 첫 페이지는 pageGroup * pagesInPageGroup + 1
+            pages.push(`<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${pageGroup * pagesInPageGroup + 1}})">>></a></li>`)
+        }
+
+        document.getElementById("pagination").innerHTML = pages.join("")
+
+        $(`#page${currentPage}`).addClass('active')
     }
 </script>

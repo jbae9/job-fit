@@ -336,7 +336,7 @@
             async: false,
             success: function (response) {
                 console.log(response)
-                showCarouselJobposts('carouselRecent', response)
+                showCarouselJobposts('carouselRecent', response.data)
             }
         })
 
@@ -345,7 +345,7 @@
             url: '/api/jobpost/filter?sort=popular&order=desc&limit=12',
             async: false,
             success: function (response) {
-                showCarouselJobposts('carouselPopular', response)
+                showCarouselJobposts('carouselPopular', response.data)
             }
         })
 
@@ -355,7 +355,7 @@
             async: false,
             success: function (response) {
                 console.log(response)
-                showCarouselJobposts('carouselEnding', response)
+                showCarouselJobposts('carouselEnding', response.data)
             }
         })
     })
@@ -378,7 +378,7 @@
             if (likedUsers) {
                 const userId = '<%- user?.userId %>'
                 if (likedUsers.split(',').includes(userId.toString())) {
-                    likedSpan = `<span class="material-symbols-outlined likeIcon" style="color:#FFEA00" id="${jobpostId}">
+                    likedSpan = `<span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
                                 star
                             </span>`
                 }
