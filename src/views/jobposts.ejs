@@ -23,7 +23,7 @@
                     <div class="col">
                         <div class="dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                                data-bs-toggle="dropdown" aria-expanded="false" id="currentAddressUpper">
                             </button>
                             <ul class="dropdown-menu" id="addressUpperDropdown">
                             </ul>
@@ -32,7 +32,7 @@
                     <div class=" col">
                         <div class="dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                                data-bs-toggle="dropdown" aria-expanded="false" id="currentAddressLower">
                             </button>
                             <ul class="dropdown-menu" id="addressLowerDropdown">
                             </ul>
@@ -144,24 +144,53 @@
             async: false,
             success: function (response) {
                 const { addressUpper, addressLower } = response
+
+                let tempHtml = `<li><a class="dropdown-item" id="addressUpper전체" onclick="appendQueryParameter({address_upper: null, address_lower: null})">전체</a>
+                                </li>`
+                $('#addressUpperDropdown').append(tempHtml)
+
                 for (let i = 0; i < addressUpper.length; i++) {
-                    let tempHtml = `<li><a class="dropdown-item" onclick="$('#addressLowerDropDown > li').hide(); $('#addressLowerDropDown > li.${addressUpper[i].address_upper}').show()">${addressUpper[i].address_upper}</a>
+                    tempHtml = `<li><a class="dropdown-item" id="addressUpper${addressUpper[i].address_upper}" onclick="$('#addressLowerDropDown > li').hide(); $('#addressLowerDropDown > li.${addressUpper[i].address_upper}').show()">${addressUpper[i].address_upper}</a>
                                 </li>`
                     $('#addressUpperDropdown').append(tempHtml)
 
-                    tempHtml = `<li class="${addressUpper[i].address_upper}"><a class="dropdown-item" onclick="appendQueryParameter({address_upper: '${addressUpper[i].address_upper}', address_lower: null})">전체</a>
+                    tempHtml = `<li class="${addressUpper[i].address_upper}"><a class="dropdown-item" id="addressUpper${addressUpper[i].address_upper}addressLower전체" onclick="appendQueryParameter({address_upper: '${addressUpper[i].address_upper}', address_lower: null})">전체</a>
                                 </li>`
                     $('#addressLowerDropdown').append(tempHtml)
                 }
 
                 for (let i = 0; i < addressLower.length; i++) {
                     if (addressLower[i].address_lower === '전체') continue
-                    const tempHtml = `<li class="${addressLower[i].address_upper}"><a class="dropdown-item" onclick="appendQueryParameter({address_upper: '${addressLower[i].address_upper}', address_lower: '${addressLower[i].address_lower}'})">${addressLower[i].address_lower}</a>
+                    tempHtml = `<li class="${addressLower[i].address_upper}"><a class="dropdown-item" id="addressUpper${addressLower[i].address_upper}addressLower${addressLower[i].address_lower}" onclick="appendQueryParameter({address_upper: '${addressLower[i].address_upper}', address_lower: '${addressLower[i].address_lower}'})">${addressLower[i].address_lower}</a>
                                 </li>`
                     $('#addressLowerDropdown').append(tempHtml)
                 }
             }
         })
+
+        let addressUpper = url.searchParams.get('address_upper')
+        let addressLower = url.searchParams.get('address_lower')
+
+        if (addressUpper) {
+            $('#currentAddressUpper').html(addressUpper)
+            $(`#addressUpper${addressUpper}`).addClass('active')
+            if (addressLower) {
+                $('#currentAddressLower').html(addressLower)
+                $(`#addressUpper${addressUpper}addressLower${addressLower}`).addClass('active')
+                $('#addressLowerDropDown > li').hide()
+                $(`#addressLowerDropDown > li.${addressUpper}`).show()
+            } else {
+                $('#currentAddressLower').html('전체')
+                $(`#addressUpper${addressUpper}addressLower전체`).addClass('active')
+                $('#addressLowerDropDown > li').hide()
+                $(`#addressLowerDropDown > li.${addressUpper}`).show()
+            }
+        } else {
+            $('#currentAddressUpper').html('전체')
+            $(`#addressUpper전체`).addClass('active')
+            $('#addressLowerDropDown > li').hide()
+            $('#currentAddressLower').html('전체')
+        }
 
         $.ajax({
             type: "GET",
