@@ -50,3 +50,12 @@
     display: flex;
     align-items: center;
 }
+
+#searchResult {
+    font-size: 25px;
+    padding: 10px 0;
+}
+
+.order {
+    padding: 10px 0;
+}

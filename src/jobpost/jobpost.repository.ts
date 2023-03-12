@@ -157,22 +157,22 @@ export class JobpostRepository extends Repository<Jobpost> {
         let having = ''
         switch (sort) {
             case 'recent':
-                sort = 'j.updated_dtm'
+                sort = `j.updated_dtm ${order}`
                 break
             case 'popular':
-                sort = 'likesCount, views'
+                sort = `likesCount ${order}, views ${order}`
                 break
             case 'ending':
                 if (order === 'asc') {
-                    sort = 'deadline_dtm'
+                    sort = `deadline_dtm ${order}`
                     where = 'where deadline_dtm is not null'
                     break
                 } else {
-                    sort = 'deadline_dtm'
+                    sort = `deadline_dtm ${order}`
                     break
                 }
             default:
-                sort = 'j.updated_dtm'
+                sort = `j.updated_dtm ${order}`
         }
 
         if (others) {
@@ -243,62 +243,10 @@ export class JobpostRepository extends Repository<Jobpost> {
                         left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
                         group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
                         ${having}
-                        order by ${sort} ${order}
+                        order by ${sort}
                         limit ? offset ?`
 
         const values = [limit, offset]
-
-        // const test = await this.createQueryBuilder('jobpost')
-        //     .leftJoin('jobpost.keywords', 'keyword')
-        //     .leftJoin('jobpost.company', 'company')
-        //     .leftJoin('jobpost.stacks', 'stack')
-        //     // .addSelect(['stack.stack', 'stack.stackImgUrl'])
-        //     .leftJoin('jobpost.users', 'likedjobpost')
-        //     // .addSelect('COUNT(likedjobpost.userId) AS likes')
-        //     .addGroupBy('jobpost.jobpostId')
-        //     .orderBy('jobpost.deadlineDtm', 'ASC')
-        //     .select([
-        //         'jobpost.jobpostId',
-        //         'company.companyName',
-        //         'jobpost.originalImgUrl',
-        //         'jobpost.title',
-        //         'keyword',
-        //         'stack',
-        //         // 'keyword.keyword',
-        //         // 'stack.stack',
-        //         // 'stack.stackImgUrl',
-        //         'COUNT(likedjobpost.userId) AS likes',
-        //         'jobpost.views',
-        //         'jobpost.deadlineDtm',
-        //     ])
-        //     .where('jobpost.deadlineDtm IS NOT NULL')
-        //     .skip(offset)
-        //     .take(limit)
-        //     .getMany()
-
-        // const test = await this.createQueryBuilder('jobpost')
-        //     .select([
-        //         'jobpost.jobpostId',
-        //         'jobpost.originalImgUrl',
-        //         'jobpost.title',
-        //         'jobpost.views',
-        //         'jobpost.deadlineDtm',
-        //     ])
-        //     .loadRelationCountAndMap('jobpost.likes', 'jobpost.users')
-        //     .leftJoin('jobpost.company', 'company')
-        //     .leftJoinAndMapMany('jobpost.stacks', Stack, 'stacks')
-        //     .leftJoin('jobpost.users', 'likedjobpost')
-        //     .leftJoin('jobpost.keywords', 'keyword')
-        //     .addSelect(['company.companyName', 'keyword', 'stacks'])
-        //     // .groupBy('jobpost.jobpostId')
-        //     .orderBy('jobpost.updatedDtm', 'ASC')
-        //     .take(10)
-        //     .getMany()
-
-        // if (order.includes('ending')) {
-        //     return test
-        // }
-        // console.log(test)
 
         return await this.query(query, values)
     }

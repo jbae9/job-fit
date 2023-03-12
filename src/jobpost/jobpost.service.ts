@@ -57,44 +57,6 @@ export class JobpostService {
         const limitNum = parseInt(limit) || 16
         const offsetNum = parseInt(offset) || 0
 
-        // this.logger.log(sort, order, limitNum, offsetNum, others)
-
-        let orderObj: { [keys: string]: string }
-        if (sort === 'recent') {
-            orderObj = { updatedDtm: order.toUpperCase() }
-        } else if (sort === 'popular') {
-            orderObj = {}
-        } else {
-            orderObj = { updatedDtm: order.toUpperCase() }
-        }
-
-        // const test = await this.jobpostRepository.find({
-        //     relations: {
-        //         company: true,
-        //         keywords: true,
-        //         stacks: true,
-        //         users: true,
-        //     },
-        //     select: {
-        //         jobpostId: true,
-        //         company: { companyName: true },
-        //         originalImgUrl: true,
-        //         title: true,
-        //         // keywords: { keyword: true },
-        //         // stacks: { stack: true, stackImgUrl: true },
-        //         users: true,
-        //         views: true,
-        //         deadlineDtm: true,
-        //         addressUpper: true,
-        //         addressLower: true,
-        //     },
-        //     order: orderObj,
-        //     take: limitNum,
-        //     skip: offsetNum,
-        // })
-
-        // this.logger.log(test)
-
         return await this.jobpostRepository.getFilteredJobposts(
             sort,
             order,
