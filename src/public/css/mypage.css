@@ -180,3 +180,135 @@
     color: #ffffff !important;
     border-radius: 5px;
 }
+
+.mypage-content-mystack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    padding: 2rem;
+    border: 0.75px solid #bfc0c0;
+    border-radius: 10px;
+    background-color: #ffffff;
+    margin-bottom: 2.5rem;
+}
+
+.mypage-content-mystack-input-wrap {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+}
+
+.mypage-content-mystack-name-input {
+    padding: 0.5rem 1rem;
+    border: 0.75px solid #bfc0c0;
+    border-radius: 10px;
+}
+
+.mypage-content-mystack-name-input::placeholder {
+    color: #bfc0c0;
+}
+
+.mypage-content-mystack-name-input:focus {
+    outline: none;
+}
+
+.mypage-content-mystack-btn {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: #1f7a8c;
+    font-weight: bold;
+    color: #ffffff !important;
+    border-radius: 5px;
+}
+
+.stack-search-box {
+    position: relative;
+}
+
+.stack-list-box {
+    position: absolute;
+    width: 100%;
+    height: 10rem;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    display: none;
+}
+
+.stack-list-box::-webkit-scrollbar {
+    width: 1rem;
+    border-radius: 10px;
+}
+
+.stack-list-box::-webkit-scrollbar-thumb {
+    background-color: #1f7a8c;
+    border-radius: 10px;
+}
+
+.stack-list-box::-webkit-scrollbar-track {
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.stack-list {
+    width: 100%;
+    height: 3rem;
+    padding: 0 1rem;
+    font-size: 0.75rem;
+    color: gray;
+
+    display: flex;
+    align-items: center;
+}
+
+.stack-list:hover {
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.stack-list img {
+    height: 100%;
+}
+
+.mypage-content-mystack-list-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mypage-content-mystack-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+
+    padding: 0.5rem 1rem;
+    border: 0.75px solid lightgray;
+    border-radius: 10px;
+}
+
+.mypage-content-mystack-list-stack-info-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.mypage-content-mystack-list-stack-info-wrap img {
+    width: 8rem;
+}
+
+.mypage-content-mystack-list button {
+    border: 0.75px solid lightgray;
+    padding: 0.5rem;
+    background: none;
+    border-radius: 5px;
+}

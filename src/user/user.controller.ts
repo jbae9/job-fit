@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common'
 import {
     Body,
+    Delete,
     Get,
     Param,
     Post,
@@ -12,6 +13,7 @@ import {
 import { HttpException, UnauthorizedException } from '@nestjs/common/exceptions'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { KakaoAuthGuard } from 'src/auth/guards/kakao-auth.guard'
+import { userStackDto } from 'src/stack/dto/create-userstack.dto'
 import { UserService } from './user.service'
 
 @Controller('api/user')
@@ -68,11 +70,26 @@ export class UserController {
     }
 
     @Put('/myinfo/:userId/address')
-    async updateMyAddress(
+    async updateUserAddress(
         @Param('userId') userId: number,
         @Body('address') address: string
     ) {
-        console.log(address)
-        return await this.userService.updateMyAddress(userId, address)
+        return await this.userService.updateUserAddress(userId, address)
+    }
+
+    @Post('/myinfo/:userId/stack')
+    async createUserStack(
+        @Param('userId') userId: number,
+        @Body('stackId') stackId: number
+    ) {
+        return await this.userService.createUserStack(userId, stackId)
+    }
+
+    @Delete('/myinfo/:userId/stack/:stackId')
+    async deleteUserStack(
+        @Param('userId') userId: number,
+        @Param('stackId') stackId: number
+    ) {
+        return await this.userService.deleteUserStack(userId, stackId)
     }
 }

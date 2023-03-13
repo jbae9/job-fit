@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module'
 import { KeywordModule } from './keyword/keyword.module'
 import redisStore from 'cache-manager-redis-store'
 import { ScheduleModule } from '@nestjs/schedule'
+import { StackModule } from './stack/stack.module';
 
 @Module({
     imports: [
@@ -49,6 +50,7 @@ import { ScheduleModule } from '@nestjs/schedule'
         AuthModule,
         KeywordModule,
         ScheduleModule.forRoot(),
+        StackModule,
     ],
     controllers: [AppController],
     providers: [AppService],
