@@ -2,7 +2,6 @@ import { DataSource, Repository } from 'typeorm'
 import { Jobpost } from 'src/entities/jobpost.entity'
 import { Injectable } from '@nestjs/common'
 import { CompanyRepository } from 'src/company/company.repository'
-import { off } from 'process'
 import { default as keywords } from '../resources/data/parsing/keywordsForParsing.json'
 import { default as stacks } from '../resources/data/parsing/stacksForParsing.json'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -155,107 +154,122 @@ export class JobpostRepository extends Repository<Jobpost> {
         others: object
     ) {
         let where = ''
-
+        let having = ''
         switch (sort) {
             case 'recent':
-                sort = 'j.updated_dtm'
+                sort = `j.updated_dtm ${order}`
                 break
             case 'popular':
-                sort = 'likes, views'
+                sort = `likesCount ${order}, views ${order}`
                 break
             case 'ending':
                 if (order === 'asc') {
-                    sort = 'deadline_dtm'
-                    // where = 'where deadline_dtm is not null'
+                    sort = `deadline_dtm ${order}`
+                    where = 'where deadline_dtm is not null'
                     break
                 } else {
-                    sort = 'deadline_dtm'
+                    sort = `deadline_dtm ${order}`
                     break
                 }
             default:
-                sort = 'j.updated_dtm'
+                sort = `j.updated_dtm ${order}`
         }
 
         if (others) {
             const othersKeys = Object.keys(others)
             for (let i = 0; i < othersKeys.length; i++) {
-                if (where.length === 0) {
-                    where += `where ${othersKeys[i]}='${others[othersKeys[i]]}'`
+                if (othersKeys[i] === 'stack') {
+                    const stacks = others[othersKeys[i]].split(',')
+                    for (let j = 0; j < stacks.length; j++) {
+                        if (having.length === 0) {
+                            having += `having stacks like '%${stacks[j]}%'`
+                        } else {
+                            having += ` and stacks like '%${stacks[j]}%'`
+                        }
+                    }
+                } else if (othersKeys[i] === 'keywordCode') {
+                    const keywordCodes = others[othersKeys[i]].split(',')
+                    for (let j = 0; j < keywordCodes.length; j++) {
+                        if (having.length === 0) {
+                            having += `having keywordCodes like '%${keywordCodes[j]}%'`
+                        } else {
+                            having += ` and keywordCodes like '%${keywordCodes[j]}%'`
+                        }
+                    }
+                } else if (othersKeys[i] === 'search') {
+                    const searchWords = others[othersKeys[i]].split(' ')
+                    for (let j = 0; j < searchWords.length; j++) {
+                        if (where.length === 0) {
+                            where += `where company_name like '%${searchWords[j]}%'
+                            or title like '%${searchWords[j]}%'
+                            or keywords like '%${searchWords[j]}%'
+                            or stacks like '%${searchWords[j]}%'
+                            or address_upper like '%${searchWords[j]}%'
+                            or address_lower like '%${searchWords[j]}%'
+                            or content like '%${searchWords[j]}%'`
+                        } else {
+                            where += ` and company_name like '%${searchWords[j]}%'
+                            or title like '%${searchWords[j]}%'
+                            or keywords like '%${searchWords[j]}%'
+                            or stacks like '%${searchWords[j]}%'
+                            or address_upper like '%${searchWords[j]}%'
+                            or address_lower like '%${searchWords[j]}%'
+                            or content like '%${searchWords[j]}%'`
+                        }
+                    }
+                } else if (othersKeys[i] === 'page') {
+                    offset = (Number(others['page']) - 1) * limit
                 } else {
-                    where += ` and ${othersKeys[i]}='${others[othersKeys[i]]}'`
+                    if (where.length === 0) {
+                        where += `where ${othersKeys[i]}='${
+                            others[othersKeys[i]]
+                        }'`
+                    } else {
+                        where += ` and ${othersKeys[i]}='${
+                            others[othersKeys[i]]
+                        }'`
+                    }
                 }
             }
         }
 
-        const query = `select j.jobpost_id, company_name, original_img_url, title, keywords, stacks, stackimgurls, likes, views, deadline_dtm, address_upper, address_lower from jobpost j 
-                        left join (select jobpost_id, j.keyword_code, group_concat(keyword) as keywords from jobpostkeyword j 
+        let query = `select j.jobpost_id, company_name, original_img_url, title, keywords, keywordCodes, stacks, stackimgurls, likesCount, likedUsers, views, deadline_dtm, address_upper, address_lower from jobpost j 
+                        left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
                         left join keyword k on j.keyword_code = k.keyword_code 
-                        group by j.jobpost_id ) j2 on j.jobpost_id = j2.jobpost_id
+                        group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
                         left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
-                        left join stack s  on j.stack_id = s.stack_id  
+                        left join stack s on j.stack_id = s.stack_id  
                         group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
                         left join company c on j.company_id = c.company_id 
-                        left join (select j.jobpost_id, count(user_id) as likes from jobfit.jobpost j 
+                        left join (select j.jobpost_id, count(user_id) as likesCount, group_concat(user_id) as likedUsers from jobfit.jobpost j 
                         left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
                         group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
-                        order by ${sort} ${order}
+                        ${having}
+                        order by ${sort}
                         limit ? offset ?`
 
         const values = [limit, offset]
 
-        // const test = await this.createQueryBuilder('jobpost')
-        //     .leftJoin('jobpost.keywords', 'keyword')
-        //     .leftJoin('jobpost.company', 'company')
-        //     .leftJoin('jobpost.stacks', 'stack')
-        //     // .addSelect(['stack.stack', 'stack.stackImgUrl'])
-        //     .leftJoin('jobpost.users', 'likedjobpost')
-        //     // .addSelect('COUNT(likedjobpost.userId) AS likes')
-        //     .addGroupBy('jobpost.jobpostId')
-        //     .orderBy('jobpost.deadlineDtm', 'ASC')
-        //     .select([
-        //         'jobpost.jobpostId',
-        //         'company.companyName',
-        //         'jobpost.originalImgUrl',
-        //         'jobpost.title',
-        //         'keyword',
-        //         'stack',
-        //         // 'keyword.keyword',
-        //         // 'stack.stack',
-        //         // 'stack.stackImgUrl',
-        //         'COUNT(likedjobpost.userId) AS likes',
-        //         'jobpost.views',
-        //         'jobpost.deadlineDtm',
-        //     ])
-        //     .where('jobpost.deadlineDtm IS NOT NULL')
-        //     .skip(offset)
-        //     .take(limit)
-        //     .getMany()
+        const data = await this.query(query, values)
 
-        // const test = await this.createQueryBuilder('jobpost')
-        //     .select([
-        //         'jobpost.jobpostId',
-        //         'jobpost.originalImgUrl',
-        //         'jobpost.title',
-        //         'jobpost.views',
-        //         'jobpost.deadlineDtm',
-        //     ])
-        //     .loadRelationCountAndMap('jobpost.likes', 'jobpost.users')
-        //     .leftJoin('jobpost.company', 'company')
-        //     .leftJoinAndMapMany('jobpost.stacks', Stack, 'stacks')
-        //     .leftJoin('jobpost.users', 'likedjobpost')
-        //     .leftJoin('jobpost.keywords', 'keyword')
-        //     .addSelect(['company.companyName', 'keyword', 'stacks'])
-        //     // .groupBy('jobpost.jobpostId')
-        //     .orderBy('jobpost.updatedDtm', 'ASC')
-        //     .take(10)
-        //     .getMany()
+        query = `select count(*) as totalCount
+        from (select keywordCodes, stacks from jobpost j 
+            left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
+            left join keyword k on j.keyword_code = k.keyword_code 
+            group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
+            left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
+            left join stack s on j.stack_id = s.stack_id  
+            group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
+            left join company c on j.company_id = c.company_id 
+            left join (select j.jobpost_id, count(user_id) as likesCount, group_concat(user_id) as likedUsers from jobfit.jobpost j 
+            left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
+            group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
+            ${having}
+            order by ${sort}) as results`
 
-        // if (order.includes('ending')) {
-        //     return test
-        // }
-        // console.log(test)
+        const totalCount = await this.query(query, values)
 
-        return await this.query(query, values)
+        return { data, totalCount: Number(totalCount[0].totalCount) }
     }
 
     async getAddresses() {
@@ -284,5 +298,41 @@ export class JobpostRepository extends Repository<Jobpost> {
                                 where j2.stack is not null
                                 group by j2.stack
                                 order by j2.category asc, j2.stack asc`)
+    }
+
+    async getKeywords() {
+        return await this
+            .query(`select jobpost_id, j.keyword_code, keyword from jobpostkeyword j 
+                    left join keyword k on j.keyword_code = k.keyword_code 
+                    group by keyword_code
+                    order by keyword asc`)
+    }
+
+    async postLike(userId: number, jobpostId: number) {
+        const like = await this.find({
+            relations: ['users'],
+            where: {
+                jobpostId: jobpostId,
+            },
+        })
+        let query = 'insert'
+        like[0]?.users.forEach((user) => {
+            if (user.userId == userId) {
+                query = 'delete'
+            }
+        })
+        if (query === 'insert') {
+            query += ` into likedjobpost values (?, ?)`
+        } else {
+            query += ` from likedjobpost where jobpost_id = ? and user_id=  ?`
+        }
+        const values = [jobpostId, userId]
+        try {
+            await this.query(query, values)
+            return 'success'
+        } catch (err) {
+            console.log(err)
+            return 'fail'
+        }
     }
 }

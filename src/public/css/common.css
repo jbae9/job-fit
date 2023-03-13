@@ -46,23 +46,32 @@ button .muted {
 }
 
 .card-title {
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 600;
 }
 
 .card-text {
     color: rgb(69, 87, 117, 0.8);
     padding: 5px 0;
+    font-size: 15px;
 }
 
 .card-text img {
-    height: 35px;
+    height: 30px;
     padding-right: 3px;
 }
 
-.card-text.row {
+.card-text .row {
     display: flex;
     align-items: center;
+}
+
+.card-col {
+    display: flex;
+    align-items: center;
+    color: rgb(69, 87, 117, 0.8) !important;
+    padding: 5px 0;
+    font-size: 15px;
 }
 
 .card-text.companyName {
@@ -73,7 +82,7 @@ button .muted {
     max-height: 150px;
     max-width: fit-content;
     margin: auto;
-    padding: 10px 0;
+    padding: 10px;
     position: relative;
 }
 
@@ -99,4 +108,13 @@ button .muted {
     padding: 10px;
     right: 0;
     z-index: 2;
+}
+
+.material-symbols-outlined.liked {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48;
+    color: #FFEA00;
 }

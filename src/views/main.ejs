@@ -1,6 +1,4 @@
 <div class="container-md" id="mainContainer">
-    메인
-
     <% if (user) { %>
         <div>
             <div class="mainHeader">
@@ -338,7 +336,7 @@
             async: false,
             success: function (response) {
                 console.log(response)
-                showCarouselJobposts('carouselRecent', response)
+                showCarouselJobposts('carouselRecent', response.data)
             }
         })
 
@@ -347,7 +345,7 @@
             url: '/api/jobpost/filter?sort=popular&order=desc&limit=12',
             async: false,
             success: function (response) {
-                showCarouselJobposts('carouselPopular', response)
+                showCarouselJobposts('carouselPopular', response.data)
             }
         })
 
@@ -357,13 +355,14 @@
             async: false,
             success: function (response) {
                 console.log(response)
-                showCarouselJobposts('carouselEnding', response)
+                showCarouselJobposts('carouselEnding', response.data)
             }
         })
     })
 
     function showCarouselJobposts(carouselId, response) {
         for (let i = 0; i < 12; i++) {
+            const jobpostId = response[i].jobpost_id
             const title = response[i].title
             const companyName = response[i].company_name
             const jobpostImgUrl = response[i].original_img_url
@@ -371,7 +370,19 @@
             const addressLower = response[i].address_lower
             const stackImgUrlArr = response[i].stackimgurls === null ? null : response[i].stackimgurls.split(',')
             const stackArr = response[i].stacks === null ? null : response[i].stacks.split(',')
+            const likedUsers = response[i].likedUsers
+            let likedSpan = `<span class="material-symbols-outlined likeIcon" id="${jobpostId}">
+                                star
+                            </span>`
 
+            if (likedUsers) {
+                const userId = '<%- user?.userId %>'
+                if (likedUsers.split(',').includes(userId.toString())) {
+                    likedSpan = `<span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
+                                star
+                            </span>`
+                }
+            }
             let deadlineDtm
             if (response[i].deadline_dtm) {
                 const date = new Date(response[i].deadline_dtm)
@@ -382,9 +393,15 @@
 
             let tempHtml = `<div class="col">
                                         <div class="card">
+                                            <%if(user) {%>
+                                            <a style="cursor:pointer" onclick="postLike(<%-(user.userId)%>, ${jobpostId})">
+                                                ${likedSpan}
+                                            </a>
+                                            <% }else { %>
                                             <span class="material-symbols-outlined likeIcon">
                                                 star
                                             </span>
+                                            <% } %>
                                             <img src="${jobpostImgUrl}"
                                                 class="card-img-top" alt="${companyName}" title="${companyName}">
                                             <div class="card-body">
@@ -394,22 +411,28 @@
                                                 </p>
                                                 <div class="card-text row">
                                                     <div class="col">
+                                                        <a class="card-col">
                                                         <span class="material-symbols-outlined">
                                                             work
                                                         </span>
                                                         신입
+                                                        </a>
                                                     </div>
                                                     <div class="col-8">
+                                                        <a class="card-col">
                                                         <span class="material-symbols-outlined">
                                                             location_on
                                                         </span>
                                                         ${addressUpper} ${addressLower}
+                                                        </a>
                                                     </div>
                                                     <div class="col-8">
+                                                        <a class="card-col">
                                                         <span class="material-symbols-outlined">
                                                             calendar_month
                                                         </span>
                                                         ${deadlineDtm}
+                                                        </a>
                                                     </div>
                                                 </div>
                                                 <p class="card-text">
@@ -433,5 +456,23 @@
             const carouselNum = Math.floor(i / 4) + 1
             $(`#${carouselId}${carouselNum}`).append(tempHtml)
         }
+    }
+    function postLike(userId, jobpostId) {
+        $.ajax({
+            type: "POST",
+            url: '/api/jobpost/like',
+            async: false,
+            data: { "userId": userId, "jobpostId": jobpostId },
+            success: function (response) {
+                if (response['message'] === 'success') {
+                    let starTag = $(`#${jobpostId}`)
+                    if (starTag.css('color') === 'rgb(255, 234, 0)') {
+                        starTag.css('color', 'rgba(69, 87, 117, 0.8)')
+                    } else {
+                        starTag.css('color', '#FFEA00')
+                    }
+                }
+            }
+        })
     }
 </script>

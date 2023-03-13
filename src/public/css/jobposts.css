@@ -33,3 +33,52 @@
     right: 0;
     padding: 0 10px;
 }
+
+.filterButton {
+    border-radius: 50px;
+    width: auto;
+    --bs-btn-active-bg: rgb(240, 115, 61, 0.9) !important;
+    --bs-btn-hover-bg: rgb(240, 115, 61, 0.9) !important;
+    --bs-btn-hover-border-color: rgb(240, 115, 61, 0.9) !important;
+}
+
+.filterButton.active {
+    color: white !important;
+}
+
+.row .keyword-text {
+    display: flex;
+    align-items: center;
+}
+
+#searchResult {
+    font-size: 25px;
+    padding: 10px 0;
+}
+
+.order {
+    padding: 10px 0;
+    margin: 20px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.page-item {
+    --bs-pagination-active-bg: rgb(240, 115, 61, 0.9) !important;
+    --bs-pagination-active-border-color: rgb(240, 115, 61, 0.9) !important;
+    --bs-pagination-active-color: white;
+}
+
+#searchCount {
+    position: absolute;
+    right: 0;
+}
+
+#orderDropdown {
+    position: absolute;
+}
+
+#pagination a {
+    cursor: pointer;
+}
