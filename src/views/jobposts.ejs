@@ -44,10 +44,17 @@
                         <span class="material-symbols-outlined">
                             format_list_bulleted
                         </span>
-                        키워드
+                        직업 분류
                     </p>
                 </div>
-                <div id="keywordList"></div>
+                <details id="keywordDetail">
+                    <summary>키워드
+                        <input type="text" class="form-control" id="keywordsInput" oninput="keywordInput('keyword', '')"
+                            aria-label="검색" aria-describedby="button-addon2">
+                    </summary>
+                    <div id="keywordList">
+                    </div>
+                </details>
                 <div class="row">
                     <p class="keyword-text">
                         <span class="material-symbols-outlined">
@@ -104,6 +111,18 @@
 </div>
 
 <script>
+    let keywordsList = []
+    let stacksList = {
+        '데브옵스': [],
+        '데이터': [],
+        '데이터베이스': [],
+        '모바일': [],
+        '백엔드': [],
+        '언어': [],
+        '테스팅툴': [],
+        '프론트엔드': [],
+        '협업툴': []
+    }
     $(document).ready(function () {
         let url = new URL(window.location.href)
         let sort = url.searchParams.get('sort') || 'recent'
@@ -209,18 +228,21 @@
                 for (let i = 0; i < response.length; i++) {
                     if (!categories.includes(response[i].category)) {
                         categories.push(response[i].category)
-                        tempHtml = `<div class="row">
-                                            <p class="keyword-text">
-                                                ${response[i].category}
-                                            </p>
+                        tempHtml = `<details id="stackDetail${response[i].category}">
+                                        <summary>${response[i].category}
+                                            <input type="text" class="form-control" id="stacksInput${response[i].category}" oninput="keywordInput('stack', '${response[i].category}')"
+                                                aria-label="검색" aria-describedby="button-addon2">
+                                        </summary>
+                                        <div id="stacksList${response[i].category}">
                                         </div>
-                                        <div class="row" id="${response[i].category}"></div>`
+                                    </details>`
 
                         $('#stackList').append(tempHtml)
                     }
 
                     tempHtml = `<button class="btn btn-outline-secondary filterButton" id="${response[i].stack.replaceAll(/\s/g, '')}" type="button" data-bs-toggle="button" onclick="appendStackQueryParameter($(this).hasClass('active'),'${response[i].stack}')">${response[i].stack}</button>`
-                    $(`#${response[i].category}`).append(tempHtml)
+                    stacksList[`${response[i].category}`].push(tempHtml)
+                    $(`#stacksList${response[i].category}`).append(tempHtml)
                 }
             }
         })
@@ -232,6 +254,7 @@
             success: function (response) {
                 for (let i = 0; i < response.length; i++) {
                     const tempHtml = `<button class="btn btn-outline-secondary filterButton" id="keywordCode${response[i].keyword_code}" type="button" data-bs-toggle="button" onclick="appendKeywordQueryParameter($(this).hasClass('active'),'${response[i].keyword_code}')">${response[i].keyword}</button>`
+                    keywordsList.push(tempHtml)
                     $('#keywordList').append(tempHtml)
                 }
             }
@@ -243,6 +266,8 @@
             for (let i = 0; i < stacks.length; i++) {
                 const stack = stacks[i].replaceAll(/\s/g, '')
                 $(`#${stack}`).addClass('active')
+                let categoty = $(`#${stack}`).parent().attr('id').split('List')[1]
+                changeActiveButton(stacksList, stacks[i], 'Stack', $(`#${stack}`).text(), categoty)
             }
         }
 
@@ -251,6 +276,7 @@
             keywordCode = keywordCode.split(',')
             for (let i = 0; i < keywordCode.length; i++) {
                 $(`#keywordCode${keywordCode[i]}`).addClass('active')
+                changeActiveButton(keywordsList, `keywordCode${keywordCode[i]}`, 'Keyword', $(`#keywordCode${keywordCode[i]}`).text(), '')
             }
         }
     })
@@ -474,5 +500,72 @@
         document.getElementById("pagination").innerHTML = pages.join("")
 
         $(`#page${currentPage}`).addClass('active')
+    }
+    async function keywordInput(key, stackCategory) {
+        if (key == 'keyword') {
+            keywordSearch(`keywordList${stackCategory}`, `keywordsInput${stackCategory}`, `keywordDetail${stackCategory}`, keywordsList, stackCategory)
+        } else if (key == 'stack') {
+            keywordSearch(`stacksList${stackCategory}`, `stacksInput${stackCategory}`, `stackDetail${stackCategory}`, stacksList, stackCategory)
+        }
+    }
+
+    function keywordSearch(listId, inputId, detailId, keywordArray, category) {
+        let result = false
+        let keywordList = document.getElementById(listId)
+        keywordList.replaceChildren()
+        if (category != '') {
+            for (let i = 0; i < keywordArray[category].length; i++) {
+                let tempHtml = ''
+                let keyword = keywordArray[category][i].split('<')[1].split('>')[1]
+                if (keyword.match(new RegExp($(`#${inputId}`).val(), 'i')) == null) {
+                    continue
+                } else {
+                    result = true
+                    tempHtml = keywordArray[category][i]
+                    $(`#${listId}`).append(tempHtml)
+                }
+            }
+        } else {
+            for (let i = 0; i < keywordArray.length; i++) {
+                let tempHtml = ''
+                let keyword = keywordArray[i].split('<')[1].split('>')[1]
+                if (keyword.match(new RegExp($(`#${inputId}`).val(), 'i')) == null) {
+                    continue
+                } else {
+                    result = true
+                    tempHtml = keywordArray[i]
+                    $(`#${listId}`).append(tempHtml)
+                }
+            }
+        }
+
+        if (!result) {
+            $(`#${listId}`).append('<p>검색 결과가 없습니다.</p>')
+        }
+        $(`#${detailId}`).attr('open', true)
+    }
+    function changeActiveButton(list, code, key, keyword, category) {
+        if (key == 'Stack') {
+            let stackList = list[category]
+            for (let i = 0; i < stackList.length; i++) {
+                let buttonKeyCode = stackList[i].split('type')[0].split('id=')[1].split('"')[1]
+                if (code.replace(" ", "") === buttonKeyCode) {
+                    stackList[i] = `<button class="btn btn-outline-secondary filterButton active" 
+                        id="${code}" type="button" data-bs-toggle="button" 
+                        onclick="append${key}QueryParameter($(this).hasClass('active'),'${code}')">${keyword}
+                        </button>`
+                }
+            }
+        } else {
+            for (let i = 0; i < list.length; i++) {
+                let buttonKeyCode = list[i].split('type')[0].split('id=')[1].split('"')[1]
+                if (code.replace(" ", "") === buttonKeyCode) {
+                    list[i] = `<button class="btn btn-outline-secondary filterButton active" 
+                        id="${code}" type="button" data-bs-toggle="button" 
+                        onclick="append${key}QueryParameter($(this).hasClass('active'),'${code}')">${keyword}
+                        </button>`
+                }
+            }
+        }
     }
 </script>
