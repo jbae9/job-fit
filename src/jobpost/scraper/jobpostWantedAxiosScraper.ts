@@ -42,14 +42,29 @@ export async function wantedScraper() {
                     let addressLower: string | null
                     let longitude: number | null
                     let latitude: number | null
+                    let addressDetail: {
+                        lat?: number
+                        lng?: number
+                        address?: string
+                    }
+                    let addressName: string
+                    let getAddressResult
 
                     if (address) {
-                        const addressDetail = address.geo_location.n_location
-                        const addressName = addressDetail.address
-                        const getAddressResult = await getAddress(
-                            addressName,
-                            process.env.KAKAO_KEY
-                        )
+                        if (address.geo_location) {
+                            addressDetail = address.geo_location.n_location
+                            addressName = addressDetail.address
+                            getAddressResult = await getAddress(
+                                addressName,
+                                process.env.KAKAO_KEY
+                            )
+                        } else {
+                            getAddressResult = await getAddress(
+                                address.full_location,
+                                process.env.KAKAO_KEY
+                            )
+                        }
+
                         originalAddress = address.full_location
                         addressUpper = getAddressResult.addressUpper
                         addressLower = getAddressResult.addressLower
@@ -187,8 +202,8 @@ export async function wantedScraper() {
                 `https://www.wanted.co.kr${nextLink}`
             )
 
-            // nextLink = nextPage.data.links.next
-            nextLink = null
+            nextLink = nextPage.data.links.next
+            // nextLink = null
 
             jobsList = nextPage.data.data
         }
