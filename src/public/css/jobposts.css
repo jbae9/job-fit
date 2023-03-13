@@ -82,3 +82,26 @@
 #pagination a {
     cursor: pointer;
 }
+
+#keywordDetail,
+details[id^=stackDetail] {
+    margin: 0 10px;
+    padding: 5px;
+}
+
+#keywordsInput,
+input[id^=stacksInput] {
+    width: 80px;
+    height: 30px;
+    margin: 0 10px;
+    float: right;
+}
+
+#keywordList,
+div[id^=stacksList] {
+    margin: 5px;
+}
+
+summary {
+    height: 40px
+}
