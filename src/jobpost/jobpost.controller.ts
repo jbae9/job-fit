@@ -4,7 +4,7 @@ import { JobpostService } from './jobpost.service'
 
 @Controller('api/jobpost')
 export class JobpostController {
-    constructor(private readonly jobpostService: JobpostService) { }
+    constructor(private readonly jobpostService: JobpostService) {}
 
     @Cron('0 0 9,19 * * *') // 매일 오전 9시, 오후 7시
     @Get('/saramin')
@@ -46,8 +46,18 @@ export class JobpostController {
     async getStacks() {
         return await this.jobpostService.getStacks()
     }
+
+    @Get('/keywords')
+    async getKeywords() {
+        return await this.jobpostService.getKeywords()
+    }
+
     @Post('/like')
-    async postLike(@Body("userId") userId: number, @Body("jobpostId") jobpostId: number, @Res() res) {
+    async postLike(
+        @Body('userId') userId: number,
+        @Body('jobpostId') jobpostId: number,
+        @Res() res
+    ) {
         const result = await this.jobpostService.postLike(userId, jobpostId)
 
         return res.json({ message: result })
