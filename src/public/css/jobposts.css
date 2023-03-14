@@ -15,6 +15,7 @@
 #keyword-card {
     position: fixed;
     margin: 20px;
+    margin-top: 80px;
 }
 
 #keyword-card .row {
