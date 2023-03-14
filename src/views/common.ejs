@@ -91,28 +91,36 @@
 
         let tempHtml = ``
         tempHtml += `<div class="col">
-                                        <div class="card">
-                                            ${likedSpan}
-                                            <img src="${jobpostImgUrl}"
-                                                class="card-img-top" alt="${companyName}" title="${companyName}">
-                                            <div class="card-body">
-                                                <h5 class="card-title">${title}</h5>
-                                                <p class="card-text companyName">
-                                                    ${companyName}
-                                                </p>
-                                                <div class="card-text row">
-                                                    ${wordAndAddressCol}
-                                                    <div class="col-8">
-                                                        <a class="card-col">
-                                                        <span class="material-symbols-outlined">
-                                                            calendar_month
-                                                        </span>
-                                                        ${deadlineDtm}
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <p class="card-text">
-                                                    `
+                        <div class="card">
+                            <%if(user) {%>
+                            <a style="cursor:pointer" onclick="postLike(<%-(user.userId)%>, ${jobpostId})">
+                                ${likedSpan}
+                            </a>
+                            <% }else { %>
+                            <span class="material-symbols-outlined likeIcon">
+                                star
+                            </span>
+                            <% } %>
+                            <img src="${jobpostImgUrl}"
+                                class="card-img-top" alt="${companyName}" title="${companyName}">
+                            <div class="card-body">
+                                <h5 class="card-title">${title}</h5>
+                                <p class="card-text companyName">
+                                    ${companyName}
+                                </p>
+                                <div class="card-text row">
+                                    ${wordAndAddressCol}
+                                    <div class="col-8">
+                                        <a class="card-col">
+                                        <span class="material-symbols-outlined">
+                                            calendar_month
+                                        </span>
+                                        ${deadlineDtm}
+                                        </a>
+                                    </div>
+                                </div>
+                                <p class="card-text">
+                                    `
         if (stackImgUrlArr !== null) {
             for (let j = 0; j < stackImgUrlArr.length; j++) {
                 const imgTag = `<img src="${stackImgUrlArr[j]}" alt="${stackArr[j]}" title="${stackArr[j]}">`
@@ -126,5 +134,26 @@
                                     </div>`
 
         return tempHtml
+    }
+
+    function postLike(userId, jobpostId) {
+        $.ajax({
+            type: "POST",
+            url: '/api/jobpost/like',
+            async: false,
+            data: { "userId": userId, "jobpostId": jobpostId },
+            success: function (response) {
+                if (response['message'] === 'success') {
+                    let starTag = $(`#${jobpostId}`)
+                    if (starTag.css('color') === 'rgb(255, 234, 0)') {
+                        starTag.css('color', 'rgba(69, 87, 117, 0.8)')
+                        starTag.removeClass('liked')
+                    } else {
+                        starTag.css('color', '#FFEA00')
+                        starTag.addClass('liked')
+                    }
+                }
+            }
+        })
     }
 </script>

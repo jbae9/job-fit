@@ -368,22 +368,4 @@
             $(`#${carouselId}${carouselNum}`).append(tempHtml)
         }
     }
-    function postLike(userId, jobpostId) {
-        $.ajax({
-            type: "POST",
-            url: '/api/jobpost/like',
-            async: false,
-            data: { "userId": userId, "jobpostId": jobpostId },
-            success: function (response) {
-                if (response['message'] === 'success') {
-                    let starTag = $(`#${jobpostId}`)
-                    if (starTag.css('color') === 'rgb(255, 234, 0)') {
-                        starTag.css('color', 'rgba(69, 87, 117, 0.8)')
-                    } else {
-                        starTag.css('color', '#FFEA00')
-                    }
-                }
-            }
-        })
-    }
 </script>
