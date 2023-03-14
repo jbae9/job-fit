@@ -1,0 +1,130 @@
+<script>
+    function createJobpostCard(data) {
+        const jobpostId = data.jobpost_id
+        const likedUsers = data.likedUsers
+        const title = data.title
+        const companyName = data.company_name
+        const jobpostImgUrl = data.original_img_url
+        const addressUpper = data.address_upper
+        const addressLower = data.address_lower
+        const stackImgUrlArr = data.stackimgurls === null ? null : data.stackimgurls.split(',')
+        const stackArr = data.stacks === null ? null : data.stacks.split(',')
+        const keywords = data.keywords
+
+        let deadlineDtm
+        if (data.deadline_dtm) {
+            const date = new Date(data.deadline_dtm)
+            deadlineDtm = date.toLocaleDateString('ko-KR', { dateStyle: 'long' })
+        } else {
+            deadlineDtm = '상시 채용'
+        }
+
+        let likedSpan = `<span class="material-symbols-outlined likeIcon" id="${jobpostId}">
+                                star
+                            </span>`
+
+        if (likedUsers) {
+            const userId = '<%- user?.userId %>'
+            if (likedUsers.split(',').includes(userId.toString())) {
+                likedSpan = `<span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
+                                star
+                            </span>`
+            }
+        }
+
+        let wordAndAddressCol = ``
+        if (keywords !== null) {
+            if (keywords.includes('신입')) {
+                wordAndAddressCol = `<div class="col">
+                                        <a class="card-col">
+                                        <span class="material-symbols-outlined">
+                                            work
+                                        </span>
+                                        신입
+                                        </a>
+                                    </div>
+                                    <div class="col-8">
+                                        <a class="card-col">
+                                        <span class="material-symbols-outlined">
+                                            location_on
+                                        </span>
+                                        ${addressUpper} ${addressLower}
+                                        </a>
+                                    </div>`
+            } else if (keywords.includes('경력')) {
+                wordAndAddressCol = `<div class="col">
+                                        <a class="card-col">
+                                        <span class="material-symbols-outlined">
+                                            work
+                                        </span>
+                                        경력
+                                        </a>
+                                    </div>
+                                    <div class="col-8">
+                                        <a class="card-col">
+                                        <span class="material-symbols-outlined">
+                                            location_on
+                                        </span>
+                                        ${addressUpper} ${addressLower}
+                                        </a>
+                                    </div>`
+            } else {
+                wordAndAddressCol = `<div class="col-8">
+                                        <a class="card-col">
+                                        <span class="material-symbols-outlined">
+                                            location_on
+                                        </span>
+                                        ${addressUpper} ${addressLower}
+                                        </a>
+                                    </div>`
+            }
+        } else {
+            wordAndAddressCol = `<div class="col-8">
+                                        <a class="card-col">
+                                        <span class="material-symbols-outlined">
+                                            location_on
+                                        </span>
+                                        ${addressUpper} ${addressLower}
+                                        </a>
+                                    </div>`
+        }
+
+        let tempHtml = ``
+        tempHtml += `<div class="col">
+                                        <div class="card">
+                                            ${likedSpan}
+                                            <img src="${jobpostImgUrl}"
+                                                class="card-img-top" alt="${companyName}" title="${companyName}">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${title}</h5>
+                                                <p class="card-text companyName">
+                                                    ${companyName}
+                                                </p>
+                                                <div class="card-text row">
+                                                    ${wordAndAddressCol}
+                                                    <div class="col-8">
+                                                        <a class="card-col">
+                                                        <span class="material-symbols-outlined">
+                                                            calendar_month
+                                                        </span>
+                                                        ${deadlineDtm}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <p class="card-text">
+                                                    `
+        if (stackImgUrlArr !== null) {
+            for (let j = 0; j < stackImgUrlArr.length; j++) {
+                const imgTag = `<img src="${stackImgUrlArr[j]}" alt="${stackArr[j]}" title="${stackArr[j]}">`
+                tempHtml += imgTag
+            }
+        }
+
+        tempHtml += `              </p>
+                                            </div>
+                                        </div>
+                                    </div>`
+
+        return tempHtml
+    }
+</script>
