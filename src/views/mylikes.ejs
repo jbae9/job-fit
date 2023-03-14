@@ -1,0 +1,37 @@
+<div class="mypage-content-wrap">
+    <div class="mypage-content-title">내 찜 목록</div>
+    <div
+        id="mypage-content-mylikes-wrap"
+        class="mypage-content-mylikes-wrap"
+    ></div>
+</div>
+
+<script>
+    // 회원 고유번호
+    const userId = '<%- JSON.stringify(user.userId) %>'
+
+    // 찜 목록 가져오기
+    axios
+        .get(`/api/user/myinfo/${userId}/likes`)
+        .then((res) => {
+            const { jobposts } = res.data
+            console.log(jobposts)
+
+            let jobpostsHtml = ''
+            for (let jobpost of jobposts) {
+                jobpostsHtml += `
+                    <div class='mylikes-container'>
+                        <div class='mylikes'>
+                            <img class='mylikes-jobpost-img' src='${jobpost.originalImgUrl}' />
+                            <div class='mylikes-jobpost-title'>${jobpost.title}</div>
+                            <div class='mylikes-jobpost-company'>${jobpost.company.companyName}</div>
+                        </div>    
+                    </div>
+                `
+            }
+
+            document.getElementById('mypage-content-mylikes-wrap').innerHTML =
+                jobpostsHtml
+        })
+        .catch((err) => {})
+</script>
