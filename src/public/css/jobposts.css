@@ -12,6 +12,12 @@
     background-color: rgb(69, 87, 117, 0.2) !important;
 }
 
+#keyword-card {
+    position: fixed;
+    margin: 20px;
+    margin-top: 80px;
+}
+
 #keyword-card .row {
     align-items: center;
     padding: 10px;
@@ -104,4 +110,10 @@ div[id^=stacksList] {
 
 summary {
     height: 40px
+}
+
+#pagination {
+    display: flex;
+    justify-content: center;
+    margin: 10px 5px;
 }

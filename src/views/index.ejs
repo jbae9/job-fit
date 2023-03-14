@@ -34,6 +34,7 @@
     <link rel="stylesheet" href="/css/main.css" />
     <link rel="stylesheet" href="/css/jobposts.css" />
     <link rel="stylesheet" href="/css/mypage.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
 
     <!-- Common script -->
     <%- include('common.ejs') %>
@@ -49,9 +50,12 @@
                     <% if (components==='login' ) { %> <%- include('login.ejs') %>
                             <% } %>
                                 <% if (components==='jobposts' ) { %> <%- include('jobposts.ejs') %>
-                                        <% } %>
+                                        <% }%>
                                             <% if(components==='mypage' ) { %> <%- include('mypage.ejs') %>
-                                                    <% } %>
+                                                    <% }%>
+
+                                                        <!-- footer -->
+                                                        <%- include('footer.ejs') %>
 </body>
 
 </html>

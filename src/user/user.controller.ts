@@ -92,4 +92,9 @@ export class UserController {
     ) {
         return await this.userService.deleteUserStack(userId, stackId)
     }
+
+    @Get('/myinfo/:userId/likes')
+    async getLikedJobposts(@Param('userId') userId: number) {
+        return await this.userService.getLikedJobposts(userId)
+    }
 }

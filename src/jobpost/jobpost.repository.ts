@@ -221,13 +221,11 @@ export class JobpostRepository extends Repository<Jobpost> {
                     offset = (Number(others['page']) - 1) * limit
                 } else {
                     if (where.length === 0) {
-                        where += `where ${othersKeys[i]}='${
-                            others[othersKeys[i]]
-                        }'`
+                        where += `where ${othersKeys[i]}='${others[othersKeys[i]]
+                            }'`
                     } else {
-                        where += ` and ${othersKeys[i]}='${
-                            others[othersKeys[i]]
-                        }'`
+                        where += ` and ${othersKeys[i]}='${others[othersKeys[i]]
+                            }'`
                     }
                 }
             }
@@ -322,7 +320,7 @@ export class JobpostRepository extends Repository<Jobpost> {
             }
         })
         if (query === 'insert') {
-            query += ` into likedjobpost values (?, ?)`
+            query += ` into likedjobpost(jobpost_id, user_id) values (?, ?)`
         } else {
             query += ` from likedjobpost where jobpost_id = ? and user_id=  ?`
         }

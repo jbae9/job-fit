@@ -312,3 +312,54 @@
     background: none;
     border-radius: 5px;
 }
+
+.mypage-content-mylikes-wrap {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.mylikes-container {
+    width: 25%;
+    height: 15rem;
+    padding: 0.5rem;
+}
+
+.mylikes {
+    height: 100%;
+    border: 0.75px solid #bfc0c0;
+    border-radius: 10px;
+    padding: 0.5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+}
+
+.mylikes-jobpost-img {
+    height: 7rem;
+    object-fit: contain;
+}
+
+.mylikes-jobpost-title {
+    width: 100%;
+    font-weight: bold;
+    font-size: 1rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0.5rem 0;
+}
+
+.mylikes-jobpost-company {
+    font-size: 0.875rem;
+    color: gray;
+    padding: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .mylikes-container {
+        width: 100%;
+    }
+}
