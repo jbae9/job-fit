@@ -1,4 +1,4 @@
-import { CacheModule, Module } from '@nestjs/common'
+import { Module } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { UserModule } from './user/user.module'
@@ -14,7 +14,10 @@ import { AuthModule } from './auth/auth.module'
 import { KeywordModule } from './keyword/keyword.module'
 import redisStore from 'cache-manager-redis-store'
 import { ScheduleModule } from '@nestjs/schedule'
-import { StackModule } from './stack/stack.module';
+import { StackModule } from './stack/stack.module'
+import { RedisModule } from '@liaoliaots/nestjs-redis'
+import { RedisConfigService } from './_config/cache.config'
+import { CacheModule } from 'src/cache/cache.module'
 
 @Module({
     imports: [
@@ -29,17 +32,12 @@ import { StackModule } from './stack/stack.module';
             useClass: JwtConfigService,
             inject: [ConfigService],
         }),
-        CacheModule.registerAsync({
+        RedisModule.forRootAsync({
             imports: [ConfigModule],
+            useClass: RedisConfigService,
             inject: [ConfigService],
-            useFactory: (configService: ConfigService) => ({
-                isGlobal: true,
-                store: redisStore,
-                host: configService.get('REDIS_HOST'),
-                port: Number(configService.get('REDIS_PORT')),
-                password: configService.get('REDIS_PASSWORD'),
-            }),
         }),
+        CacheModule,
         // ThrottlerModule.forRoot({
         //     ttl: 60,
         //     limit: 10, // ttl (60초) 동안 limit 만큼의 요청만 받는다.
@@ -55,4 +53,4 @@ import { StackModule } from './stack/stack.module';
     controllers: [AppController],
     providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

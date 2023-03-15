@@ -1,4 +1,5 @@
 footer {
+	position: fixed;
 	background: #455775;
 	height: auto;
 	width: 100vw;
