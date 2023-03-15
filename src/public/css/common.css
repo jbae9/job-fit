@@ -80,6 +80,7 @@ button .muted {
 }
 
 .card-img-top {
+    min-height: 150px;
     max-height: 150px;
     max-width: fit-content;
     margin: auto;
@@ -126,6 +127,7 @@ button .muted {
     opacity: 1;
     font-size: larger;
     bottom: 5px;
+    height: 27px;
 }
 
 .tooltip .tooltiptext {
