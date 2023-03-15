@@ -89,4 +89,22 @@ export class UserService {
             return { message: '삭제에 실패했습니다. 관리자에게 문의하십시오.' }
         }
     }
+
+    async getLikedJobposts(userId: number) {
+        try {
+            return await this.userRepository
+                .createQueryBuilder('user')
+                .leftJoinAndSelect('user.jobposts', 'jobpost')
+                .leftJoinAndSelect('jobpost.company', 'company')
+                .leftJoinAndSelect('jobpost.keywords', 'keyword')
+                .where('user.user_id = :userId', { userId })
+                .getOne()
+        } catch (error) {
+            console.log(error)
+            return {
+                message:
+                    '찜 목록을 가져오는데 실패했습니다. 관리자에게 문의하십시오.',
+            }
+        }
+    }
 }

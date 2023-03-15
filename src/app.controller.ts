@@ -92,4 +92,22 @@ export class AppController {
 
         return { components: 'mypage', user: user, subComponents: 'myinfo' }
     }
+
+    // 마이페이지 내 찜목록 카테고리
+    @UseGuards(JwtAuthGuard)
+    @Get('/mypage/likes')
+    @Render('index')
+    mypageMyposts(@Req() require, @Res() res) {
+        const user = !require.authResult.hasOwnProperty('user')
+            ? null
+            : require.authResult.user
+
+        if (!user)
+            return res.render('alert.ejs', {
+                message: '로그인이 필요합니다.',
+                href: '/',
+            })
+
+        return { components: 'mypage', user: user, subComponents: 'mylikes' }
+    }
 }

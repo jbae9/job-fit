@@ -36,5 +36,3 @@ lerna-debug.log*
 
 .env
 *.exe
-
-src/model

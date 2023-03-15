@@ -108,7 +108,7 @@ export class JobpostRepository extends Repository<Jobpost> {
             }
 
             for (let j = 0; j < keywords[i].keyword.length; j++) {
-                const re = new RegExp(`\\b${keywords[i].keyword[j]}\\b`, 'gi')
+                const re = new RegExp(`${keywords[i].keyword[j]}`, 'gi')
                 if (re.test(content)) {
                     const keyword = await this.keywordRepository.findOne({
                         where: { keywordCode: keywords[i].keywordCode },

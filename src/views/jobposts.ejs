@@ -1,13 +1,12 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-2">
-        </div>
+        <div class="col-2"></div>
         <div class="col-2" id="keyword-card">
             <div class="card">
                 <div class="row">
                     <p class="keyword-text">
                         필터
-                        <a title="초기화" onclick="resetKeywords()" style="cursor: pointer;">
+                        <a title="초기화" onclick="resetKeywords()" style="cursor: pointer">
                             <span class="material-symbols-outlined" id="resetButton">
                                 restart_alt
                             </span></a>
@@ -25,19 +24,15 @@
                     <div class="col">
                         <div class="dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false" id="currentAddressUpper">
-                            </button>
-                            <ul class="dropdown-menu" id="addressUpperDropdown">
-                            </ul>
+                                data-bs-toggle="dropdown" aria-expanded="false" id="currentAddressUpper"></button>
+                            <ul class="dropdown-menu" id="addressUpperDropdown"></ul>
                         </div>
                     </div>
-                    <div class=" col">
+                    <div class="col">
                         <div class="dropdown">
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false" id="currentAddressLower">
-                            </button>
-                            <ul class="dropdown-menu" id="addressLowerDropdown">
-                            </ul>
+                                data-bs-toggle="dropdown" aria-expanded="false" id="currentAddressLower"></button>
+                            <ul class="dropdown-menu" id="addressLowerDropdown"></ul>
                         </div>
                     </div>
                 </div>
@@ -50,12 +45,12 @@
                     </p>
                 </div>
                 <details id="keywordDetail">
-                    <summary>키워드
+                    <summary>
+                        키워드
                         <input type="text" class="form-control" id="keywordsInput" oninput="keywordInput('keyword', '')"
-                            aria-label="검색" aria-describedby="button-addon2">
+                            aria-label="검색" aria-describedby="button-addon2" />
                     </summary>
-                    <div id="keywordList">
-                    </div>
+                    <div id="keywordList"></div>
                 </details>
                 <div class="row">
                     <p class="keyword-text">
@@ -73,26 +68,31 @@
             <div class="order">
                 <div class="dropdown" id="orderDropdown">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false" id="currentOrder">
-                    </button>
+                        aria-expanded="false" id="currentOrder"></button>
                     <ul class="dropdown-menu">
                         <% if (!user) { %>
-                            <li title="기술스택에 딱 맞는 현재 공고를 보고싶으면 로그인해주세요!"><a class="dropdown-item disabled"
-                                    href="/jobposts?sort=recent&order=desc">추천순</a></li>
+                            <li title="기술스택에 딱 맞는 현재 공고를 보고싶으면 로그인해주세요!">
+                                <a class="dropdown-item disabled" href="/jobposts?sort=recent&order=desc">추천순</a>
+                            </li>
                             <% } else { %>
-                                <li><a class="dropdown-item"
+                                <li>
+                                    <a class="dropdown-item"
                                         onclick="appendQueryParameter({sort: 'recent', order: 'desc'})"
                                         id="recommend">추천순</a>
                                 </li>
                                 <% } %>
-                                    <li><a class="dropdown-item"
+                                    <li>
+                                        <a class="dropdown-item"
                                             onclick="appendQueryParameter({sort: 'recent', order: 'desc'})"
                                             id="recent">최신순</a>
                                     </li>
-                                    <li><a class="dropdown-item"
+                                    <li>
+                                        <a class="dropdown-item"
                                             onclick="appendQueryParameter({sort: 'popular', order: 'desc'})"
-                                            id="popular">인기순</a></li>
-                                    <li><a class="dropdown-item"
+                                            id="popular">인기순</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
                                             onclick="appendQueryParameter({sort: 'ending', order: 'asc'})"
                                             id="ending">마감순</a>
                                     </li>
@@ -104,6 +104,12 @@
             <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow2"></div>
             <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow3"></div>
             <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow4"></div>
+<<<<<<< HEAD
+=======
+            <nav aria-label="Page navigation">
+                <ul class="pagination" id="pagination"></ul>
+            </nav>
+>>>>>>> 789fbfcc7b6a206884d5409305e0c9bf6e01a3c5
         </div>
     </div>
     <nav class="pagination" id="pagination" aria-label="Page navigation">
@@ -115,15 +121,15 @@
 <script>
     let keywordsList = []
     let stacksList = {
-        '데브옵스': [],
-        '데이터': [],
-        '데이터베이스': [],
-        '모바일': [],
-        '백엔드': [],
-        '언어': [],
-        '테스팅툴': [],
-        '프론트엔드': [],
-        '협업툴': []
+        데브옵스: [],
+        데이터: [],
+        데이터베이스: [],
+        모바일: [],
+        백엔드: [],
+        언어: [],
+        테스팅툴: [],
+        프론트엔드: [],
+        협업툴: [],
     }
     $(document).ready(function () {
         let url = new URL(window.location.href)
@@ -156,18 +162,20 @@
         }
 
         $.ajax({
-            type: "GET",
+            type: 'GET',
             url: `/api/jobpost/filter${url.search}`,
             async: false,
             success: function (response) {
-                $('#searchCount').html(`${response.totalCount}개의 공고를 찾았습니다`)
+                $('#searchCount').html(
+                    `${response.totalCount}개의 공고를 찾았습니다`
+                )
                 showJobposts(response.data)
                 showPagination(response.totalCount, page)
-            }
+            },
         })
 
         $.ajax({
-            type: "GET",
+            type: 'GET',
             url: `/api/jobpost/addresses`,
             async: false,
             success: function (response) {
@@ -193,7 +201,7 @@
                                 </li>`
                     $('#addressLowerDropdown').append(tempHtml)
                 }
-            }
+            },
         })
 
         let addressUpper = url.searchParams.get('address_upper')
@@ -204,12 +212,16 @@
             $(`#addressUpper${addressUpper}`).addClass('active')
             if (addressLower) {
                 $('#currentAddressLower').html(addressLower)
-                $(`#addressUpper${addressUpper}addressLower${addressLower}`).addClass('active')
+                $(
+                    `#addressUpper${addressUpper}addressLower${addressLower}`
+                ).addClass('active')
                 $('#addressLowerDropDown > li').hide()
                 $(`#addressLowerDropDown > li.${addressUpper}`).show()
             } else {
                 $('#currentAddressLower').html('전체')
-                $(`#addressUpper${addressUpper}addressLower전체`).addClass('active')
+                $(`#addressUpper${addressUpper}addressLower전체`).addClass(
+                    'active'
+                )
                 $('#addressLowerDropDown > li').hide()
                 $(`#addressLowerDropDown > li.${addressUpper}`).show()
             }
@@ -221,7 +233,7 @@
         }
 
         $.ajax({
-            type: "GET",
+            type: 'GET',
             url: `/api/jobpost/stacks`,
             async: false,
             success: function (response) {
@@ -242,15 +254,21 @@
                         $('#stackList').append(tempHtml)
                     }
 
-                    tempHtml = `<button class="btn btn-outline-secondary filterButton" id="${response[i].stack.replaceAll(/\s/g, '')}" type="button" data-bs-toggle="button" onclick="appendStackQueryParameter($(this).hasClass('active'),'${response[i].stack}')">${response[i].stack}</button>`
+                    tempHtml = `<button class="btn btn-outline-secondary filterButton" id="${response[
+                        i
+                    ].stack.replaceAll(
+                        /\s/g,
+                        ''
+                    )}" type="button" data-bs-toggle="button" onclick="appendStackQueryParameter($(this).hasClass('active'),'${response[i].stack
+                        }')">${response[i].stack}</button>`
                     stacksList[`${response[i].category}`].push(tempHtml)
                     $(`#stacksList${response[i].category}`).append(tempHtml)
                 }
-            }
+            },
         })
 
         $.ajax({
-            type: "GET",
+            type: 'GET',
             url: `/api/jobpost/keywords`,
             async: false,
             success: function (response) {
@@ -259,7 +277,7 @@
                     keywordsList.push(tempHtml)
                     $('#keywordList').append(tempHtml)
                 }
-            }
+            },
         })
 
         let stacks = url.searchParams.get('stack')
@@ -268,8 +286,17 @@
             for (let i = 0; i < stacks.length; i++) {
                 const stack = stacks[i].replaceAll(/\s/g, '')
                 $(`#${stack}`).addClass('active')
-                let categoty = $(`#${stack}`).parent().attr('id').split('List')[1]
-                changeActiveButton(stacksList, stacks[i], 'Stack', $(`#${stack}`).text(), categoty)
+                let categoty = $(`#${stack}`)
+                    .parent()
+                    .attr('id')
+                    .split('List')[1]
+                changeActiveButton(
+                    stacksList,
+                    stacks[i],
+                    'Stack',
+                    $(`#${stack}`).text(),
+                    categoty
+                )
             }
         }
 
@@ -278,94 +305,20 @@
             keywordCode = keywordCode.split(',')
             for (let i = 0; i < keywordCode.length; i++) {
                 $(`#keywordCode${keywordCode[i]}`).addClass('active')
-                changeActiveButton(keywordsList, `keywordCode${keywordCode[i]}`, 'Keyword', $(`#keywordCode${keywordCode[i]}`).text(), '')
+                changeActiveButton(
+                    keywordsList,
+                    `keywordCode${keywordCode[i]}`,
+                    'Keyword',
+                    $(`#keywordCode${keywordCode[i]}`).text(),
+                    ''
+                )
             }
         }
     })
 
     function showJobposts(response) {
         for (let i = 0; i < response.length; i++) {
-            const jobpostId = response[i].jobpost_id
-            const likedUsers = response[i].likedUsers
-            const title = response[i].title
-            const companyName = response[i].company_name
-            const jobpostImgUrl = response[i].original_img_url
-            const addressUpper = response[i].address_upper
-            const addressLower = response[i].address_lower
-            const stackImgUrlArr = response[i].stackimgurls === null ? null : response[i].stackimgurls.split(',')
-            const stackArr = response[i].stacks === null ? null : response[i].stacks.split(',')
-
-            let deadlineDtm
-            if (response[i].deadline_dtm) {
-                const date = new Date(response[i].deadline_dtm)
-                deadlineDtm = date.toLocaleDateString('ko-KR', { dateStyle: 'long' })
-            } else {
-                deadlineDtm = '상시 채용'
-            }
-
-            let likedSpan = `<span class="material-symbols-outlined likeIcon" id="${jobpostId}">
-                                star
-                            </span>`
-
-            if (likedUsers) {
-                const userId = '<%- user?.userId %>'
-                if (likedUsers.split(',').includes(userId.toString())) {
-                    likedSpan = `<span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
-                                star
-                            </span>`
-                }
-            }
-
-            let tempHtml = ``
-            tempHtml += `<div class="col">
-                                        <div class="card">
-                                            ${likedSpan}
-                                            <img src="${jobpostImgUrl}"
-                                                class="card-img-top" alt="${companyName}" title="${companyName}">
-                                            <div class="card-body">
-                                                <h5 class="card-title">${title}</h5>
-                                                <p class="card-text companyName">
-                                                    ${companyName}
-                                                </p>
-                                                <div class="card-text row">
-                                                    <div class="col">
-                                                        <a class="card-col">
-                                                        <span class="material-symbols-outlined">
-                                                            work
-                                                        </span>
-                                                        신입
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-8">
-                                                        <a class="card-col">
-                                                        <span class="material-symbols-outlined">
-                                                            location_on
-                                                        </span>
-                                                        ${addressUpper} ${addressLower}
-                                                        </a>
-                                                    </div>
-                                                    <div class="col-8">
-                                                        <a class="card-col">
-                                                        <span class="material-symbols-outlined">
-                                                            calendar_month
-                                                        </span>
-                                                        ${deadlineDtm}
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <p class="card-text">
-                                                    `
-            if (stackImgUrlArr !== null) {
-                for (let j = 0; j < stackImgUrlArr.length; j++) {
-                    const imgTag = `<img src="${stackImgUrlArr[j]}" alt="${stackArr[j]}" title="${stackArr[j]}">`
-                    tempHtml += imgTag
-                }
-            }
-
-            tempHtml += `              </p>
-                                            </div>
-                                        </div>
-                                    </div>`
+            const tempHtml = createJobpostCard(response[i])
 
             $(`#jobpostRow${Math.floor(i / 4) + 1}`).append(tempHtml)
         }
@@ -404,7 +357,12 @@
 
         // hasClassActive = false => 버튼 선택 취소
         if (!hasClassActive) {
-            const newStackParam = stackParam.split(',').filter((value, _i, _a) => { return value !== stack }).join(',')
+            const newStackParam = stackParam
+                .split(',')
+                .filter((value, _i, _a) => {
+                    return value !== stack
+                })
+                .join(',')
             if (newStackParam.length === 0) {
                 url.searchParams.delete('stack')
             } else {
@@ -431,7 +389,12 @@
 
         // hasClassActive = false => 버튼 선택 취소
         if (!hasClassActive) {
-            const newKeywordCodeParam = keywordCodeParam.split(',').filter((value, _i, _a) => { return value !== keywordCode }).join(',')
+            const newKeywordCodeParam = keywordCodeParam
+                .split(',')
+                .filter((value, _i, _a) => {
+                    return value !== keywordCode
+                })
+                .join(',')
             if (newKeywordCodeParam.length === 0) {
                 url.searchParams.delete('keywordCode')
             } else {
@@ -447,7 +410,9 @@
         const keys = Array.from(url.searchParams.keys())
 
         for (const key of keys) {
-            if (key === 'sort' || key === 'order') { continue }
+            if (key === 'sort' || key === 'order') {
+                continue
+            }
             console.log(key)
             url.searchParams.delete(key)
         }
@@ -463,51 +428,81 @@
         const pageGroup = Math.ceil(currentPage / pagesInPageGroup)
 
         // 페이지 그룹1의 마지막 페이지는 2
-        const pageGroupLast = pageGroup * pagesInPageGroup > lastPage ? lastPage : pageGroup * pagesInPageGroup
+        const pageGroupLast =
+            pageGroup * pagesInPageGroup > lastPage
+                ? lastPage
+                : pageGroup * pagesInPageGroup
 
         // 페이지 그룹1의 첫번째 페이지는 1
         // => 마지막 페이지 숫자(2) - 한 페이지 그룹에 들어가는 페이지 수(2) - 1
         // const pageGroupFirst = pageGroupLast - (pagesInPageGroup - 1) < 1 ? 1 : pageGroupLast - (pagesInPageGroup -1)
-        const pageGroupFirst = pageGroup === 1 ? 1 : (pageGroup - 1) * pagesInPageGroup + 1
+        const pageGroupFirst =
+            pageGroup === 1 ? 1 : (pageGroup - 1) * pagesInPageGroup + 1
 
-        const pages = [];
+        const pages = []
 
         // 전 페이지 그룹으로 가기
         if (pageGroup > 1) {
             // 이전 페이지 그룹 - 1 => 이전 페이지 그룹의 마지막 페이지는 (pageGroup-1)*2
-            pages.push(`<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${(pageGroup - 1) * pagesInPageGroup}})"><<</a></li>`)
+            pages.push(
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${(pageGroup - 1) * pagesInPageGroup
+                }})"><<</a></li>`
+            )
         }
 
         // 페이지 그룹의 첫번 째 페이지가 1보다 크면 이전 화살 만들기
         if (currentPage > 1) {
-            pages.push(`<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${currentPage - 1}})"><</a></li>`)
+            pages.push(
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${currentPage - 1
+                }})"><</a></li>`
+            )
         }
 
         // 페이지 그룹의 마지막 페이지까지 페이지 숫자 렌더링 하기
         for (i = pageGroupFirst; i <= pageGroupLast; i++) {
-            pages.push(`<li class="page-item" id="page${i}"><a class="page-link" onclick="appendQueryParameter({page:${i}})">${i}</a></li>`);
+            pages.push(
+                `<li class="page-item" id="page${i}"><a class="page-link" onclick="appendQueryParameter({page:${i}})">${i}</a></li>`
+            )
         }
 
         // 페이지 그룹의 마지막 페이지가 총 마지막 페이지보다 작을 때 다음 화살 만들기
         if (currentPage < lastPage) {
-            pages.push(`<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${currentPage + 1}})">></a></li>`);
+            pages.push(
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${currentPage + 1
+                }})">></a></li>`
+            )
         }
 
         // 다음 페이지 그룹으로 가기
         if (pageGroupLast < lastPage) {
             // 다음 페이지 그룹 + 2 => 다음 페이지 그룹의 첫 페이지는 pageGroup * pagesInPageGroup + 1
-            pages.push(`<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${pageGroup * pagesInPageGroup + 1}})">>></a></li>`)
+            pages.push(
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${pageGroup * pagesInPageGroup + 1
+                }})">>></a></li>`
+            )
         }
 
-        document.getElementById("pagination").innerHTML = pages.join("")
+        document.getElementById('pagination').innerHTML = pages.join('')
 
         $(`#page${currentPage}`).addClass('active')
     }
     async function keywordInput(key, stackCategory) {
         if (key == 'keyword') {
-            keywordSearch(`keywordList${stackCategory}`, `keywordsInput${stackCategory}`, `keywordDetail${stackCategory}`, keywordsList, stackCategory)
+            keywordSearch(
+                `keywordList${stackCategory}`,
+                `keywordsInput${stackCategory}`,
+                `keywordDetail${stackCategory}`,
+                keywordsList,
+                stackCategory
+            )
         } else if (key == 'stack') {
-            keywordSearch(`stacksList${stackCategory}`, `stacksInput${stackCategory}`, `stackDetail${stackCategory}`, stacksList, stackCategory)
+            keywordSearch(
+                `stacksList${stackCategory}`,
+                `stacksInput${stackCategory}`,
+                `stackDetail${stackCategory}`,
+                stacksList,
+                stackCategory
+            )
         }
     }
 
@@ -518,8 +513,13 @@
         if (category != '') {
             for (let i = 0; i < keywordArray[category].length; i++) {
                 let tempHtml = ''
-                let keyword = keywordArray[category][i].split('<')[1].split('>')[1]
-                if (keyword.match(new RegExp($(`#${inputId}`).val(), 'i')) == null) {
+                let keyword = keywordArray[category][i]
+                    .split('<')[1]
+                    .split('>')[1]
+                if (
+                    keyword.match(new RegExp($(`#${inputId}`).val(), 'i')) ==
+                    null
+                ) {
                     continue
                 } else {
                     result = true
@@ -531,7 +531,10 @@
             for (let i = 0; i < keywordArray.length; i++) {
                 let tempHtml = ''
                 let keyword = keywordArray[i].split('<')[1].split('>')[1]
-                if (keyword.match(new RegExp($(`#${inputId}`).val(), 'i')) == null) {
+                if (
+                    keyword.match(new RegExp($(`#${inputId}`).val(), 'i')) ==
+                    null
+                ) {
                     continue
                 } else {
                     result = true
@@ -550,9 +553,14 @@
         if (key == 'Stack') {
             let stackList = list[category]
             for (let i = 0; i < stackList.length; i++) {
-                let buttonKeyCode = stackList[i].split('type')[0].split('id=')[1].split('"')[1]
-                if (code.replace(" ", "") === buttonKeyCode) {
-                    stackList[i] = `<button class="btn btn-outline-secondary filterButton active" 
+                let buttonKeyCode = stackList[i]
+                    .split('type')[0]
+                    .split('id=')[1]
+                    .split('"')[1]
+                if (code.replace(' ', '') === buttonKeyCode) {
+                    stackList[
+                        i
+                    ] = `<button class="btn btn-outline-secondary filterButton active" 
                         id="${code}" type="button" data-bs-toggle="button" 
                         onclick="append${key}QueryParameter($(this).hasClass('active'),'${code}')">${keyword}
                         </button>`
@@ -560,9 +568,14 @@
             }
         } else {
             for (let i = 0; i < list.length; i++) {
-                let buttonKeyCode = list[i].split('type')[0].split('id=')[1].split('"')[1]
-                if (code.replace(" ", "") === buttonKeyCode) {
-                    list[i] = `<button class="btn btn-outline-secondary filterButton active" 
+                let buttonKeyCode = list[i]
+                    .split('type')[0]
+                    .split('id=')[1]
+                    .split('"')[1]
+                if (code.replace(' ', '') === buttonKeyCode) {
+                    list[
+                        i
+                    ] = `<button class="btn btn-outline-secondary filterButton active" 
                         id="${code}" type="button" data-bs-toggle="button" 
                         onclick="append${key}QueryParameter($(this).hasClass('active'),'${code}')">${keyword}
                         </button>`
