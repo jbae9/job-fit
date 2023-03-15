@@ -119,20 +119,34 @@
                                         </a>
                                     </div>
                                 </div>
-                                <p class="card-text">
+                                <div class="card-text">
                                     `
+        const tooltipTag = `<div class="tooltip">▲
+                                <span class="tooltiptext tooltip-top card-text">`
         if (stackImgUrlArr !== null) {
             for (let j = 0; j < stackImgUrlArr.length; j++) {
                 const imgTag = `<img src="${stackImgUrlArr[j]}" alt="${stackArr[j]}" title="${stackArr[j]}">`
-                tempHtml += imgTag
+                if (j < 11) {
+                    tempHtml += imgTag
+                } else if (j == 11) {
+                    tempHtml += tooltipTag
+                    tempHtml += imgTag
+                } else if (j > 11) {
+                    tempHtml += imgTag
+                    console.log(stackImgUrlArr.length - 1)
+                    if (j == stackImgUrlArr.length - 1) {
+                        tempHtml += `                   </span>
+                                                    </div>`
+                    }
+                }
             }
         }
 
-        tempHtml += `              </p>
+        tempHtml += `              </div>
                                             </div>
                                         </div>
                                     </div>`
-
+        console.log(tempHtml)
         return tempHtml
     }
 
