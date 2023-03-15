@@ -63,7 +63,7 @@ export class Jobpost {
     @Column('varchar')
     title: string
 
-    @Column('text')
+    @Column('mediumtext')
     content: string
 
     @Column('int', { nullable: true })
