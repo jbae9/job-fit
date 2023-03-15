@@ -31,7 +31,41 @@
             </div>
             <div id="jobpost-content" class="jobpost-detail-content-wrap"></div>
         </div>
-        <div class="jobpost-detail-company-wrap">dfdf</div>
+        <div class="jobpost-detail-company-container">
+            <div class="jobpost-detail-company-wrap">
+                <div
+                    id="company-image"
+                    class="jobpost-detail-company-image"
+                ></div>
+                <div
+                    id="company-name"
+                    class="jobpost-detail-company-name"
+                ></div>
+                <div
+                    id="company-homepage"
+                    class="jobpost-detail-company-homepage"
+                ></div>
+                <div
+                    id="company-representative-name"
+                    class="jobpost-detail-company-representative-name"
+                ></div>
+                <div
+                    id="company-employees"
+                    class="jobpost-detail-company-employees"
+                ></div>
+                <div
+                    id="company-founded-year"
+                    class="jobpost-detail-company-founded-year"
+                ></div>
+                <div
+                    id="company-avg-salary"
+                    class="jobpost-detail-company-avg-salary"
+                ></div>
+            </div>
+            <a id="jobpost-link" class="jobpost-link">
+                <div id="jobpost-link-btn" class="jobpost-link-btn"></div>
+            </a>
+        </div>
     </div>
 </div>
 
@@ -44,7 +78,6 @@
     axios
         .get(`/api/jobpost/${jobpostId}`)
         .then((res) => {
-            console.log(res.data)
             const {
                 originalImgUrl,
                 title,
@@ -55,6 +88,7 @@
                 stacks,
                 content,
                 originalSiteName,
+                originalUrl,
             } = res.data
 
             // 채용공고 이미지
@@ -116,6 +150,83 @@
             }
 
             document.getElementById('jobpost-content').innerHTML = result
+
+            // 회사 이미지
+            const companyImageHtml = `
+                <img src='${company.imageUrl}' />
+            `
+            document.getElementById('company-image').innerHTML =
+                companyImageHtml
+
+            // 회사 이름
+            document.getElementById('company-name').innerHTML =
+                company.companyName
+
+            // 회사 링크
+            document.getElementById('company-homepage').innerHTML = `
+                <a href='${company.homepageUrl}'>${company.homepageUrl}</a>
+            `
+            // 회사 대표자
+            const representativeName = !company.representativeName
+                ? '비공개'
+                : company.representativeName
+            const representativeNameHtml = `
+                <div>
+                    <span class="material-symbols-outlined">Person</span>
+                    <span class="symbols-name">대표자</span>
+                </div>
+                <span class="company-data">${representativeName}</span>
+            `
+            document.getElementById('company-representative-name').innerHTML =
+                representativeNameHtml
+
+            // 회사 사원수
+            const employeesNumber = !company.numberEmployees
+                ? '비공개'
+                : company.numberEmployees + ' 명'
+            const employeesNumberHtml = `
+                <div>
+                    <span class="material-symbols-outlined">Group</span>
+                    <span class="symbols-name">사원수</span>
+                </div>
+                <span class="company-data">${employeesNumber}</span>
+            `
+            document.getElementById('company-employees').innerHTML =
+                employeesNumberHtml
+
+            // 회사 설립연도
+            const foundedYear = !company.foundedYear
+                ? '비공개'
+                : company.foundedYear + ' 년'
+            const foundedYearHtml = `
+                <div>
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    <span class="symbols-name">설립연도</span>
+                </div>
+                <span class="company-data">${foundedYear}</span>
+            `
+            document.getElementById('company-founded-year').innerHTML =
+                foundedYearHtml
+
+            // 회사 평균연봉
+            const avgSalary = !company.avgSalary
+                ? '비공개'
+                : company.avgSalary.toLocaleString() + ' 원'
+            const avgSalaryHtml = `
+                <div>
+                    <span class="material-symbols-outlined">payments</span>
+                    <span class="symbols-name">평균연봉</span>
+                </div>
+                <span class="company-data">${avgSalary}</span>
+            `
+            document.getElementById('company-avg-salary').innerHTML =
+                avgSalaryHtml
+
+            // 채용공고 링크
+            document.getElementById('jobpost-link').href = `${originalUrl}`
+            document.getElementById(
+                'jobpost-link-btn'
+            ).innerHTML = `${originalSiteName} 채용공고 보러가기`
         })
         .catch((err) => {})
 
