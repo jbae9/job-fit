@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query, Body, Res } from '@nestjs/common'
+import { Controller, Get, Post, Query, Body, Res, Param } from '@nestjs/common'
 import { Cron } from '@nestjs/schedule'
 import { JobpostService } from './jobpost.service'
 
@@ -61,5 +61,10 @@ export class JobpostController {
         const result = await this.jobpostService.postLike(userId, jobpostId)
 
         return res.json({ message: result })
+    }
+
+    @Get('/:jobpostId')
+    async getJobpostDetail(@Param('jobpostId') jobpostId: number) {
+        return await this.jobpostService.getJobpostDetail(jobpostId)
     }
 }
