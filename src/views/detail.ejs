@@ -1,0 +1,154 @@
+<div class="jobpost-detail-wrap">
+    <div class="jobpost-detail-container-wrap">
+        <div class="jobpost-detail-container">
+            <div class="jobpost-detail-content-title-wrap">
+                <div
+                    id="jobpost-title-image"
+                    class="jobpost-detail-content-title-image"
+                ></div>
+                <div class="jobpost-detail-content-title-desc">
+                    <div
+                        id="jobpost-title"
+                        class="jobpost-detail-content-title"
+                    ></div>
+                    <div
+                        id="jobpost-company-name"
+                        class="jobpost-detail-content-company-name"
+                    ></div>
+                    <div
+                        id="jobpost-address"
+                        class="jobpost-detail-content-address"
+                    ></div>
+                    <div
+                        id="jobpost-deadline"
+                        class="jobpost-detail-content-deadline"
+                    ></div>
+                    <div
+                        id="jobpost-stacks"
+                        class="jobpost-detail-content-stacks"
+                    ></div>
+                </div>
+            </div>
+            <div id="jobpost-content" class="jobpost-detail-content-wrap"></div>
+        </div>
+        <div class="jobpost-detail-company-wrap">dfdf</div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
+<script>
+    // 채용공고 고유번호
+    const jobpostId = Number('<%= jobpostId %>')
+
+    // 채용공고 정보 가져오기
+    axios
+        .get(`/api/jobpost/${jobpostId}`)
+        .then((res) => {
+            console.log(res.data)
+            const {
+                originalImgUrl,
+                title,
+                company,
+                addressUpper,
+                addressLower,
+                deadlineDtm,
+                stacks,
+                content,
+                originalSiteName,
+            } = res.data
+
+            // 채용공고 이미지
+            const originalImgUrlHtml = `
+                <img src='${originalImgUrl}' />
+            `
+            document.getElementById('jobpost-title-image').innerHTML =
+                originalImgUrlHtml
+
+            // 채용공고 제목
+            document.getElementById('jobpost-title').innerHTML = title
+
+            // 채용공고 회사이름
+            document.getElementById('jobpost-company-name').innerHTML =
+                company.companyName
+
+            // 채용공고 주소
+            const addressHtml = `
+                <span class="material-symbols-outlined">location_on</span>
+                ${addressUpper} ${addressLower}
+            `
+            document.getElementById('jobpost-address').innerHTML = addressHtml
+
+            // 채용공고 마감날
+            const jobpostDeadline = !deadlineDtm
+                ? '상시 채용'
+                : new Date(deadlineDtm).toLocaleDateString('ko-KR', {
+                      dateStyle: 'long',
+                  })
+            const deadlineHtml = `
+                <span class="material-symbols-outlined">calendar_month</span>
+                ${jobpostDeadline}
+            `
+            document.getElementById('jobpost-deadline').innerHTML = deadlineHtml
+
+            // 채용공고 스택
+            let stacksHtml = ''
+            for (let stack of stacks) {
+                stacksHtml += `
+                    <img src='${stack.stackImgUrl}' />
+                `
+            }
+            document.getElementById('jobpost-stacks').innerHTML = stacksHtml
+
+            //  채용공고 내용
+            let text = ''
+            let result = ''
+            if (originalSiteName === '프로그래머스') {
+                text = programmersContent(content)
+                const converter = new showdown.Converter()
+                result = converter.makeHtml(text)
+            }
+            if (originalSiteName === '원티드') {
+                text = wantedContent(content)
+                result = text
+            }
+            if (originalSiteName === '사람인') {
+                result = content
+            }
+
+            document.getElementById('jobpost-content').innerHTML = result
+        })
+        .catch((err) => {})
+
+    // 프로그래머스 채용공고 내용 파싱
+    function programmersContent(content) {
+        // undefined 제거
+        let text = content.replaceAll('undefined', '')
+        // null 제거
+        text = text.replaceAll('null', '')
+        // 줄바꿈
+        text = text.replaceAll('\r\n', '<br>')
+
+        return text
+    }
+
+    // 원티드 채용공고 내용 파싱
+    function wantedContent(content) {
+        let { requirements, main_tasks, intro, benefits, preferred_points } =
+            JSON.parse(content)
+
+        let text =
+            intro +
+            '<br><br>' +
+            main_tasks +
+            '<br><br>' +
+            requirements +
+            '<br><br>' +
+            preferred_points +
+            '<br><br>' +
+            benefits
+
+        text = text.replaceAll('\n', '<br>')
+
+        return text
+    }
+</script>
