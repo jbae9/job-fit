@@ -40,13 +40,9 @@ export class CacheService {
 	}
 
 	async setViewCount(jobpostId: number, userId: number) {
-		// this.redisClient.hmset('viewjobposts',
-		// 	'jobpostId', jobpostId.toString(),
-		// 	'userId', userId.toString(),
-		// 	'viewCount', 1, 'EX', 600)
-		await this.redisClient.setbit(jobpostId.toString(), userId, 1)
-			.then(element => {
-				console.log(element)
-			})
+		// await this.redisClient.setbit(jobpostId.toString(), userId, 1)
+		// 	.then(element => {
+		// 		console.log(element)
+		// 	})
 	}
 }
