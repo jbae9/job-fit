@@ -9,10 +9,14 @@ import {
 } from '@nestjs/common'
 import { AppService } from './app.service'
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
+import { CacheService } from 'src/cache/cache.service'
 
 @Controller()
 export class AppController {
-    constructor(private readonly appService: AppService) {}
+    constructor(
+        private readonly appService: AppService,
+        private readonly cacheService: CacheService
+    ) { }
 
     @UseGuards(JwtAuthGuard)
     @Get()
@@ -115,10 +119,15 @@ export class AppController {
     @UseGuards(JwtAuthGuard)
     @Get('/jobpost/:jobpostId')
     @Render('index')
-    jobpostDetail(@Req() req, @Param('jobpostId') jobpostId: number) {
+    async jobpostDetail(@Req() req, @Param('jobpostId') jobpostId: number) {
         const user = !req.authResult.hasOwnProperty('user')
             ? null
             : req.authResult.user
+
+        const view = await this.cacheService.getViewCount(jobpostId)
+        console.log(view)
+        this.cacheService.setViewCount(jobpostId, user.userId)
+
 
         return { components: 'detail', user: user, jobpostId }
     }

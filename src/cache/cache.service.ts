@@ -40,9 +40,8 @@ export class CacheService {
 	}
 
 	async setViewCount(jobpostId: number, userId: number) {
-		// await this.redisClient.setbit(jobpostId.toString(), userId, 1)
-		// 	.then(element => {
-		// 		console.log(element)
-		// 	})
+		let pipe = this.redisClient.pipeline()
+		pipe.setbit(jobpostId.toString(), userId, 1).expire(jobpostId.toString(), 60)
+		pipe.exec()
 	}
 }
