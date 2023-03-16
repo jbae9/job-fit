@@ -9,20 +9,19 @@ export class CacheService {
 		this.redisClient = redisService.getClient();
 	}
 
-	async getLikedjobpost(jobpostId: number) {
-		return await this.redisClient.hmget('likedjobposts', `jobpostId`, 'userId')
+	async getLikedjobpost(jobpostId: number, userId: number) {
+		return await this.redisClient.srem('likedjobposts', jobpostId.toString() + ',' + userId.toString())
 	}
-
 
 	async setLikedjobpost(jobpostId: number, userId: number) {
-		await this.redisClient.hmset('likedjobposts',
-			'jobpostId', jobpostId.toString(),
-			'userId', userId.toString())
+		await this.redisClient.sadd('likedjobposts',
+			jobpostId.toString() + ',' + userId.toString())
 	}
 
-	async delLikedjobpost(jobpostId: number, userId: number) {
-		await this.redisClient.hdel('likedjobposts', 'jobpostId', jobpostId.toString(), 'userId', userId.toString())
+	async getAllLikedjobpost() {
+		return await this.redisClient.smembers('likedjobposts')
 	}
+
 
 	async saveRefreshToken(userId: number, token: string) {
 		await this.redisClient.set(userId.toString(), token)
@@ -34,5 +33,20 @@ export class CacheService {
 
 	async removeRedisRefreshToken(userId: number) {
 		return this.redisClient.del(userId.toString())
+	}
+
+	async getViewCount(jobpostId: number) {
+		return await this.redisClient.bitcount(jobpostId.toString())
+	}
+
+	async setViewCount(jobpostId: number, userId: number) {
+		// this.redisClient.hmset('viewjobposts',
+		// 	'jobpostId', jobpostId.toString(),
+		// 	'userId', userId.toString(),
+		// 	'viewCount', 1, 'EX', 600)
+		await this.redisClient.setbit(jobpostId.toString(), userId, 1)
+			.then(element => {
+				console.log(element)
+			})
 	}
 }
