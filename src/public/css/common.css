@@ -48,6 +48,7 @@ button .muted {
 .card-title {
     font-size: 22px;
     font-weight: 600;
+    word-break: keep-all;
 }
 
 .card-text {
@@ -79,6 +80,7 @@ button .muted {
 }
 
 .card-img-top {
+    min-height: 150px;
     max-height: 150px;
     max-width: fit-content;
     margin: auto;
@@ -117,4 +119,53 @@ button .muted {
         'GRAD' 0,
         'opsz' 48;
     color: #FFEA00;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    opacity: 1;
+    font-size: larger;
+    bottom: 5px;
+    height: 27px;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #ffffff;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    border: 2px solid #000000;
+
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltip .tooltip-top {
+    width: 10vw;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip .tooltip-top::after {
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-color: black transparent transparent transparent;
+}
+
+div[id^="jobpostRow"] {
+    margin-bottom: 20px;
+}
+
+.card {
+    min-height: 399.61px
 }

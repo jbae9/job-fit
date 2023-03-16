@@ -25,3 +25,12 @@
     color: #F0723D;
     font-family: 'EliceDigitalBaeum-Bd';
 }
+
+.container-fluid {
+    position: relative;
+    min-height: 1130px;
+}
+
+#mainContainer {
+    min-height: 1130px;
+}

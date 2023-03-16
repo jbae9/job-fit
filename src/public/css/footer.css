@@ -1,9 +1,11 @@
 footer {
+	position: absolute;
 	background: #455775;
 	height: auto;
 	width: 100vw;
 	padding-top: 5px;
 	color: #fcfeff;
+	bottom: auto
 }
 
 .footer-content {

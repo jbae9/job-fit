@@ -308,31 +308,23 @@ export class JobpostRepository extends Repository<Jobpost> {
                     order by keyword asc`)
     }
 
-    async postLike(userId: number, jobpostId: number) {
-        const like = await this.find({
-            relations: ['users'],
-            where: {
-                jobpostId: jobpostId,
-            },
-        })
-        let query = 'insert'
-        like[0]?.users.forEach((user) => {
-            if (user.userId == userId) {
-                query = 'delete'
-            }
-        })
-        if (query === 'insert') {
-            query += ` into likedjobpost(jobpost_id, user_id) values (?, ?)`
-        } else {
-            query += ` from likedjobpost where jobpost_id = ? and user_id=  ?`
-        }
+    async insertLike(userId: number, jobpostId: number) {
+        let query = `insert into likedjobpost(jobpost_id, user_id) values (?, ?)`
         const values = [jobpostId, userId]
         try {
             await this.query(query, values)
-            return 'success'
         } catch (err) {
             console.log(err)
-            return 'fail'
+        }
+    }
+
+    async deleteLike(userId: number, jobpostId: number) {
+        let query = `delete from likedjobpost where jobpost_id = ? and user_id=  ?`
+        const values = [jobpostId, userId]
+        try {
+            await this.query(query, values)
+        } catch (err) {
+            console.log(err)
         }
     }
 

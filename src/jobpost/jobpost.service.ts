@@ -4,15 +4,16 @@ import { JobpostRepository } from './jobpost.repository'
 import { wantedScraper } from './scraper/jobpostWantedAxiosScraper'
 import { SaraminSelenium } from './scraper/jobpostSaraminSeleniumScraper'
 import { programmersScraper } from './scraper/jobpostProgrammersScraper'
+import { CacheService } from 'src/cache/cache.service'
 
 @Injectable()
 export class JobpostService {
     constructor(
         private jobpostRepository: JobpostRepository,
         private companyRepository: CompanyRepository,
+        private cacheService: CacheService,
         private logger: Logger
-    ) {}
-
+    ) { }
     async getSaraminJobposts() {
         const saraminScraper = new SaraminSelenium('100')
         const { companies, jobposts } = await saraminScraper.getSaraminScraper()
@@ -79,7 +80,20 @@ export class JobpostService {
     }
 
     async postLike(userId: number, jobpostId: number) {
-        return await this.jobpostRepository.postLike(userId, jobpostId)
+        let likes = await this.cacheService.getLikedjobpost(jobpostId)
+        console.log(likes)
+        if (likes[0] == jobpostId.toString() && likes[1] == userId.toString()) {
+            await this.cacheService.delLikedjobpost(jobpostId, userId)
+            setTimeout(() => {
+                this.jobpostRepository.deleteLike(userId, jobpostId)
+            }, 3000)
+        } else {
+            await this.cacheService.setLikedjobpost(jobpostId, userId)
+            setTimeout(() => {
+                this.jobpostRepository.insertLike(userId, jobpostId)
+            }, 3000)
+        }
+        return 'success'
     }
 
     // 채용공고 상세정보
