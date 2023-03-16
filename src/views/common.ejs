@@ -1,7 +1,10 @@
 <script>
-    function createJobpostCard(data) {
+    function createJobpostCard(data, likedUser) {
         const jobpostId = data.jobpost_id
-        const likedUsers = data.likedUsers
+        let likedUsers = {}
+        for (like in likedUser) {
+            likedUsers[likedUser[like].split(',')[0]] = (likedUser[like].split(',')[1])
+        }
         const title = data.title
         const companyName = data.company_name
         const jobpostImgUrl = data.original_img_url
@@ -25,13 +28,12 @@
         let likedSpan = `<span class="material-symbols-outlined likeIcon" id="${jobpostId}">
                                 star
                             </span>`
-
-        if (likedUsers) {
+        if (data.jobpost_id in likedUsers && likedUser) {
             const userId = '<%- user?.userId %>'
-            if (likedUsers.split(',').includes(userId.toString())) {
+            if (userId == likedUsers[data.jobpost_id]) {
                 likedSpan = `<span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
-                                star
-                            </span>`
+                        star
+                    </span>`
             }
         }
 
@@ -138,7 +140,6 @@
                     tempHtml += imgTag
                 } else if (j > 11) {
                     tempHtml += imgTag
-                    console.log(stackImgUrlArr.length - 1)
                     if (j == stackImgUrlArr.length - 1) {
                         tempHtml += `                   </span>
                                                     </div>`
@@ -151,7 +152,6 @@
                                             </div>
                                         </div>
                                     </div>`
-        console.log(tempHtml)
         return tempHtml
     }
 
