@@ -53,9 +53,7 @@ export class SaraminSelenium {
         ]
         try {
             for (let i = 0; i < allJobsArr.length; i++) {
-                await driver.get(
-                    `${allJobsArr[i].originalUrl}`
-                )
+                await driver.get(`${allJobsArr[i].originalUrl}`)
                 await driver.wait(
                     until.elementLocated(By.className('wrap_jv_cont')),
                     3000
@@ -97,7 +95,9 @@ export class SaraminSelenium {
                     .findElement(By.css('div.cont'))
                     .getAttribute('innerHTML')
                 const iframeUrl = iframe.split('"', 21)[17]
-                const iframeData = await axios.get('https://www.saramin.co.kr' + iframeUrl)
+                const iframeData = await axios.get(
+                    'https://www.saramin.co.kr' + iframeUrl
+                )
                 const data = cheerio.load(iframeData.data)
                 const jobData = data('.user_content').html()
                 const content = jobData
