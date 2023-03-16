@@ -7,14 +7,17 @@
         const jobpostImgUrl = data.original_img_url
         const addressUpper = data.address_upper
         const addressLower = data.address_lower
-        const stackImgUrlArr = data.stackimgurls === null ? null : data.stackimgurls.split(',')
+        const stackImgUrlArr =
+            data.stackimgurls === null ? null : data.stackimgurls.split(',')
         const stackArr = data.stacks === null ? null : data.stacks.split(',')
         const keywords = data.keywords
 
         let deadlineDtm
         if (data.deadline_dtm) {
             const date = new Date(data.deadline_dtm)
-            deadlineDtm = date.toLocaleDateString('ko-KR', { dateStyle: 'long' })
+            deadlineDtm = date.toLocaleDateString('ko-KR', {
+                dateStyle: 'long',
+            })
         } else {
             deadlineDtm = '상시 채용'
         }
@@ -104,7 +107,9 @@
                             <img src="${jobpostImgUrl}"
                                 class="card-img-top" alt="${companyName}" title="${companyName}">
                             <div class="card-body">
-                                <h5 class="card-title">${title}</h5>
+                                <a href='/jobpost/${jobpostId}'>
+                                    <h5 class="card-title">${title}</h5>
+                                </a>
                                 <p class="card-text companyName">
                                     ${companyName}
                                 </p>
@@ -152,10 +157,10 @@
 
     function postLike(userId, jobpostId) {
         $.ajax({
-            type: "POST",
+            type: 'POST',
             url: '/api/jobpost/like',
             async: false,
-            data: { "userId": userId, "jobpostId": jobpostId },
+            data: { userId: userId, jobpostId: jobpostId },
             success: function (response) {
                 if (response['message'] === 'success') {
                     let starTag = $(`#${jobpostId}`)
@@ -167,7 +172,7 @@
                         starTag.addClass('liked')
                     }
                 }
-            }
+            },
         })
     }
 </script>

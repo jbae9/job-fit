@@ -97,10 +97,10 @@ export class AppController {
     @UseGuards(JwtAuthGuard)
     @Get('/mypage/likes')
     @Render('index')
-    mypageMyposts(@Req() require, @Res() res) {
-        const user = !require.authResult.hasOwnProperty('user')
+    mypageMyposts(@Req() req, @Res() res) {
+        const user = !req.authResult.hasOwnProperty('user')
             ? null
-            : require.authResult.user
+            : req.authResult.user
 
         if (!user)
             return res.render('alert.ejs', {
@@ -109,5 +109,17 @@ export class AppController {
             })
 
         return { components: 'mypage', user: user, subComponents: 'mylikes' }
+    }
+
+    // 채용공고 상세페이지
+    @UseGuards(JwtAuthGuard)
+    @Get('/jobpost/:jobpostId')
+    @Render('index')
+    jobpostDetail(@Req() req, @Param('jobpostId') jobpostId: number) {
+        const user = !req.authResult.hasOwnProperty('user')
+            ? null
+            : req.authResult.user
+
+        return { components: 'detail', user: user, jobpostId }
     }
 }

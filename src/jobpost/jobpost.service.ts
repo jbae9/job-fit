@@ -15,7 +15,7 @@ export class JobpostService {
         private logger: Logger
     ) { }
     async getSaraminJobposts() {
-        const saraminScraper = new SaraminSelenium('10')
+        const saraminScraper = new SaraminSelenium('100')
         const { companies, jobposts } = await saraminScraper.getSaraminScraper()
 
         // 회사 데이터 넣기
@@ -94,5 +94,10 @@ export class JobpostService {
             }, 3000)
         }
         return 'success'
+    }
+
+    // 채용공고 상세정보
+    async getJobpostDetail(jobpostId: number) {
+        return await this.jobpostRepository.getJobpostDetail(jobpostId)
     }
 }

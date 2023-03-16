@@ -221,11 +221,13 @@ export class JobpostRepository extends Repository<Jobpost> {
                     offset = (Number(others['page']) - 1) * limit
                 } else {
                     if (where.length === 0) {
-                        where += `where ${othersKeys[i]}='${others[othersKeys[i]]
-                            }'`
+                        where += `where ${othersKeys[i]}='${
+                            others[othersKeys[i]]
+                        }'`
                     } else {
-                        where += ` and ${othersKeys[i]}='${others[othersKeys[i]]
-                            }'`
+                        where += ` and ${othersKeys[i]}='${
+                            others[othersKeys[i]]
+                        }'`
                     }
                 }
             }
@@ -323,6 +325,20 @@ export class JobpostRepository extends Repository<Jobpost> {
             await this.query(query, values)
         } catch (err) {
             console.log(err)
+        }
+    }
+
+    // 채용공고 상세정보
+    async getJobpostDetail(jobpostId: number) {
+        try {
+            return await this.createQueryBuilder('jobpost')
+                .leftJoinAndSelect('jobpost.company', 'company')
+                .leftJoinAndSelect('jobpost.keywords', 'keyword')
+                .leftJoinAndSelect('jobpost.stacks', 'stack')
+                .where('jobpost.jobpost_id = :jobpostId', { jobpostId })
+                .getOne()
+        } catch (error) {
+            return { message: '상세정보를 불러올 수 없습니다.' }
         }
     }
 }
