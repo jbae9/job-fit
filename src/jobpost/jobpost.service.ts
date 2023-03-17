@@ -83,6 +83,13 @@ export class JobpostService {
         let likes = await this.cacheService.getLikedjobpost(jobpostId, userId)
         if (likes == 0) {
             await this.cacheService.setLikedjobpost(jobpostId, userId)
+            setTimeout(() => {
+                this.jobpostRepository.insertLike(userId, jobpostId)
+            }, 1000)
+        } else {
+            setTimeout(() => {
+                this.jobpostRepository.deleteLike(userId, jobpostId)
+            }, 1000)
         }
         return 'success'
     }

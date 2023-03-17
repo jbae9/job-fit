@@ -10,6 +10,7 @@ import {
 import { AppService } from './app.service'
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
 import { CacheService } from 'src/cache/cache.service'
+import { Cron } from '@nestjs/schedule'
 
 @Controller()
 export class AppController {
@@ -124,9 +125,9 @@ export class AppController {
             ? null
             : req.authResult.user
 
-        const view = await this.cacheService.getViewCount(jobpostId)
-        console.log(view)
-        this.cacheService.setViewCount(jobpostId, user.userId)
+        // const view = await this.cacheService.getViewCount(jobpostId)
+        // console.log('조회수:' + view)
+        // this.cacheService.setViewCount(jobpostId, user.userId)
 
 
         return { components: 'detail', user: user, jobpostId }
