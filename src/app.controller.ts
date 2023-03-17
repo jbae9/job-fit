@@ -125,9 +125,9 @@ export class AppController {
             ? null
             : req.authResult.user
 
-        // const view = await this.cacheService.getViewCount(jobpostId)
-        // console.log('조회수:' + view)
-        // this.cacheService.setViewCount(jobpostId, user.userId)
+        this.cacheService.setViewCount(jobpostId, user.userId)
+        const view = await this.cacheService.getViewCount(jobpostId)
+        console.log('조회수:' + view)
 
 
         return { components: 'detail', user: user, jobpostId }

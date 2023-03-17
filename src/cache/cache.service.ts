@@ -40,26 +40,23 @@ export class CacheService {
 	}
 
 	async getViewCount(jobpostId: number) {
-		// return await this.redisClient.hget('views', jobpostId.toString())
-		// return await this.redisClient.hlen('view,' + jobpostId.toString())
-		// return await this.redisClient.smembers('viewjobposts')
+		return await this.redisClient.hget('views', jobpostId.toString())
 	}
 
 	async setViewCount(jobpostId: number, userId: number) {
-		// let pipe = this.redisClient.pipeline()
-		// let count = await this.redisClient.getbit(jobpostId.toString(), userId)
-		// console.log('bitmap: ' + count)
-		// if (count != 1) {
-		// 	pipe.setbit(jobpostId.toString(), userId, 1).expire(jobpostId.toString(), 5)
-		// 	pipe.exec()
-		// 	await this.addCountOne(jobpostId)
-		// }
-		// pipe.hset('viewjobpost',
-		// 	jobpostId.toString(), 'jobpostId',
-		// 	userId.toString(), 'userId')
+		let pipe = this.redisClient.pipeline()
+		let count = await this.redisClient.getbit(jobpostId.toString(), userId)
+		if (count != 1) {
+			pipe.setbit(jobpostId.toString(), userId, 1).expire(jobpostId.toString(), 5)
+			pipe.exec()
+			await this.addCountOne(jobpostId)
+		}
 	}
 
 	async addCountOne(jobpostId: number) {
+		if (!jobpostId) {
+			return
+		}
 		let count = Number(await this.redisClient.hget('views', jobpostId.toString()))
 		if (count > 0) {
 			count += 1
