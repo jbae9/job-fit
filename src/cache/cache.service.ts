@@ -45,6 +45,9 @@ export class CacheService {
 
 	async setViewCount(jobpostId: number, userId: number) {
 		let pipe = this.redisClient.pipeline()
+		if (!userId) { //비회원 조회
+			userId = 0
+		}
 		let count = await this.redisClient.getbit(jobpostId.toString(), userId)
 		if (count != 1) {
 			pipe.setbit(jobpostId.toString(), userId, 1).expire(jobpostId.toString(), 5)
