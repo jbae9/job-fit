@@ -80,18 +80,16 @@ export class JobpostService {
     }
 
     async postLike(userId: number, jobpostId: number) {
-        let likes = await this.cacheService.getLikedjobpost(jobpostId)
-        console.log(likes)
-        if (likes[0] == jobpostId.toString() && likes[1] == userId.toString()) {
-            await this.cacheService.delLikedjobpost(jobpostId, userId)
-            setTimeout(() => {
-                this.jobpostRepository.deleteLike(userId, jobpostId)
-            }, 3000)
-        } else {
+        let likes = await this.cacheService.getLikedjobpost(jobpostId, userId)
+        if (likes == 0) {
             await this.cacheService.setLikedjobpost(jobpostId, userId)
             setTimeout(() => {
                 this.jobpostRepository.insertLike(userId, jobpostId)
-            }, 3000)
+            }, 1000)
+        } else {
+            setTimeout(() => {
+                this.jobpostRepository.deleteLike(userId, jobpostId)
+            }, 1000)
         }
         return 'success'
     }

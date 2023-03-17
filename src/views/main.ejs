@@ -336,7 +336,7 @@
             async: false,
             success: function (response) {
                 console.log(response)
-                showCarouselJobposts('carouselRecent', response.data)
+                showCarouselJobposts('carouselRecent', response.data, response.likedUser)
             }
         })
 
@@ -345,7 +345,7 @@
             url: '/api/jobpost/filter?sort=popular&order=desc&limit=12',
             async: false,
             success: function (response) {
-                showCarouselJobposts('carouselPopular', response.data)
+                showCarouselJobposts('carouselPopular', response.data, response.likedUser)
             }
         })
 
@@ -355,14 +355,14 @@
             async: false,
             success: function (response) {
                 console.log(response)
-                showCarouselJobposts('carouselEnding', response.data)
+                showCarouselJobposts('carouselEnding', response.data, response.likedUser)
             }
         })
     })
 
-    function showCarouselJobposts(carouselId, response) {
+    function showCarouselJobposts(carouselId, response, likedUser) {
         for (let i = 0; i < 12; i++) {
-            const tempHtml = createJobpostCard(response[i])
+            const tempHtml = createJobpostCard(response[i], likedUser)
 
             const carouselNum = Math.floor(i / 4) + 1
             $(`#${carouselId}${carouselNum}`).append(tempHtml)
