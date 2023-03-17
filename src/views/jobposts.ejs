@@ -157,7 +157,6 @@
         $.ajax({
             type: 'GET',
             url: `/api/jobpost/filter${url.search}`,
-            async: false,
             success: function (response) {
                 $('#searchCount').html(
                     `${response.totalCount}개의 공고를 찾았습니다`
@@ -170,7 +169,6 @@
         $.ajax({
             type: 'GET',
             url: `/api/jobpost/addresses`,
-            async: false,
             success: function (response) {
                 const { addressUpper, addressLower } = response
 
@@ -228,7 +226,6 @@
         $.ajax({
             type: 'GET',
             url: `/api/jobpost/stacks`,
-            async: false,
             success: function (response) {
                 let categories = []
                 let tempHtml = ``
@@ -263,7 +260,6 @@
         $.ajax({
             type: 'GET',
             url: `/api/jobpost/keywords`,
-            async: false,
             success: function (response) {
                 for (let i = 0; i < response.length; i++) {
                     const tempHtml = `<button class="btn btn-outline-secondary filterButton" id="keywordCode${response[i].keyword_code}" type="button" data-bs-toggle="button" onclick="appendKeywordQueryParameter($(this).hasClass('active'),'${response[i].keyword_code}')">${response[i].keyword}</button>`
@@ -279,7 +275,7 @@
             for (let i = 0; i < stacks.length; i++) {
                 const stack = stacks[i].replaceAll(/\s/g, '')
                 $(`#${stack}`).addClass('active')
-                let categoty = $(`#${stack}`)
+                let category = $(`#${stack}`)
                     .parent()
                     .attr('id')
                     .split('List')[1]
@@ -288,7 +284,7 @@
                     stacks[i],
                     'Stack',
                     $(`#${stack}`).text(),
-                    categoty
+                    category
                 )
             }
         }

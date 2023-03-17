@@ -1,9 +1,6 @@
 <div class="mypage-content-wrap">
     <div class="mypage-content-title">내 찜 목록</div>
-    <div
-        id="mypage-content-mylikes-wrap"
-        class="mypage-content-mylikes-wrap"
-    ></div>
+    <div id="mypage-content-mylikes-wrap" class="mypage-content-mylikes-wrap"></div>
 </div>
 
 <script>
@@ -23,7 +20,7 @@
                     <div class='mylikes-container'>
                         <div class='mylikes'>
                             <img class='mylikes-jobpost-img' src='${jobpost.originalImgUrl}' />
-                            <div class='mylikes-jobpost-title'>${jobpost.title}</div>
+                            <a href='/jobpost/${jobpost.jobpostId}'><div class='mylikes-jobpost-title'>${jobpost.title}</div></a>
                             <div class='mylikes-jobpost-company'>${jobpost.company.companyName}</div>
                         </div>    
                     </div>
@@ -33,5 +30,5 @@
             document.getElementById('mypage-content-mylikes-wrap').innerHTML =
                 jobpostsHtml
         })
-        .catch((err) => {})
+        .catch((err) => { })
 </script>
