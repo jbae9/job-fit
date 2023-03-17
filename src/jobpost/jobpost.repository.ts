@@ -7,6 +7,7 @@ import { default as stacks } from '../resources/data/parsing/stacksForParsing.js
 import { InjectRepository } from '@nestjs/typeorm'
 import { Keyword } from 'src/entities/keyword.entity'
 import { Stack } from 'src/entities/stack.entity'
+import { CacheService } from 'src/cache/cache.service'
 
 @Injectable()
 export class JobpostRepository extends Repository<Jobpost> {
@@ -15,6 +16,7 @@ export class JobpostRepository extends Repository<Jobpost> {
         private companyRepository: CompanyRepository,
         @InjectRepository(Keyword)
         private keywordRepository: Repository<Keyword>,
+        private cacheService: CacheService,
         @InjectRepository(Stack) private stackRepository: Repository<Stack>
     ) {
         super(Jobpost, dataSource.createEntityManager())
@@ -221,13 +223,11 @@ export class JobpostRepository extends Repository<Jobpost> {
                     offset = (Number(others['page']) - 1) * limit
                 } else {
                     if (where.length === 0) {
-                        where += `where ${othersKeys[i]}='${
-                            others[othersKeys[i]]
-                        }'`
+                        where += `where ${othersKeys[i]}='${others[othersKeys[i]]
+                            }'`
                     } else {
-                        where += ` and ${othersKeys[i]}='${
-                            others[othersKeys[i]]
-                        }'`
+                        where += ` and ${othersKeys[i]}='${others[othersKeys[i]]
+                            }'`
                     }
                 }
             }
@@ -250,6 +250,8 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         const values = [limit, offset]
 
+        let likedUser = await this.cacheService.getAllLikedjobpost()
+
         const data = await this.query(query, values)
 
         query = `select count(*) as totalCount
@@ -269,7 +271,7 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         const totalCount = await this.query(query, values)
 
-        return { data, totalCount: Number(totalCount[0].totalCount) }
+        return { data, totalCount: Number(totalCount[0].totalCount), likedUser }
     }
 
     async getAddresses() {
