@@ -86,6 +86,7 @@ button .muted {
     margin: auto;
     padding: 10px;
     position: relative;
+    object-fit: contain;
 }
 
 .material-symbols-outlined {

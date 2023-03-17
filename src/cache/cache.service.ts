@@ -1,31 +1,33 @@
-import { Injectable } from '@nestjs/common';
-import { Redis } from 'ioredis';
-import { RedisService } from '@liaoliaots/nestjs-redis';
+import { Injectable } from '@nestjs/common'
+import { Redis } from 'ioredis'
+import { RedisService } from '@liaoliaots/nestjs-redis'
 import { JobpostRepository } from '../jobpost/jobpost.repository'
 
 @Injectable()
 export class CacheService {
 	private readonly redisClient: Redis
 	private readonly jobpostRepository: JobpostRepository
-	constructor(
-		private readonly redisService: RedisService
-	) {
-		this.redisClient = redisService.getClient();
+	constructor(private readonly redisService: RedisService) {
+		this.redisClient = redisService.getClient()
 	}
 
 	async getLikedjobpost(jobpostId: number, userId: number) {
-		return await this.redisClient.srem('likedjobposts', jobpostId.toString() + ',' + userId.toString())
+		return await this.redisClient.srem(
+			'likedjobposts',
+			jobpostId.toString() + ',' + userId.toString()
+		)
 	}
 
 	async setLikedjobpost(jobpostId: number, userId: number) {
-		await this.redisClient.sadd('likedjobposts',
-			jobpostId.toString() + ',' + userId.toString())
+		await this.redisClient.sadd(
+			'likedjobposts',
+			jobpostId.toString() + ',' + userId.toString()
+		)
 	}
 
 	async getAllLikedjobpost() {
 		return await this.redisClient.smembers('likedjobposts')
 	}
-
 
 	async saveRefreshToken(userId: number, token: string) {
 		await this.redisClient.set(userId.toString(), token)
@@ -57,10 +59,9 @@ export class CacheService {
 	}
 
 	async addCountOne(jobpostId: number) {
-		if (!jobpostId) {
-			return
-		}
-		let count = Number(await this.redisClient.hget('views', jobpostId.toString()))
+		let count = Number(
+			await this.redisClient.hget('views', jobpostId.toString())
+		)
 		if (count > 0) {
 			count += 1
 			await this.redisClient.hset('views', jobpostId.toString(), count)
@@ -68,5 +69,4 @@ export class CacheService {
 			await this.redisClient.hset('views', jobpostId.toString(), 1)
 		}
 	}
-
 }

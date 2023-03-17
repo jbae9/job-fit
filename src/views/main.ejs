@@ -333,9 +333,7 @@
         $.ajax({
             type: "GET",
             url: '/api/jobpost/filter?sort=recent&order=desc&limit=12',
-            async: false,
             success: function (response) {
-                console.log(response)
                 showCarouselJobposts('carouselRecent', response.data, response.likedUser)
             }
         })
@@ -343,7 +341,6 @@
         $.ajax({
             type: "GET",
             url: '/api/jobpost/filter?sort=popular&order=desc&limit=12',
-            async: false,
             success: function (response) {
                 showCarouselJobposts('carouselPopular', response.data, response.likedUser)
             }
@@ -352,9 +349,7 @@
         $.ajax({
             type: "GET",
             url: '/api/jobpost/filter?sort=ending&order=asc&limit=12',
-            async: false,
             success: function (response) {
-                console.log(response)
                 showCarouselJobposts('carouselEnding', response.data, response.likedUser)
             }
         })
