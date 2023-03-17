@@ -13,7 +13,7 @@ export class JobpostService {
         private companyRepository: CompanyRepository,
         private cacheService: CacheService,
         private logger: Logger
-    ) { }
+    ) {}
     async getSaraminJobposts() {
         const saraminScraper = new SaraminSelenium('100')
         const { companies, jobposts } = await saraminScraper.getSaraminScraper()
