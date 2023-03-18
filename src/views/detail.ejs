@@ -42,10 +42,6 @@
                     class="jobpost-detail-company-name"
                 ></div>
                 <div
-                    id="company-homepage"
-                    class="jobpost-detail-company-homepage"
-                ></div>
-                <div
                     id="company-representative-name"
                     class="jobpost-detail-company-representative-name"
                 ></div>
@@ -74,6 +70,21 @@
     // 채용공고 고유번호
     const jobpostId = Number('<%= jobpostId %>')
 
+    // 로그인 되어있다면 내가 찜 한 채용공고 번호 리스트 불러오기
+    const likedJobpostIds = getUserLikeJobpost()
+
+    const likedHtml = !likedJobpostIds.includes(jobpostId)
+        ? `<a style="cursor:pointer" onclick="createJobpostLike(${jobpostId})">
+                    <span class="material-symbols-outlined detail-like-icon" id="${jobpostId}">
+                        star
+                    </span>
+                </a>`
+        : `<a style="cursor:pointer" onclick="deleteJobpostLike(${jobpostId})">
+                    <span class="material-symbols-outlined detail-like-icon liked" style="color:#FFEA00" id="${jobpostId}">
+                        star
+                    </span>
+                </a>`
+
     // 채용공고 정보 가져오기
     axios
         .get(`/api/jobpost/${jobpostId}`)
@@ -99,7 +110,9 @@
                 originalImgUrlHtml
 
             // 채용공고 제목
-            document.getElementById('jobpost-title').innerHTML = title
+            document.getElementById(
+                'jobpost-title'
+            ).innerHTML = `${title} ${likedHtml}`
 
             // 채용공고 회사이름
             document.getElementById('jobpost-company-name').innerHTML =
@@ -158,14 +171,11 @@
             document.getElementById('company-image').innerHTML =
                 companyImageHtml
 
-            // 회사 이름
-            document.getElementById('company-name').innerHTML =
-                company.companyName
-
-            // 회사 링크
-            document.getElementById('company-homepage').innerHTML = `
-                <a href='${company.homepageUrl}'>${company.homepageUrl}</a>
+            // 회사 이름 및 링크
+            document.getElementById('company-name').innerHTML = `
+                <a href='${company.homepageUrl}'>${company.companyName}</a>
             `
+
             // 회사 대표자
             const representativeName = !company.representativeName
                 ? '비공개'
