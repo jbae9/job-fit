@@ -5,10 +5,18 @@
                 <div class="row">
                     <p class="keyword-text">
                         필터
-                        <a title="초기화" onclick="resetKeywords()" style="cursor: pointer">
-                            <span class="material-symbols-outlined" id="resetButton">
+                        <a
+                            title="초기화"
+                            onclick="resetKeywords()"
+                            style="cursor: pointer"
+                        >
+                            <span
+                                class="material-symbols-outlined"
+                                id="resetButton"
+                            >
                                 restart_alt
-                            </span></a>
+                            </span></a
+                        >
                     </p>
                 </div>
                 <div class="row">
@@ -22,16 +30,32 @@
                 <div class="row">
                     <div class="col">
                         <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false" id="currentAddressUpper"></button>
-                            <ul class="dropdown-menu" id="addressUpperDropdown"></ul>
+                            <button
+                                class="btn btn-outline-secondary dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                id="currentAddressUpper"
+                            ></button>
+                            <ul
+                                class="dropdown-menu"
+                                id="addressUpperDropdown"
+                            ></ul>
                         </div>
                     </div>
                     <div class="col">
                         <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false" id="currentAddressLower"></button>
-                            <ul class="dropdown-menu" id="addressLowerDropdown"></ul>
+                            <button
+                                class="btn btn-outline-secondary dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                                id="currentAddressLower"
+                            ></button>
+                            <ul
+                                class="dropdown-menu"
+                                id="addressLowerDropdown"
+                            ></ul>
                         </div>
                     </div>
                 </div>
@@ -46,8 +70,14 @@
                 <details id="keywordDetail">
                     <summary>
                         키워드
-                        <input type="text" class="form-control" id="keywordsInput" oninput="keywordInput('keyword', '')"
-                            aria-label="검색" aria-describedby="button-addon2" />
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="keywordsInput"
+                            oninput="keywordInput('keyword', '')"
+                            aria-label="검색"
+                            aria-describedby="button-addon2"
+                        />
                     </summary>
                     <div id="keywordList"></div>
                 </details>
@@ -66,48 +96,82 @@
             <div id="searchResult"></div>
             <div class="order">
                 <div class="dropdown" id="orderDropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false" id="currentOrder"></button>
+                    <button
+                        class="btn btn-outline-secondary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        id="currentOrder"
+                    ></button>
                     <ul class="dropdown-menu">
                         <% if (!user) { %>
-                            <li title="기술스택에 딱 맞는 현재 공고를 보고싶으면 로그인해주세요!">
-                                <a class="dropdown-item disabled" href="/jobposts?sort=recent&order=desc">추천순</a>
-                            </li>
-                            <% } else { %>
-                                <li>
-                                    <a class="dropdown-item"
-                                        onclick="appendQueryParameter({sort: 'recent', order: 'desc'})"
-                                        id="recommend">추천순</a>
-                                </li>
-                                <% } %>
-                                    <li>
-                                        <a class="dropdown-item"
-                                            onclick="appendQueryParameter({sort: 'recent', order: 'desc'})"
-                                            id="recent">최신순</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                            onclick="appendQueryParameter({sort: 'popular', order: 'desc'})"
-                                            id="popular">인기순</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                            onclick="appendQueryParameter({sort: 'ending', order: 'asc'})"
-                                            id="ending">마감순</a>
-                                    </li>
+                        <li
+                            title="기술스택에 딱 맞는 현재 공고를 보고싶으면 로그인해주세요!"
+                        >
+                            <a
+                                class="dropdown-item disabled"
+                                href="/jobposts?sort=recent&order=desc"
+                                >추천순</a
+                            >
+                        </li>
+                        <% } else { %>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                onclick="appendQueryParameter({sort: 'recent', order: 'desc'})"
+                                id="recommend"
+                                >추천순</a
+                            >
+                        </li>
+                        <% } %>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                onclick="appendQueryParameter({sort: 'recent', order: 'desc'})"
+                                id="recent"
+                                >최신순</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                onclick="appendQueryParameter({sort: 'popular', order: 'desc'})"
+                                id="popular"
+                                >인기순</a
+                            >
+                        </li>
+                        <li>
+                            <a
+                                class="dropdown-item"
+                                onclick="appendQueryParameter({sort: 'ending', order: 'asc'})"
+                                id="ending"
+                                >마감순</a
+                            >
+                        </li>
                     </ul>
                 </div>
                 <div id="searchCount"></div>
             </div>
-            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow1"></div>
-            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow2"></div>
-            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow3"></div>
-            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow4"></div>
+            <div
+                class="row row-cols-1 row-cols-md-4 g-4"
+                id="jobpostRow1"
+            ></div>
+            <div
+                class="row row-cols-1 row-cols-md-4 g-4"
+                id="jobpostRow2"
+            ></div>
+            <div
+                class="row row-cols-1 row-cols-md-4 g-4"
+                id="jobpostRow3"
+            ></div>
+            <div
+                class="row row-cols-1 row-cols-md-4 g-4"
+                id="jobpostRow4"
+            ></div>
         </div>
     </div>
     <nav class="pagination" id="pagination" aria-label="Page navigation">
-        <ul>
-        </ul>
+        <ul></ul>
     </nav>
 </div>
 
@@ -125,6 +189,9 @@
         협업툴: [],
     }
     $(document).ready(function () {
+        // 로그인 한 회원이 찜 한 채용공고 번호 리스트
+        const likedJobpostIds = getUserLikeJobpost()
+
         let url = new URL(window.location.href)
         let sort = url.searchParams.get('sort') || 'recent'
         let order = url.searchParams.get('order') || 'desc'
@@ -161,7 +228,7 @@
                 $('#searchCount').html(
                     `${response.totalCount}개의 공고를 찾았습니다`
                 )
-                showJobposts(response.data)
+                showJobposts(response.data, likedJobpostIds)
                 showPagination(response.totalCount, page)
             },
         })
@@ -249,8 +316,9 @@
                     ].stack.replaceAll(
                         /\s/g,
                         ''
-                    )}" type="button" data-bs-toggle="button" onclick="appendStackQueryParameter($(this).hasClass('active'),'${response[i].stack
-                        }')">${response[i].stack}</button>`
+                    )}" type="button" data-bs-toggle="button" onclick="appendStackQueryParameter($(this).hasClass('active'),'${
+                        response[i].stack
+                    }')">${response[i].stack}</button>`
                     stacksList[`${response[i].category}`].push(tempHtml)
                     $(`#stacksList${response[i].category}`).append(tempHtml)
                 }
@@ -305,9 +373,14 @@
         }
     })
 
-    function showJobposts(response) {
+    function showJobposts(response, likedJobpostIds) {
         for (let i = 0; i < response.length; i++) {
-            const tempHtml = createJobpostCard(response[i])
+            // 채용공고 번호
+            const jobpostId = response[i].jobpost_id
+            // 채용공고가 좋아요가 눌린건지 안눌린건지 boolean
+            const isLiked = likedJobpostIds.includes(jobpostId) ? true : false
+            console.log(isLiked)
+            const tempHtml = createJobpostCard(response[i], isLiked)
 
             $(`#jobpostRow${Math.floor(i / 4) + 1}`).append(tempHtml)
         }
@@ -434,7 +507,8 @@
         if (pageGroup > 1) {
             // 이전 페이지 그룹 - 1 => 이전 페이지 그룹의 마지막 페이지는 (pageGroup-1)*2
             pages.push(
-                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${(pageGroup - 1) * pagesInPageGroup
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${
+                    (pageGroup - 1) * pagesInPageGroup
                 }})"><<</a></li>`
             )
         }
@@ -442,7 +516,8 @@
         // 페이지 그룹의 첫번 째 페이지가 1보다 크면 이전 화살 만들기
         if (currentPage > 1) {
             pages.push(
-                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${currentPage - 1
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${
+                    currentPage - 1
                 }})"><</a></li>`
             )
         }
@@ -457,7 +532,8 @@
         // 페이지 그룹의 마지막 페이지가 총 마지막 페이지보다 작을 때 다음 화살 만들기
         if (currentPage < lastPage) {
             pages.push(
-                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${currentPage + 1
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${
+                    currentPage + 1
                 }})">></a></li>`
             )
         }
@@ -466,7 +542,8 @@
         if (pageGroupLast < lastPage) {
             // 다음 페이지 그룹 + 2 => 다음 페이지 그룹의 첫 페이지는 pageGroup * pagesInPageGroup + 1
             pages.push(
-                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${pageGroup * pagesInPageGroup + 1
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${
+                    pageGroup * pagesInPageGroup + 1
                 }})">>></a></li>`
             )
         }

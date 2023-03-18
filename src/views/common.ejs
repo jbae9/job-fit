@@ -1,10 +1,6 @@
 <script>
-    function createJobpostCard(data, likedUser) {
+    function createJobpostCard(data, isLiked) {
         const jobpostId = data.jobpost_id
-        let likedUsers = {}
-        for (like in likedUser) {
-            likedUsers[likedUser[like].split(',')[0]] = (likedUser[like].split(',')[1])
-        }
         const title = data.title
         const companyName = data.company_name
         const jobpostImgUrl = data.original_img_url
@@ -23,18 +19,6 @@
             })
         } else {
             deadlineDtm = '상시 채용'
-        }
-
-        let likedSpan = `<span class="material-symbols-outlined likeIcon" id="${jobpostId}">
-                                star
-                            </span>`
-        if (data.jobpost_id in likedUsers && likedUser) {
-            const userId = '<%- user?.userId %>'
-            if (userId == likedUsers[data.jobpost_id]) {
-                likedSpan = `<span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
-                        star
-                    </span>`
-            }
         }
 
         let wordAndAddressCol = ``
@@ -94,17 +78,24 @@
                                     </div>`
         }
 
+        // 좋아요
+        let likedSpan = !isLiked
+            ? `<a style="cursor:pointer" onclick="createJobpostLike(${jobpostId})">
+                    <span class="material-symbols-outlined likeIcon" id="${jobpostId}">
+                        star
+                    </span>
+                </a>`
+            : `<a style="cursor:pointer" onclick="deleteJobpostLike(${jobpostId})">
+                    <span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
+                        star
+                    </span>
+                </a>`
+
         let tempHtml = ``
         tempHtml += `<div class="col">
                         <div class="card">
                             <%if(user) {%>
-                            <a style="cursor:pointer" onclick="postLike(<%-(user.userId)%>, ${jobpostId})">
                                 ${likedSpan}
-                            </a>
-                            <% }else { %>
-                            <span class="material-symbols-outlined likeIcon" title="로그인해서 공고를 찜해보세요!">
-                                star
-                            </span>
                             <% } %>
                             <img src="${jobpostImgUrl}"
                                 class="card-img-top" alt="${companyName}" title="${companyName}">
@@ -155,24 +146,53 @@
         return tempHtml
     }
 
-    function postLike(userId, jobpostId) {
-        $.ajax({
-            type: 'POST',
-            url: '/api/jobpost/like',
-            async: false,
-            data: { userId: userId, jobpostId: jobpostId },
-            success: function (response) {
-                if (response['message'] === 'success') {
-                    let starTag = $(`#${jobpostId}`)
-                    if (starTag.css('color') === 'rgb(255, 234, 0)') {
-                        starTag.css('color', 'rgba(69, 87, 117, 0.8)')
-                        starTag.removeClass('liked')
-                    } else {
-                        starTag.css('color', '#FFEA00')
-                        starTag.addClass('liked')
+    // 로그인 되어있다면 내가 찜 한 채용공고 번호 리스트 불러오기
+    // 채용공고들이 불려지기전 반드시 완료되어야 하므로 동기
+    function getUserLikeJobpost() {
+        const userId = Number('<%- user?.userId %>')
+        let likedJobpostIds = []
+        if (userId) {
+            $.ajax({
+                type: 'GET',
+                async: false,
+                url: `/api/jobpost/likes/${userId}`,
+                success: function (response) {
+                    for (let jobpostId of response) {
+                        likedJobpostIds.push(jobpostId.jobpost_id)
                     }
-                }
-            },
-        })
+                },
+            })
+        }
+        return likedJobpostIds
+    }
+
+    // 찜 하기
+    function createJobpostLike(jobpostId) {
+        const userId = Number('<%- user?.userId %>')
+        axios
+            .post(`/api/jobpost/${jobpostId}/like`, { userId })
+            .then((res) => {
+                alert(res.data.message)
+                location.reload()
+            })
+            .catch((err) => {
+                alert(err.response.data.message)
+                location.reload()
+            })
+    }
+
+    // 찜 삭제
+    function deleteJobpostLike(jobpostId) {
+        const userId = Number('<%- user?.userId %>')
+        axios
+            .delete(`/api/jobpost/${jobpostId}/like`, { data: { userId } })
+            .then((res) => {
+                alert(res.data.message)
+                location.reload()
+            })
+            .catch((err) => {
+                alert(err.response.data.message)
+                location.reload()
+            })
     }
 </script>
