@@ -55,6 +55,15 @@
 .jobpost-detail-content-title {
     font-size: 2rem;
     font-weight: bold;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+}
+
+.detail-like-icon {
+    font-size: 2rem;
 }
 
 .jobpost-detail-content-company-name {
@@ -79,6 +88,7 @@
 
 .jobpost-detail-content-stacks {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
 }
@@ -95,6 +105,10 @@
     border-radius: 10px;
     background-color: #ffffff;
     padding: 1rem;
+}
+
+.jobpost-detail-company-container {
+    width: 100%;
 }
 
 .jobpost-detail-company-wrap {
@@ -130,9 +144,14 @@
     font-weight: bold;
 }
 
-.jobpost-detail-company-homepage a {
-    color: #0078ff !important;
-    font-size: 1.25rem;
+.jobpost-detail-company-name a {
+    font-size: 1.5rem;
+    color: gray !important;
+    font-weight: bold;
+}
+
+.jobpost-detail-company-name a:hover {
+    color: #bfc0c0 !important;
 }
 
 .jobpost-detail-company-employees,
