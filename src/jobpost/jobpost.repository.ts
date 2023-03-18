@@ -223,11 +223,13 @@ export class JobpostRepository extends Repository<Jobpost> {
                     offset = (Number(others['page']) - 1) * limit
                 } else {
                     if (where.length === 0) {
-                        where += `where ${othersKeys[i]}='${others[othersKeys[i]]
-                            }'`
+                        where += `where ${othersKeys[i]}='${
+                            others[othersKeys[i]]
+                        }'`
                     } else {
-                        where += ` and ${othersKeys[i]}='${others[othersKeys[i]]
-                            }'`
+                        where += ` and ${othersKeys[i]}='${
+                            others[othersKeys[i]]
+                        }'`
                     }
                 }
             }
@@ -250,10 +252,9 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         const values = [limit, offset]
 
-        let likedUser = await this.cacheService.getAllLikedjobpost()
-
         const data = await this.query(query, values)
 
+        // 채용공고 카운트
         query = `select count(*) as totalCount
         from (select keywordCodes, stacks from jobpost j 
             left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
@@ -271,7 +272,7 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         const totalCount = await this.query(query, values)
 
-        return { data, totalCount: Number(totalCount[0].totalCount), likedUser }
+        return { data, totalCount: Number(totalCount[0].totalCount) }
     }
 
     async getAddresses() {
@@ -310,16 +311,53 @@ export class JobpostRepository extends Repository<Jobpost> {
                     order by keyword asc`)
     }
 
-    async insertLike(userId: number, jobpostId: number) {
-        let query = `insert into likedjobpost(jobpost_id, user_id) values (?, ?)`
-        const values = [jobpostId, userId]
+    // 회원이 좋아요 누른 채용공고 리스트 번호 가져오기
+    async getUserLikeJobpostList(userId: number) {
+        // redis에 지금 담겨있고 반영이 아직 안되어 있는 좋아요 눌린 채용공고가 있는지 체크
+        // db에 반영이 아직 되지않았어도 화면과 싱크를 맞춰야하므로
+        const likedJobpostsInRedis =
+            await this.cacheService.getAllLikedjobpost()
+
+        // 있다면
+        let tempArr = []
+        if (likedJobpostsInRedis.length !== 0) {
+            tempArr = likedJobpostsInRedis
+                .filter((value) => {
+                    return (
+                        userId === Number(value.split(',')[1].replace(')', ''))
+                    )
+                })
+                .map((value) => {
+                    return {
+                        jobpost_id: Number(
+                            value.split(',')[0].replace('(', '')
+                        ),
+                    }
+                })
+        }
+
+        // DB에 반영되어있는 채용공고 리스트
+        const query = `select jobpost_id from likedjobpost where user_id = (?)`
+        const likedJobpostsInDB = await this.query(query, [userId])
+
+        // 두 리스트 합치기
+        const likedJobpostIds = [...tempArr, ...likedJobpostsInDB]
+
+        return likedJobpostIds
+    }
+
+    // 찜 하기 DB반영
+    async insertLike(likedJobpostsData: string) {
+        let query = `insert into likedjobpost(jobpost_id, user_id) values ${likedJobpostsData}`
         try {
-            await this.query(query, values)
+            await this.query(query)
+            console.log('db반영완료')
         } catch (err) {
             console.log(err)
         }
     }
 
+    // 찜 취소 DB반영
     async deleteLike(userId: number, jobpostId: number) {
         let query = `delete from likedjobpost where jobpost_id = ? and user_id=  ?`
         const values = [jobpostId, userId]

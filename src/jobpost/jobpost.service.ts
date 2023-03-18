@@ -5,6 +5,7 @@ import { wantedScraper } from './scraper/jobpostWantedAxiosScraper'
 import { SaraminSelenium } from './scraper/jobpostSaraminSeleniumScraper'
 import { programmersScraper } from './scraper/jobpostProgrammersScraper'
 import { CacheService } from 'src/cache/cache.service'
+import { Cron } from '@nestjs/schedule'
 
 @Injectable()
 export class JobpostService {
@@ -13,7 +14,7 @@ export class JobpostService {
         private companyRepository: CompanyRepository,
         private cacheService: CacheService,
         private logger: Logger
-    ) { }
+    ) {}
     async getSaraminJobposts() {
         const saraminScraper = new SaraminSelenium('100')
         const { companies, jobposts } = await saraminScraper.getSaraminScraper()
@@ -79,19 +80,63 @@ export class JobpostService {
         return await this.jobpostRepository.getKeywords()
     }
 
-    async postLike(userId: number, jobpostId: number) {
-        let likes = await this.cacheService.getLikedjobpost(jobpostId, userId)
-        if (likes == 0) {
+    // 회원이 찜 누른 채용공고 리스트 번호 가져오기
+    async getUserLikeJobpostList(userId: number) {
+        return await this.jobpostRepository.getUserLikeJobpostList(userId)
+    }
+
+    // 찜 하기
+    async createJobpostLike(userId: number, jobpostId: number) {
+        try {
             await this.cacheService.setLikedjobpost(jobpostId, userId)
-            setTimeout(() => {
-                this.jobpostRepository.insertLike(userId, jobpostId)
-            }, 1000)
-        } else {
-            setTimeout(() => {
-                this.jobpostRepository.deleteLike(userId, jobpostId)
-            }, 1000)
+            return { message: '찜 목록에 추가했습니다.' }
+        } catch (err) {
+            console.log(err)
+            return { message: '찜 목록 추가에 실패했습니다.' }
         }
-        return 'success'
+    }
+
+    // 찜 삭제
+    async deleteJobpostLike(userId: number, jobpostId: number) {
+        try {
+            // 찜 누른 데이터가 아직 DB에 반영되지 않아서 redis 에 있는지 없는지 체크
+            // DB에 반영되지 않았을때 찜 취소를 하는 경우를 대비
+            const isLikedJobpost = await this.cacheService.isLikedjobpost(
+                jobpostId,
+                userId
+            )
+
+            if (isLikedJobpost === 1) {
+                // 아직 반영되지 않고 있다면? Redis에서만 삭제
+                await this.cacheService.remOneLikedjobpost(jobpostId, userId)
+            } else {
+                // 이미 반영되어서 없다면? DB에서 삭제
+                await this.jobpostRepository.deleteLike(userId, jobpostId)
+            }
+
+            return { message: '찜 목록에서 삭제했습니다.' }
+        } catch (err) {
+            console.log(err)
+            return { message: '찜 목록 삭제에 실패했습니다.' }
+        }
+    }
+
+    // redis에 있는 찜 눌린 채용공고를 DB에 반영
+    // 서버시간 매 10초마다 반영
+    @Cron('*/5 * * * * *')
+    async jobpostLikeInsert() {
+        const likedJobposts = await this.cacheService.getAllLikedjobpost()
+
+        // 찜 눌린 정보가 없을 때
+        if (likedJobposts.length === 0) return
+
+        // 있다면
+        // DB에 반영
+        await this.jobpostRepository.insertLike(likedJobposts.join(','))
+
+        // DB 반영하고 redis 데이터 제거
+        await this.cacheService.remLikedjobpost()
+        console.log('제거완료')
     }
 
     // 채용공고 상세정보
