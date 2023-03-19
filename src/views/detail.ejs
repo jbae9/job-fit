@@ -75,12 +75,12 @@
 
     const likedHtml = !likedJobpostIds.includes(jobpostId)
         ? `<a style="cursor:pointer" onclick="createJobpostLike(${jobpostId})">
-                    <span class="material-symbols-outlined detail-like-icon" id="${jobpostId}">
+                    <span class="material-symbols-outlined likeIcon " id="${jobpostId}">
                         star
                     </span>
                 </a>`
         : `<a style="cursor:pointer" onclick="deleteJobpostLike(${jobpostId})">
-                    <span class="material-symbols-outlined detail-like-icon liked" style="color:#FFEA00" id="${jobpostId}">
+                    <span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
                         star
                     </span>
                 </a>`
@@ -104,15 +104,16 @@
 
             // 채용공고 이미지
             const originalImgUrlHtml = `
-                <img src='${originalImgUrl}' />
+                <div id='like-btn-wrap-${jobpostId}'>
+                    ${likedHtml}    
+                </div>
+                <img src='${originalImgUrl}' />                
             `
             document.getElementById('jobpost-title-image').innerHTML =
                 originalImgUrlHtml
 
             // 채용공고 제목
-            document.getElementById(
-                'jobpost-title'
-            ).innerHTML = `${title} ${likedHtml}`
+            document.getElementById('jobpost-title').innerHTML = title
 
             // 채용공고 회사이름
             document.getElementById('jobpost-company-name').innerHTML =

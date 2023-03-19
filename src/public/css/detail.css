@@ -35,6 +35,8 @@
 
 .jobpost-detail-content-title-image {
     flex-basis: 10rem;
+
+    position: relative;
 }
 
 .jobpost-detail-content-title-image img {
