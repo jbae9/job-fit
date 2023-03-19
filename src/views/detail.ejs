@@ -42,10 +42,6 @@
                     class="jobpost-detail-company-name"
                 ></div>
                 <div
-                    id="company-homepage"
-                    class="jobpost-detail-company-homepage"
-                ></div>
-                <div
                     id="company-representative-name"
                     class="jobpost-detail-company-representative-name"
                 ></div>
@@ -71,8 +67,35 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
 <script>
+    // 회원 고유번호
+    const userId = Number('<%- user?.userId %>')
+
     // 채용공고 고유번호
     const jobpostId = Number('<%= jobpostId %>')
+
+    let likedHtml = ''
+    if (userId) {
+        // 로그인 되어있다면 내가 찜 한 채용공고 번호 리스트 불러오기
+        const likedJobpostIds = getUserLikeJobpost()
+
+        likedHtml = !likedJobpostIds.includes(jobpostId)
+            ? `<a style="cursor:pointer" onclick="createJobpostLike(${jobpostId})">
+                <span class="material-symbols-outlined likeIcon " id="${jobpostId}">
+                    star
+                </span>
+            </a>`
+            : `<a style="cursor:pointer" onclick="deleteJobpostLike(${jobpostId})">
+                <span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
+                    star
+                </span>
+            </a>`
+    } else {
+        // 로그인 안되어있다면
+        likedHtml = `
+            <span class="material-symbols-outlined likeIcon" title="로그인해서 공고를 찜해보세요!">
+                star
+            </span>`
+    }
 
     // 채용공고 정보 가져오기
     axios
@@ -93,7 +116,10 @@
 
             // 채용공고 이미지
             const originalImgUrlHtml = `
-                <img src='${originalImgUrl}' />
+                <div id='like-btn-wrap-${jobpostId}'>
+                    ${likedHtml}    
+                </div>
+                <img src='${originalImgUrl}' />                
             `
             document.getElementById('jobpost-title-image').innerHTML =
                 originalImgUrlHtml
@@ -158,14 +184,11 @@
             document.getElementById('company-image').innerHTML =
                 companyImageHtml
 
-            // 회사 이름
-            document.getElementById('company-name').innerHTML =
-                company.companyName
-
-            // 회사 링크
-            document.getElementById('company-homepage').innerHTML = `
-                <a href='${company.homepageUrl}'>${company.homepageUrl}</a>
+            // 회사 이름 및 링크
+            document.getElementById('company-name').innerHTML = `
+                <a href='${company.homepageUrl}'>${company.companyName}</a>
             `
+
             // 회사 대표자
             const representativeName = !company.representativeName
                 ? '비공개'
