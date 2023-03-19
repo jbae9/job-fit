@@ -223,13 +223,11 @@ export class JobpostRepository extends Repository<Jobpost> {
                     offset = (Number(others['page']) - 1) * limit
                 } else {
                     if (where.length === 0) {
-                        where += `where ${othersKeys[i]}='${
-                            others[othersKeys[i]]
-                        }'`
+                        where += `where ${othersKeys[i]}='${others[othersKeys[i]]
+                            }'`
                     } else {
-                        where += ` and ${othersKeys[i]}='${
-                            others[othersKeys[i]]
-                        }'`
+                        where += ` and ${othersKeys[i]}='${others[othersKeys[i]]
+                            }'`
                     }
                 }
             }
@@ -380,5 +378,20 @@ export class JobpostRepository extends Repository<Jobpost> {
         } catch (error) {
             return { message: '상세정보를 불러올 수 없습니다.' }
         }
+    }
+
+    async insertView(views: [string, string][]) {
+        const values = views.map(([jobpostId, viewCount]) => `(${jobpostId}, ${viewCount}, 0, 0, 0, 0, 0, 0)`).join(', ')
+        let query = `insert into jobpost(jobpost_id, views, company_id, title, content, original_site_name, original_url, original_img_url) values ${values} ON DUPLICATE KEY UPDATE views = VALUES(views)`
+        try {
+            await this.query(query)
+            console.log('db반영완료')
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    async getViewJobpost(jobpostId: number) {
+        return this.cacheService.getViewCount(jobpostId)
     }
 }
