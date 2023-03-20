@@ -155,123 +155,234 @@ export class JobpostRepository extends Repository<Jobpost> {
         offset: number,
         others: object
     ) {
-        let where = ''
-        let having = ''
-        switch (sort) {
-            case 'recent':
-                sort = `j.updated_dtm ${order}`
-                break
-            case 'popular':
-                sort = `likesCount ${order}, views ${order}`
-                break
-            case 'ending':
-                if (order === 'asc') {
-                    sort = `deadline_dtm ${order}`
-                    where = 'where deadline_dtm is not null'
-                    break
-                } else {
-                    sort = `deadline_dtm ${order}`
-                    break
-                }
-            default:
-                sort = `j.updated_dtm ${order}`
-        }
+        if (sort === 'recommended') {
+            let query = `SELECT j.jobpost_id,
+                                j.title,
+                                COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) as distanceScore,
+                                COALESCE(0.5 * ((stackMatches - minStackMatches) / (maxStackMatches - minStackMatches)),0) as stackScore,
+                                COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) as keywordScore,
+                                COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) as salaryScore,
+                                COALESCE(0.05 * ((avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary)),0) as avgSalaryScore,
+                                (COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) +
+                                COALESCE(0.5 * ((stackMatches - minStackMatches) / (maxStackMatches - minStackMatches)),0) +
+                                COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) + 
+                                COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
+                                COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
+                                j.address_upper,
+                                j.address_lower,
+                                j.original_address,
+                                j.salary,
+                                j.original_img_url,
+                                stacks,
+                                stackImgUrls,
+                                keywords,
+                                stackMatches,
+                                j.salary
+                        FROM jobpost j
+                        JOIN (SELECT 
+                                    jp.jobpost_id,
+                                    title,
+                                    (6371 * acos(cos(radians(u.latitude)) * cos(radians(jp.latitude)) * cos(radians(jp.longitude) - radians(u.longitude)) + sin(radians(u.latitude)) * sin(radians(jp.latitude)))) AS distance,
+                                    us.user_id,
+                                    u.longitude,
+                                    u.latitude,
+                                    GROUP_CONCAT(DISTINCT jps.stack_ids) AS jobpoststack,
+                                    GROUP_CONCAT(us.stack_id) AS userstack,
+                                    stacks,
+                                    stackimgurls,
+                                    COUNT(*) AS stackMatches,
+                                    MIN(6371 * acos(cos(radians(u.latitude)) * cos(radians(jp.latitude)) * cos(radians(jp.longitude) - radians(u.longitude)) + sin(radians(u.latitude)) * sin(radians(jp.latitude)))) OVER () as minDistance,
+                                    MAX(6371 * acos(cos(radians(u.latitude)) * cos(radians(jp.latitude)) * cos(radians(jp.longitude) - radians(u.longitude)) + sin(radians(u.latitude)) * sin(radians(jp.latitude)))) OVER () as maxDistance,
+                                    MIN(COUNT(*)) OVER () AS minStackMatches,
+                                    MAX(COUNT(*)) OVER () AS maxStackMatches,
+                                    MIN(jp.salary) OVER () as minSalary,
+                                    MAX(jp.salary) OVER () as maxSalary,
+                                    c.avg_salary,
+                                    MIN(c.avg_salary) OVER () as minAvgSalary,
+                                    MAX(c.avg_salary) OVER () as maxAvgSalary
+                                FROM 
+                                    jobpost jp 
+                                LEFT JOIN (
+                                    SELECT 
+                                        js.jobpost_id,
+                                        GROUP_CONCAT(js.stack_id) AS stack_ids,
+                                        GROUP_CONCAT(s.stack) AS stacks,
+                                        GROUP_CONCAT(s.stack_img_url) AS stackImgUrls 
+                                    FROM 
+                                        jobpoststack js 
+                                    LEFT JOIN 
+                                        stack s ON js.stack_id = s.stack_id 
+                                    GROUP BY 
+                                        js.jobpost_id 
+                                    ORDER BY 
+                                        NULL
+                                ) jps ON jp.jobpost_id = jps.jobpost_id 
+                                INNER JOIN userstack us ON jps.stack_ids LIKE CONCAT('%,', us.stack_id, ',%') 
+                                LEFT JOIN \`user\` u ON us.user_id = u.user_id 
+                                JOIN company c ON jp.company_id = c.company_id 
+                                WHERE 
+                                    us.user_id = 1 
+                                GROUP BY 
+                                    jp.jobpost_id) distanceStacksCalculated ON j.jobpost_id = distanceStacksCalculated.jobpost_id
+                        JOIN (SELECT j.jobpost_id, 
+                                    group_concat(jk.keyword_code) AS jobpostKeyword, 
+                                    group_concat(k.keyword_code) AS userKeyword,
+                                    group_concat(ky.keyword) AS keywords,
+                                    COUNT(*) AS keywordMatches,
+                                    MIN(COUNT(*)) OVER () AS minKeywordMatches,
+                                    MAX(COUNT(*)) OVER () AS maxKeywordMatches
+                                FROM jobpost AS j
+                                LEFT JOIN jobpostkeyword AS jk ON j.jobpost_id = jk.jobpost_id
+                                LEFT JOIN (
+                                    SELECT j.jobpost_id, keyword_code
+                                    FROM likedjobpost
+                                    JOIN jobpostkeyword j ON likedjobpost.jobpost_id = j.jobpost_id
+                                    WHERE user_id = 1
+                                    GROUP BY keyword_code
+                                ) AS k ON jk.keyword_code = k.keyword_code
+                                JOIN keyword ky ON k.keyword_code = ky.keyword_code
+                                WHERE jk.keyword_code IS NOT NULL
+                                GROUP BY j.jobpost_id
+                                HAVING group_concat(jk.keyword_code) IN (group_concat(k.keyword_code))) keywordStats ON j.jobpost_id = keywordStats.jobpost_id
+                        GROUP BY j.jobpost_id
+                        ORDER BY score DESC
+                        LIMIT ?`
 
-        if (others) {
-            const othersKeys = Object.keys(others)
-            for (let i = 0; i < othersKeys.length; i++) {
-                if (othersKeys[i] === 'stack') {
-                    const stacks = others[othersKeys[i]].split(',')
-                    for (let j = 0; j < stacks.length; j++) {
-                        if (having.length === 0) {
-                            having += `having stacks like '%${stacks[j]}%'`
-                        } else {
-                            having += ` and stacks like '%${stacks[j]}%'`
-                        }
-                    }
-                } else if (othersKeys[i] === 'keywordCode') {
-                    const keywordCodes = others[othersKeys[i]].split(',')
-                    for (let j = 0; j < keywordCodes.length; j++) {
-                        if (having.length === 0) {
-                            having += `having keywordCodes like '%${keywordCodes[j]}%'`
-                        } else {
-                            having += ` and keywordCodes like '%${keywordCodes[j]}%'`
-                        }
-                    }
-                } else if (othersKeys[i] === 'search') {
-                    const searchWords = others[othersKeys[i]].split(' ')
-                    for (let j = 0; j < searchWords.length; j++) {
-                        if (where.length === 0) {
-                            where += `where company_name like '%${searchWords[j]}%'
-                            or title like '%${searchWords[j]}%'
-                            or keywords like '%${searchWords[j]}%'
-                            or stacks like '%${searchWords[j]}%'
-                            or address_upper like '%${searchWords[j]}%'
-                            or address_lower like '%${searchWords[j]}%'
-                            or content like '%${searchWords[j]}%'`
-                        } else {
-                            where += ` and company_name like '%${searchWords[j]}%'
-                            or title like '%${searchWords[j]}%'
-                            or keywords like '%${searchWords[j]}%'
-                            or stacks like '%${searchWords[j]}%'
-                            or address_upper like '%${searchWords[j]}%'
-                            or address_lower like '%${searchWords[j]}%'
-                            or content like '%${searchWords[j]}%'`
-                        }
-                    }
-                } else if (othersKeys[i] === 'page') {
-                    offset = (Number(others['page']) - 1) * limit
-                } else {
-                    if (where.length === 0) {
-                        where += `where ${othersKeys[i]}='${others[othersKeys[i]]
-                            }'`
+            const values = [limit]
+            const data = await this.query(query, values)
+
+            const likedUser = await this.cacheService.getAllLikedjobpost()
+
+            return {
+                data,
+                totalCount: 16,
+                likedUser,
+            }
+        } else {
+            let where = ''
+            let having = ''
+            switch (sort) {
+                case 'recent':
+                    sort = `j.updated_dtm ${order}`
+                    break
+                case 'popular':
+                    sort = `likesCount ${order}, views ${order}`
+                    break
+                case 'ending':
+                    if (order === 'asc') {
+                        sort = `deadline_dtm ${order}`
+                        where = 'where deadline_dtm is not null'
+                        break
                     } else {
-                        where += ` and ${othersKeys[i]}='${others[othersKeys[i]]
+                        sort = `deadline_dtm ${order}`
+                        break
+                    }
+                default:
+                    sort = `j.updated_dtm ${order}`
+            }
+
+            if (others) {
+                const othersKeys = Object.keys(others)
+                for (let i = 0; i < othersKeys.length; i++) {
+                    if (othersKeys[i] === 'stack') {
+                        const stacks = others[othersKeys[i]].split(',')
+                        for (let j = 0; j < stacks.length; j++) {
+                            if (having.length === 0) {
+                                having += `having stacks like '%${stacks[j]}%'`
+                            } else {
+                                having += ` and stacks like '%${stacks[j]}%'`
+                            }
+                        }
+                    } else if (othersKeys[i] === 'keywordCode') {
+                        const keywordCodes = others[othersKeys[i]].split(',')
+                        for (let j = 0; j < keywordCodes.length; j++) {
+                            if (having.length === 0) {
+                                having += `having keywordCodes like '%${keywordCodes[j]}%'`
+                            } else {
+                                having += ` and keywordCodes like '%${keywordCodes[j]}%'`
+                            }
+                        }
+                    } else if (othersKeys[i] === 'search') {
+                        const searchWords = others[othersKeys[i]].split(' ')
+                        for (let j = 0; j < searchWords.length; j++) {
+                            if (where.length === 0) {
+                                where += `where company_name like '%${searchWords[j]}%'
+                            or title like '%${searchWords[j]}%'
+                            or keywords like '%${searchWords[j]}%'
+                            or stacks like '%${searchWords[j]}%'
+                            or address_upper like '%${searchWords[j]}%'
+                            or address_lower like '%${searchWords[j]}%'
+                            or content like '%${searchWords[j]}%'`
+                            } else {
+                                where += ` and company_name like '%${searchWords[j]}%'
+                            or title like '%${searchWords[j]}%'
+                            or keywords like '%${searchWords[j]}%'
+                            or stacks like '%${searchWords[j]}%'
+                            or address_upper like '%${searchWords[j]}%'
+                            or address_lower like '%${searchWords[j]}%'
+                            or content like '%${searchWords[j]}%'`
+                            }
+                        }
+                    } else if (othersKeys[i] === 'page') {
+                        offset = (Number(others['page']) - 1) * limit
+                    } else {
+                        if (where.length === 0) {
+                            where += `where ${othersKeys[i]}='${
+                                others[othersKeys[i]]
                             }'`
+                        } else {
+                            where += ` and ${othersKeys[i]}='${
+                                others[othersKeys[i]]
+                            }'`
+                        }
                     }
                 }
             }
-        }
 
-        let query = `select j.jobpost_id, company_name, original_img_url, title, keywords, keywordCodes, stacks, stackimgurls, likesCount, likedUsers, views, deadline_dtm, address_upper, address_lower from jobpost j 
+            let query = `select j.jobpost_id, company_name, original_img_url, title, keywords, keywordCodes, stacks, stackimgurls, likesCount, likedUsers, views, deadline_dtm, address_upper, address_lower from jobpost j 
                         left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
-                        left join keyword k on j.keyword_code = k.keyword_code 
-                        group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
+                                    left join keyword k on j.keyword_code = k.keyword_code 
+                                    group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
                         left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
-                        left join stack s on j.stack_id = s.stack_id  
-                        group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
+                                    left join stack s on j.stack_id = s.stack_id  
+                                    group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
                         left join company c on j.company_id = c.company_id 
                         left join (select j.jobpost_id, count(user_id) as likesCount, group_concat(user_id) as likedUsers from jobfit.jobpost j 
-                        left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
-                        group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
+                                    left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
+                                    group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
                         ${having}
                         order by ${sort}
                         limit ? offset ?`
 
-        const values = [limit, offset]
+            const values = [limit, offset]
 
-        let likedUser = await this.cacheService.getAllLikedjobpost()
+            const likedUser = await this.cacheService.getAllLikedjobpost()
 
-        const data = await this.query(query, values)
+            const data = await this.query(query, values)
 
-        query = `select count(*) as totalCount
-        from (select keywordCodes, stacks from jobpost j 
-            left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
-            left join keyword k on j.keyword_code = k.keyword_code 
-            group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
-            left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
-            left join stack s on j.stack_id = s.stack_id  
-            group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
-            left join company c on j.company_id = c.company_id 
-            left join (select j.jobpost_id, count(user_id) as likesCount, group_concat(user_id) as likedUsers from jobfit.jobpost j 
-            left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
-            group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
-            ${having}
-            order by ${sort}) as results`
+            query = `select count(*) as totalCount
+                    from (select keywordCodes, stacks from jobpost j 
+                    left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
+                    left join keyword k on j.keyword_code = k.keyword_code 
+                    group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
+                    left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
+                    left join stack s on j.stack_id = s.stack_id  
+                    group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
+                    left join company c on j.company_id = c.company_id 
+                    left join (select j.jobpost_id, count(user_id) as likesCount, group_concat(user_id) as likedUsers from jobfit.jobpost j 
+                    left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
+                    group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
+                    ${having}
+                    order by ${sort}) as results`
 
-        const totalCount = await this.query(query, values)
+            const totalCount = await this.query(query, values)
 
-        return { data, totalCount: Number(totalCount[0].totalCount), likedUser }
+            return {
+                data,
+                totalCount: Number(totalCount[0].totalCount),
+                likedUser,
+            }
+        }
     }
 
     async getAddresses() {
