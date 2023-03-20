@@ -160,7 +160,7 @@ export class JobpostService {
         console.log('조회수 redis 제거완료')
     }
 
-    //매일 자정에 하루 전 일을 기준으로 마감기한이 지난 공고 삭제
+    //매일 자정에 하루 전 기준으로 마감기한이 지난 공고 삭제
     @Cron('0 0 0 * * *')
     async deleteOutdatedJobpost() {
         const today = new Date().setDate(new Date().getDate() - 1)
