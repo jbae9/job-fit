@@ -31,11 +31,10 @@ export class SaraminSelenium {
             .build()
         const saraminScraper = new SaraminScraper(
             `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=1&cat_mcls=2&isAjaxRequest=0&page_count=` +
-                this.pageCount +
-                `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
+            this.pageCount +
+            `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
         )
         let allJobsArr = await saraminScraper.getDataAsHtml()
-
         let allCompanies = [
             {
                 companyName: null,
@@ -56,7 +55,7 @@ export class SaraminSelenium {
                 await driver.get(`${allJobsArr[i].originalUrl}`)
                 await driver.wait(
                     until.elementLocated(By.className('wrap_jv_cont')),
-                    3000
+                    10000
                 )
                 const allJobs = await driver
                     .findElement(By.className(`wrap_jview`))
@@ -115,8 +114,8 @@ export class SaraminSelenium {
                     let d = new Date(Date.now())
                     allJobsArr[i].deadlineDtm = new Date(
                         String(d.getFullYear()) +
-                            '/' +
-                            String(allJobsArr[i].deadlineDtm).substring(2, 7)
+                        '/' +
+                        String(allJobsArr[i].deadlineDtm).substring(2, 7)
                     )
                 }
                 try {

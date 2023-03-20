@@ -64,6 +64,7 @@ export class CacheService {
 	}
 
 	async setViewCount(jobpostId: number, userId: number) {
+		if (isNaN(jobpostId)) return
 		let pipe = this.redisClient.pipeline()
 		if (!userId) {
 			//비회원 조회
