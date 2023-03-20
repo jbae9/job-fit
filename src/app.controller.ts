@@ -42,8 +42,7 @@ export class AppController {
 
         if (user)
             return res.render('alert.ejs', {
-                message: '이미 로그인 중입니다.',
-                href: '/',
+                message: '이미 로그인 중입니다.'
             })
 
         return { components: 'login', user: user }

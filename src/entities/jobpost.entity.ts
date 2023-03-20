@@ -57,22 +57,22 @@ export class Jobpost {
     })
     stacks: Stack[]
 
-    @Column('int')
+    @Column('int', { nullable: true })
     companyId: number
 
-    @Column('varchar')
+    @Column('varchar', { nullable: true })
     title: string
 
-    @Column('mediumtext')
+    @Column('mediumtext', { nullable: true })
     content: string
 
     @Column('int', { nullable: true })
     salary: number | null
 
-    @Column('varchar', { length: 100 })
+    @Column('varchar', { length: 100, nullable: true })
     originalSiteName: string
 
-    @Column('varchar', { length: 1000 })
+    @Column('varchar', { length: 1000, nullable: true })
     originalUrl: string
 
     @Column('varchar', { length: 1000, nullable: true })

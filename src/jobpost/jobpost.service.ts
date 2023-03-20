@@ -151,10 +151,11 @@ export class JobpostService {
     @Cron('* * * * *')
     async jobpostViewInsert() {
         const viewJobposts = Object.entries(await this.cacheService.getAllViews())
-
         if (viewJobposts.length === 0) return
-        await this.jobpostRepository.insertView(viewJobposts)
 
-        console.log('조회수 redis 제거완료')
+        const values = viewJobposts.map(([jobpostId, viewCount]) => `(${jobpostId}, ${viewCount})`).join(', ')
+
+        await this.jobpostRepository.insertView(values)
+        console.log('조회수 redis 이동완료')
     }
 }

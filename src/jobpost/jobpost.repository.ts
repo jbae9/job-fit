@@ -380,9 +380,8 @@ export class JobpostRepository extends Repository<Jobpost> {
         }
     }
 
-    async insertView(views: [string, string][]) {
-        const values = views.map(([jobpostId, viewCount]) => `(${jobpostId}, ${viewCount}, 0, 0, 0, 0, 0, 0)`).join(', ')
-        let query = `insert into jobpost(jobpost_id, views, company_id, title, content, original_site_name, original_url, original_img_url) values ${values} ON DUPLICATE KEY UPDATE views = VALUES(views)`
+    async insertView(views: string) {
+        let query = `insert into jobpost(jobpost_id, views) values ${views} ON DUPLICATE KEY UPDATE views = VALUES(views)`
         try {
             await this.query(query)
             console.log('db반영완료')
