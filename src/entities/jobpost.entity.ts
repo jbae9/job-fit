@@ -75,7 +75,7 @@ export class Jobpost {
     @Column('varchar', { length: 1000 })
     originalUrl: string
 
-    @Column('varchar', { length: 1000 })
+    @Column('varchar', { length: 1000, nullable: true })
     originalImgUrl: string | null
 
     @Column('datetime', { nullable: true })
