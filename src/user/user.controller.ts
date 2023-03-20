@@ -97,4 +97,9 @@ export class UserController {
     async getLikedJobposts(@Param('userId') userId: number) {
         return await this.userService.getLikedJobposts(userId)
     }
+
+    @Get('/:userId/recommend')
+    async recommendUserJobposts(@Param('userId') userId: number) {
+        return await this.userService.getRecommendJobpost(userId)
+    }
 }

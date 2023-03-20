@@ -10,11 +10,13 @@ import redisStore from 'cache-manager-redis-store'
 import { forwardRef } from '@nestjs/common/utils'
 import { AuthModule } from 'src/auth/auth.module'
 import { Stack } from 'src/entities/stack.entity'
+import { StackService } from 'src/stack/stack.service'
+import { Jobpost } from 'src/entities/jobpost.entity'
 
 @Module({
     imports: [
         forwardRef(() => AuthModule),
-        TypeOrmModule.forFeature([User, Stack]),
+        TypeOrmModule.forFeature([User, Stack, Jobpost]),
         JwtModule.registerAsync({
             imports: [ConfigModule],
             useClass: JwtConfigService,
@@ -32,7 +34,7 @@ import { Stack } from 'src/entities/stack.entity'
             }),
         }),
     ],
-    providers: [UserService],
+    providers: [UserService, StackService],
     exports: [UserService],
     controllers: [UserController],
 })
