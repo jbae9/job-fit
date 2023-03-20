@@ -12,7 +12,7 @@ import { JobpostService } from './jobpost.service'
 
 @Controller('api/jobpost')
 export class JobpostController {
-    constructor(private readonly jobpostService: JobpostService) { }
+    constructor(private readonly jobpostService: JobpostService) {}
 
     @Cron('0 0 9,19 * * *') // 매일 오전 9시, 오후 7시
     @Get('/saramin')
@@ -32,19 +32,6 @@ export class JobpostController {
         return await this.jobpostService.getProgrammersJobposts()
     }
 
-    @Get('/filter')
-    async getFilteredJobposts(
-        @Query()
-        query: {
-            sort?: string
-            order?: string
-            limit?: string
-            offset?: string
-        }
-    ) {
-        return await this.jobpostService.getFilteredJobposts(query)
-    }
-
     @Get('/filter/:userId')
     async getRecommendedJobposts(
         @Query()
@@ -56,7 +43,21 @@ export class JobpostController {
         },
         @Param('userId') userId: number
     ) {
+        console.log(userId)
         return await this.jobpostService.getRecommendedJobposts(query, userId)
+    }
+
+    @Get('/filter')
+    async getFilteredJobposts(
+        @Query()
+        query: {
+            sort?: string
+            order?: string
+            limit?: string
+            offset?: string
+        }
+    ) {
+        return await this.jobpostService.getFilteredJobposts(query)
     }
 
     @Get('/addresses')

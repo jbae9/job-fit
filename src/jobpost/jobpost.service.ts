@@ -176,10 +176,14 @@ export class JobpostService {
 
     @Cron('*/5 * * * * *')
     async jobpostViewInsert() {
-        const viewJobposts = Object.entries(await this.cacheService.getAllViews())
+        const viewJobposts = Object.entries(
+            await this.cacheService.getAllViews()
+        )
         if (viewJobposts.length === 0) return
 
-        const values = viewJobposts.map(([jobpostId, viewCount]) => `${jobpostId}, ${viewCount}`).join('/')
+        const values = viewJobposts
+            .map(([jobpostId, viewCount]) => `${jobpostId}, ${viewCount}`)
+            .join('/')
         await this.jobpostRepository.updateView(values)
 
         await this.cacheService.remViewjobpost()

@@ -159,17 +159,37 @@
                 break
         }
 
-        $.ajax({
-            type: 'GET',
-            url: `/api/jobpost/filter${url.search}`,
-            success: function (response) {
-                $('#searchCount').html(
-                    `${response.totalCount}개의 공고를 찾았습니다`
-                )
-                showJobposts(response.data, likedJobpostIds)
-                showPagination(response.totalCount, page)
-            },
-        })
+        if (sort === 'recommended') {
+            const userId = '<%= user?.userId %>'
+            if (userId) {
+                $.ajax({
+                    type: "GET",
+                    url: `/api/jobpost/filter/${userId}/${url.search}`,
+                    success: function (response) {
+                        $('#searchCount').html(
+                            `${response.totalCount}개의 공고를 찾았습니다`
+                        )
+                        showJobposts(response.data, likedJobpostIds)
+                        showPagination(response.totalCount, page)
+                    }
+                })
+            } else {
+                refresh = 1
+                modalOpen('로그인해서 공고를 추천 받아보세요!', '/')
+            }
+        } else {
+            $.ajax({
+                type: 'GET',
+                url: `/api/jobpost/filter${url.search}`,
+                success: function (response) {
+                    $('#searchCount').html(
+                        `${response.totalCount}개의 공고를 찾았습니다`
+                    )
+                    showJobposts(response.data, likedJobpostIds)
+                    showPagination(response.totalCount, page)
+                },
+            })
+        }
 
         $.ajax({
             type: 'GET',

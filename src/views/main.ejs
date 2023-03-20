@@ -127,12 +127,13 @@
         // 로그인 한 회원이 찜 한 채용공고 번호 리스트
         const likedJobpostIds = getUserLikeJobpost()
 
-        '<% if(user) { %>'
+        '<% if (user) { %>'
         const userId = '<%= user.userId %>'
         $.ajax({
             type: "GET",
             url: `/api/jobpost/filter/${userId}/?sort=recommended&order=desc&limit=12`,
             success: function (response) {
+                console.log(response)
                 showCarouselJobposts('carouselRecommended', response.data, likedJobpostIds)
             }
         })
