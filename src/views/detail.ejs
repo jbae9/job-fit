@@ -2,61 +2,25 @@
     <div class="jobpost-detail-container-wrap">
         <div class="jobpost-detail-container">
             <div class="jobpost-detail-content-title-wrap">
-                <div
-                    id="jobpost-title-image"
-                    class="jobpost-detail-content-title-image"
-                ></div>
+                <div id="jobpost-title-image" class="jobpost-detail-content-title-image"></div>
                 <div class="jobpost-detail-content-title-desc">
-                    <div
-                        id="jobpost-title"
-                        class="jobpost-detail-content-title"
-                    ></div>
-                    <div
-                        id="jobpost-company-name"
-                        class="jobpost-detail-content-company-name"
-                    ></div>
-                    <div
-                        id="jobpost-address"
-                        class="jobpost-detail-content-address"
-                    ></div>
-                    <div
-                        id="jobpost-deadline"
-                        class="jobpost-detail-content-deadline"
-                    ></div>
-                    <div
-                        id="jobpost-stacks"
-                        class="jobpost-detail-content-stacks"
-                    ></div>
+                    <div id="jobpost-title" class="jobpost-detail-content-title"></div>
+                    <div id="jobpost-company-name" class="jobpost-detail-content-company-name"></div>
+                    <div id="jobpost-address" class="jobpost-detail-content-address"></div>
+                    <div id="jobpost-deadline" class="jobpost-detail-content-deadline"></div>
+                    <div id="jobpost-stacks" class="jobpost-detail-content-stacks"></div>
                 </div>
             </div>
             <div id="jobpost-content" class="jobpost-detail-content-wrap"></div>
         </div>
         <div class="jobpost-detail-company-container">
             <div class="jobpost-detail-company-wrap">
-                <div
-                    id="company-image"
-                    class="jobpost-detail-company-image"
-                ></div>
-                <div
-                    id="company-name"
-                    class="jobpost-detail-company-name"
-                ></div>
-                <div
-                    id="company-representative-name"
-                    class="jobpost-detail-company-representative-name"
-                ></div>
-                <div
-                    id="company-employees"
-                    class="jobpost-detail-company-employees"
-                ></div>
-                <div
-                    id="company-founded-year"
-                    class="jobpost-detail-company-founded-year"
-                ></div>
-                <div
-                    id="company-avg-salary"
-                    class="jobpost-detail-company-avg-salary"
-                ></div>
+                <div id="company-image" class="jobpost-detail-company-image"></div>
+                <div id="company-name" class="jobpost-detail-company-name"></div>
+                <div id="company-representative-name" class="jobpost-detail-company-representative-name"></div>
+                <div id="company-employees" class="jobpost-detail-company-employees"></div>
+                <div id="company-founded-year" class="jobpost-detail-company-founded-year"></div>
+                <div id="company-avg-salary" class="jobpost-detail-company-avg-salary"></div>
             </div>
             <a id="jobpost-link" class="jobpost-link">
                 <div id="jobpost-link-btn" class="jobpost-link-btn"></div>
@@ -69,15 +33,12 @@
 <script>
     // 회원 고유번호
     const userId = Number('<%- user?.userId %>')
-
     // 채용공고 고유번호
     const jobpostId = Number('<%= jobpostId %>')
-
     let likedHtml = ''
     if (userId) {
         // 로그인 되어있다면 내가 찜 한 채용공고 번호 리스트 불러오기
         const likedJobpostIds = getUserLikeJobpost()
-
         likedHtml = !likedJobpostIds.includes(jobpostId)
             ? `<a style="cursor:pointer" onclick="createJobpostLike(${jobpostId})">
                 <span class="material-symbols-outlined likeIcon " id="${jobpostId}">
@@ -96,7 +57,6 @@
                 star
             </span>`
     }
-
     // 채용공고 정보 가져오기
     axios
         .get(`/api/jobpost/${jobpostId}`)
@@ -113,7 +73,6 @@
                 originalSiteName,
                 originalUrl,
             } = res.data
-
             // 채용공고 이미지
             const originalImgUrlHtml = `
                 <div id='like-btn-wrap-${jobpostId}'>
@@ -123,33 +82,28 @@
             `
             document.getElementById('jobpost-title-image').innerHTML =
                 originalImgUrlHtml
-
             // 채용공고 제목
             document.getElementById('jobpost-title').innerHTML = title
-
             // 채용공고 회사이름
             document.getElementById('jobpost-company-name').innerHTML =
                 company.companyName
-
             // 채용공고 주소
             const addressHtml = `
                 <span class="material-symbols-outlined">location_on</span>
                 ${addressUpper} ${addressLower}
             `
             document.getElementById('jobpost-address').innerHTML = addressHtml
-
             // 채용공고 마감날
             const jobpostDeadline = !deadlineDtm
                 ? '상시 채용'
                 : new Date(deadlineDtm).toLocaleDateString('ko-KR', {
-                      dateStyle: 'long',
-                  })
+                    dateStyle: 'long',
+                })
             const deadlineHtml = `
                 <span class="material-symbols-outlined">calendar_month</span>
                 ${jobpostDeadline}
             `
             document.getElementById('jobpost-deadline').innerHTML = deadlineHtml
-
             // 채용공고 스택
             let stacksHtml = ''
             for (let stack of stacks) {
@@ -158,7 +112,6 @@
                 `
             }
             document.getElementById('jobpost-stacks').innerHTML = stacksHtml
-
             //  채용공고 내용
             let text = ''
             let result = ''
@@ -174,21 +127,17 @@
             if (originalSiteName === '사람인') {
                 result = content
             }
-
             document.getElementById('jobpost-content').innerHTML = result
-
             // 회사 이미지
             const companyImageHtml = `
                 <img src='${company.imageUrl}' />
             `
             document.getElementById('company-image').innerHTML =
                 companyImageHtml
-
             // 회사 이름 및 링크
             document.getElementById('company-name').innerHTML = `
                 <a href='${company.homepageUrl}'>${company.companyName}</a>
             `
-
             // 회사 대표자
             const representativeName = !company.representativeName
                 ? '비공개'
@@ -202,7 +151,6 @@
             `
             document.getElementById('company-representative-name').innerHTML =
                 representativeNameHtml
-
             // 회사 사원수
             const employeesNumber = !company.numberEmployees
                 ? '비공개'
@@ -216,7 +164,6 @@
             `
             document.getElementById('company-employees').innerHTML =
                 employeesNumberHtml
-
             // 회사 설립연도
             const foundedYear = !company.foundedYear
                 ? '비공개'
@@ -230,7 +177,6 @@
             `
             document.getElementById('company-founded-year').innerHTML =
                 foundedYearHtml
-
             // 회사 평균연봉
             const avgSalary = !company.avgSalary
                 ? '비공개'
@@ -244,15 +190,13 @@
             `
             document.getElementById('company-avg-salary').innerHTML =
                 avgSalaryHtml
-
             // 채용공고 링크
             document.getElementById('jobpost-link').href = `${originalUrl}`
             document.getElementById(
                 'jobpost-link-btn'
             ).innerHTML = `${originalSiteName} 채용공고 보러가기`
         })
-        .catch((err) => {})
-
+        .catch((err) => { })
     // 프로그래머스 채용공고 내용 파싱
     function programmersContent(content) {
         // undefined 제거
@@ -261,15 +205,12 @@
         text = text.replaceAll('null', '')
         // 줄바꿈
         text = text.replaceAll('\r\n', '<br>')
-
         return text
     }
-
     // 원티드 채용공고 내용 파싱
     function wantedContent(content) {
         let { requirements, main_tasks, intro, benefits, preferred_points } =
             JSON.parse(content)
-
         let text =
             intro +
             '<br><br>' +
@@ -280,9 +221,7 @@
             preferred_points +
             '<br><br>' +
             benefits
-
         text = text.replaceAll('\n', '<br>')
-
         return text
     }
 </script>

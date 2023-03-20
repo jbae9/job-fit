@@ -12,7 +12,7 @@ import { JobpostService } from './jobpost.service'
 
 @Controller('api/jobpost')
 export class JobpostController {
-    constructor(private readonly jobpostService: JobpostService) {}
+    constructor(private readonly jobpostService: JobpostService) { }
 
     @Cron('0 0 9,19 * * *') // 매일 오전 9시, 오후 7시
     @Get('/saramin')
@@ -88,5 +88,11 @@ export class JobpostController {
     @Get('/:jobpostId')
     async getJobpostDetail(@Param('jobpostId') jobpostId: number) {
         return await this.jobpostService.getJobpostDetail(jobpostId)
+    }
+
+    //조회수 찾기
+    @Get('/view/:jobpostId')
+    async getViewJobpost(@Param('jobpostId') jobpostId: number) {
+        return await this.jobpostService.getViewJobpost(jobpostId)
     }
 }
