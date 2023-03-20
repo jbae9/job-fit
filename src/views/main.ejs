@@ -126,9 +126,10 @@
 <script>
     $(document).ready(function () {
         '<% if(user) { %>'
+        const userId = '<%= user.userId %>'
         $.ajax({
             type: "GET",
-            url: '/api/jobpost/filter?sort=recommended&order=desc&limit=12',
+            url: `/api/jobpost/filter/${userId}/?sort=recommended&order=desc&limit=12`,
             success: function (response) {
                 showCarouselJobposts('carouselRecommended', response.data, response.likedUser)
             }

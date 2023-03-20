@@ -37,6 +37,20 @@ export class JobpostController {
         return await this.jobpostService.getFilteredJobposts(query)
     }
 
+    @Get('/filter/:userId')
+    async getRecommendedJobposts(
+        @Query()
+        query: {
+            sort?: string
+            order?: string
+            limit?: string
+            offset?: string
+        },
+        @Param('userId') userId: number
+    ) {
+        return await this.jobpostService.getRecommendedJobposts(query, userId)
+    }
+
     @Get('/addresses')
     async getAddresses() {
         return await this.jobpostService.getAddresses()
