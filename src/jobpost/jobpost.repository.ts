@@ -16,6 +16,8 @@ export class JobpostRepository extends Repository<Jobpost> {
         private companyRepository: CompanyRepository,
         @InjectRepository(Keyword)
         private keywordRepository: Repository<Keyword>,
+        @InjectRepository(Jobpost)
+        private jobpostRepository: Repository<Jobpost>,
         private cacheService: CacheService,
         @InjectRepository(Stack) private stackRepository: Repository<Stack>
     ) {
@@ -223,13 +225,11 @@ export class JobpostRepository extends Repository<Jobpost> {
                     offset = (Number(others['page']) - 1) * limit
                 } else {
                     if (where.length === 0) {
-                        where += `where ${othersKeys[i]}='${
-                            others[othersKeys[i]]
-                        }'`
+                        where += `where ${othersKeys[i]}='${others[othersKeys[i]]
+                            }'`
                     } else {
-                        where += ` and ${othersKeys[i]}='${
-                            others[othersKeys[i]]
-                        }'`
+                        where += ` and ${othersKeys[i]}='${others[othersKeys[i]]
+                            }'`
                     }
                 }
             }
@@ -380,5 +380,20 @@ export class JobpostRepository extends Repository<Jobpost> {
         } catch (error) {
             return { message: '상세정보를 불러올 수 없습니다.' }
         }
+    }
+
+    async updateView(views: string) {
+        const viewCounts = views.split('/').map((view: string) => {
+            const [id, count] = view.split(',')
+            return { jobpostId: parseInt(id), views: parseInt(count) }
+        })
+
+        for (const { jobpostId, views } of viewCounts) {
+            await this.jobpostRepository.increment({ jobpostId }, 'views', views)
+        }
+    }
+
+    async getViewJobpost(jobpostId: number) {
+        return this.cacheService.getViewCount(jobpostId)
     }
 }

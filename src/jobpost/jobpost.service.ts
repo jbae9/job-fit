@@ -14,7 +14,7 @@ export class JobpostService {
         private companyRepository: CompanyRepository,
         private cacheService: CacheService,
         private logger: Logger
-    ) {}
+    ) { }
     async getSaraminJobposts() {
         const saraminScraper = new SaraminSelenium('100')
         const { companies, jobposts } = await saraminScraper.getSaraminScraper()
@@ -136,11 +136,27 @@ export class JobpostService {
 
         // DB 반영하고 redis 데이터 제거
         await this.cacheService.remLikedjobpost()
-        console.log('제거완료')
+        console.log('좋아요 redis 제거완료')
     }
 
     // 채용공고 상세정보
     async getJobpostDetail(jobpostId: number) {
         return await this.jobpostRepository.getJobpostDetail(jobpostId)
+    }
+
+    async getViewJobpost(jobpostId: number) {
+        return await this.jobpostRepository.getViewJobpost(jobpostId)
+    }
+
+    @Cron('*/5 * * * * *')
+    async jobpostViewInsert() {
+        const viewJobposts = Object.entries(await this.cacheService.getAllViews())
+        if (viewJobposts.length === 0) return
+
+        const values = viewJobposts.map(([jobpostId, viewCount]) => `${jobpostId}, ${viewCount}`).join('/')
+        await this.jobpostRepository.updateView(values)
+
+        await this.cacheService.remViewjobpost()
+        console.log('조회수 redis 제거완료')
     }
 }

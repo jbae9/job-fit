@@ -180,7 +180,7 @@
         axios
             .post(`/api/jobpost/${jobpostId}/like`, { userId })
             .then((res) => {
-                alert(res.data.message)
+                modalOpen(res.data.message)
 
                 // 요소 변경
                 const likedHtml = `
@@ -206,7 +206,7 @@
         axios
             .delete(`/api/jobpost/${jobpostId}/like`, { data: { userId } })
             .then((res) => {
-                alert(res.data.message)
+                modalOpen(res.data.message)
 
                 // 요소 변경
                 const likedHtml = `

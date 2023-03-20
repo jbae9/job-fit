@@ -17,7 +17,7 @@ export class AppController {
     constructor(
         private readonly appService: AppService,
         private readonly cacheService: CacheService
-    ) {}
+    ) { }
 
     @UseGuards(JwtAuthGuard)
     @Get()
@@ -42,8 +42,7 @@ export class AppController {
 
         if (user)
             return res.render('alert.ejs', {
-                message: '이미 로그인 중입니다.',
-                href: '/',
+                message: '이미 로그인 중입니다.'
             })
 
         return { components: 'login', user: user }
@@ -124,8 +123,6 @@ export class AppController {
             : req.authResult.user
 
         this.cacheService.setViewCount(jobpostId, user?.userId)
-        const view = await this.cacheService.getViewCount(jobpostId)
-        console.log('조회수:' + view)
 
         return { components: 'detail', user: user, jobpostId }
     }
