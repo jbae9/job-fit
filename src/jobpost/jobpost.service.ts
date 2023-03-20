@@ -159,4 +159,20 @@ export class JobpostService {
         await this.cacheService.remViewjobpost()
         console.log('조회수 redis 제거완료')
     }
+
+    //매일 자정에 하루 전 일을 기준으로 마감기한이 지난 공고 삭제
+    @Cron('0 0 0 * * *')
+    async deleteOutdatedJobpost() {
+        const today = new Date().setDate(new Date().getDate() - 1)
+        let intlToday = new Intl.DateTimeFormat("ko-KR").format(today)
+        intlToday = intlToday.replace(/(\s*)/g, '').slice(0, -1)
+
+        const count = await this.jobpostRepository.getOutdatedJobpost(intlToday)
+
+        if (count == 0) return
+
+        await this.jobpostRepository.deleteOutdatedJobpost(intlToday)
+
+        console.log('마감 공고 삭제완료')
+    }
 }

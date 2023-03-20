@@ -396,4 +396,26 @@ export class JobpostRepository extends Repository<Jobpost> {
     async getViewJobpost(jobpostId: number) {
         return this.cacheService.getViewCount(jobpostId)
     }
+
+    async deleteOutdatedJobpost(today: string) {
+        const query = `delete from jobpost where deadline_dtm < '${today}'`
+
+        try {
+            await this.query(query)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    async getOutdatedJobpost(today: string) {
+        const query = `select count(jobpost_id) as count from jobpost where deadline_dtm < '${today}'`
+        let count = 0
+        try {
+            count = await this.query(query)
+        } catch (err) {
+            console.log(err)
+        }
+
+        return count[0]['count']
+    }
 }

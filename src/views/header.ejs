@@ -39,16 +39,17 @@
 </div>
 
 <script>
+    let refresh = 1
     function logout() {
         axios
             .post('/api/user/logout')
             .then((res) => {
-                alert(res.data.message)
-                location.href = '/'
+                url = '/'
+                modalOpen(res.data.message)
             })
             .catch((err) => {
-                alert(err.response.data.message)
-                location.href = '/'
+                url = '/'
+                modalOpen(err.response.data.message)
             })
     }
 
