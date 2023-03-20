@@ -106,8 +106,7 @@
         </div>
     </div>
     <nav class="pagination" id="pagination" aria-label="Page navigation">
-        <ul>
-        </ul>
+        <ul></ul>
     </nav>
 </div>
 
@@ -125,6 +124,9 @@
         협업툴: [],
     }
     $(document).ready(function () {
+        // 로그인 한 회원이 찜 한 채용공고 번호 리스트
+        const likedJobpostIds = getUserLikeJobpost()
+
         let url = new URL(window.location.href)
         let sort = url.searchParams.get('sort') || 'recent'
         let order = url.searchParams.get('order') || 'desc'
@@ -164,7 +166,7 @@
                 $('#searchCount').html(
                     `${response.totalCount}개의 공고를 찾았습니다`
                 )
-                showJobposts(response.data)
+                showJobposts(response.data, likedJobpostIds)
                 showPagination(response.totalCount, page)
             },
         })
@@ -308,9 +310,14 @@
         }
     })
 
-    function showJobposts(response) {
+    function showJobposts(response, likedJobpostIds) {
         for (let i = 0; i < response.length; i++) {
-            const tempHtml = createJobpostCard(response[i])
+            // 채용공고 번호
+            const jobpostId = response[i].jobpost_id
+            // 채용공고가 좋아요가 눌린건지 안눌린건지 boolean
+            const isLiked = likedJobpostIds.includes(jobpostId) ? true : false
+            console.log(isLiked)
+            const tempHtml = createJobpostCard(response[i], isLiked)
 
             $(`#jobpostRow${Math.floor(i / 4) + 1}`).append(tempHtml)
         }

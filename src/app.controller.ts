@@ -28,8 +28,6 @@ export class AppController {
             ? null
             : req.authResult.user
 
-        console.log(user)
-
         return { components: 'main', user: user }
     }
 
@@ -45,7 +43,6 @@ export class AppController {
         if (user)
             return res.render('alert.ejs', {
                 message: '이미 로그인 중입니다.',
-                href: '/',
             })
 
         return { components: 'login', user: user }
@@ -126,8 +123,6 @@ export class AppController {
             : req.authResult.user
 
         this.cacheService.setViewCount(jobpostId, user?.userId)
-        const view = await this.cacheService.getViewCount(jobpostId)
-        console.log('조회수:' + view)
 
         return { components: 'detail', user: user, jobpostId }
     }

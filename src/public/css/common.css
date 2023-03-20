@@ -2,7 +2,8 @@
 
 @font-face {
     font-family: 'EliceDigitalBaeum-Bd';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2') format('woff2');
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2')
+        format('woff2');
     font-weight: normal;
     font-style: normal;
 }
@@ -42,7 +43,7 @@ button:focus {
 }
 
 button .muted {
-    color: rgb(69, 87, 117, 0.8)
+    color: rgb(69, 87, 117, 0.8);
 }
 
 .card-title {
@@ -90,21 +91,13 @@ button .muted {
 }
 
 .material-symbols-outlined {
-    font-variation-settings:
-        'FILL' 1,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 48;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
     color: rgb(69, 87, 117, 0.8);
-    font-size: 18px
+    font-size: 18px;
 }
 
 .material-symbols-outlined.likeIcon {
-    font-variation-settings:
-        'FILL' 0,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 48;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
     color: rgb(69, 87, 117, 0.8);
     font-size: 30px;
     position: absolute;
@@ -114,12 +107,8 @@ button .muted {
 }
 
 .material-symbols-outlined.liked {
-    font-variation-settings:
-        'FILL' 1,
-        'wght' 400,
-        'GRAD' 0,
-        'opsz' 48;
-    color: #FFEA00;
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+    color: #ffea00;
 }
 
 .tooltip {
@@ -163,10 +152,10 @@ button .muted {
     border-color: black transparent transparent transparent;
 }
 
-div[id^="jobpostRow"] {
+div[id^='jobpostRow'] {
     margin-bottom: 20px;
 }
 
 .card {
-    min-height: 399.61px
+    min-height: 399.61px;
 }
