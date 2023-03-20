@@ -71,28 +71,28 @@
                     <ul class="dropdown-menu">
                         <% if (!user) { %>
                             <li title="기술스택에 딱 맞는 현재 공고를 보고싶으면 로그인해주세요!">
-                                <a class="dropdown-item disabled" href="/jobposts?sort=recent&order=desc">추천순</a>
+                                <a class="dropdown-item disabled">추천순</a>
                             </li>
                             <% } else { %>
                                 <li>
                                     <a class="dropdown-item"
-                                        onclick="appendQueryParameter({sort: 'recent', order: 'desc'})"
+                                        onclick="appendQueryParameter({sort: 'recommended', order: 'desc', page: null, limit: null, offset: null})"
                                         id="recommend">추천순</a>
                                 </li>
                                 <% } %>
                                     <li>
                                         <a class="dropdown-item"
-                                            onclick="appendQueryParameter({sort: 'recent', order: 'desc'})"
+                                            onclick="appendQueryParameter({sort: 'recent', order: 'desc', page: null, limit: null, offset: null})"
                                             id="recent">최신순</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item"
-                                            onclick="appendQueryParameter({sort: 'popular', order: 'desc'})"
+                                            onclick="appendQueryParameter({sort: 'popular', order: 'desc', page: null, limit: null, offset: null})"
                                             id="popular">인기순</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item"
-                                            onclick="appendQueryParameter({sort: 'ending', order: 'asc'})"
+                                            onclick="appendQueryParameter({sort: 'ending', order: 'asc', page: null, limit: null, offset: null})"
                                             id="ending">마감순</a>
                                     </li>
                     </ul>
@@ -146,8 +146,11 @@
                 $('#currentOrder').html('마감순')
                 $('#ending').addClass('active')
                 break
-            case 'recent':
             case 'recommended':
+                $('#currentOrder').html('추천순')
+                $('#recommend').addClass('active')
+                break
+            case 'recent':
             default:
                 $('#currentOrder').html('최신순')
                 $('#recent').addClass('active')

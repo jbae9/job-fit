@@ -158,6 +158,7 @@ export class JobpostRepository extends Repository<Jobpost> {
         if (sort === 'recommended') {
             let query = `SELECT j.jobpost_id,
                                 j.title,
+                                company_name,
                                 COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) as distanceScore,
                                 COALESCE(0.5 * ((stackMatches - minStackMatches) / (maxStackMatches - minStackMatches)),0) as stackScore,
                                 COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) as keywordScore,
@@ -174,10 +175,11 @@ export class JobpostRepository extends Repository<Jobpost> {
                                 j.salary,
                                 j.original_img_url,
                                 stacks,
-                                stackImgUrls,
+                                stackimgurls,
                                 keywords,
                                 stackMatches,
-                                j.salary
+                                j.salary,
+                                COUNT(*) OVER () as totalCount
                         FROM jobpost j
                         JOIN (SELECT 
                                     jp.jobpost_id,
@@ -199,7 +201,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                                     MAX(jp.salary) OVER () as maxSalary,
                                     c.avg_salary,
                                     MIN(c.avg_salary) OVER () as minAvgSalary,
-                                    MAX(c.avg_salary) OVER () as maxAvgSalary
+                                    MAX(c.avg_salary) OVER () as maxAvgSalary,
+                                    c.company_name
                                 FROM 
                                     jobpost jp 
                                 LEFT JOIN (
@@ -255,7 +258,7 @@ export class JobpostRepository extends Repository<Jobpost> {
 
             return {
                 data,
-                totalCount: 16,
+                totalCount: data[0].totalCount,
                 likedUser,
             }
         } else {
