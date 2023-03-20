@@ -16,6 +16,8 @@ export class JobpostRepository extends Repository<Jobpost> {
         private companyRepository: CompanyRepository,
         @InjectRepository(Keyword)
         private keywordRepository: Repository<Keyword>,
+        @InjectRepository(Jobpost)
+        private jobpostRepository: Repository<Jobpost>,
         private cacheService: CacheService,
         @InjectRepository(Stack) private stackRepository: Repository<Stack>
     ) {
@@ -380,13 +382,14 @@ export class JobpostRepository extends Repository<Jobpost> {
         }
     }
 
-    async insertView(views: string) {
-        let query = `insert into jobpost(jobpost_id, views) values ${views} ON DUPLICATE KEY UPDATE views = VALUES(views)`
-        try {
-            await this.query(query)
-            console.log('db반영완료')
-        } catch (err) {
-            console.log(err)
+    async updateView(views: string) {
+        const viewCounts = views.split('/').map((view: string) => {
+            const [id, count] = view.split(',')
+            return { jobpostId: parseInt(id), views: parseInt(count) }
+        })
+
+        for (const { jobpostId, views } of viewCounts) {
+            await this.jobpostRepository.increment({ jobpostId }, 'views', views)
         }
     }
 
