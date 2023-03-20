@@ -17,7 +17,7 @@ export class AppController {
     constructor(
         private readonly appService: AppService,
         private readonly cacheService: CacheService
-    ) { }
+    ) {}
 
     @UseGuards(JwtAuthGuard)
     @Get()
@@ -42,7 +42,7 @@ export class AppController {
 
         if (user)
             return res.render('alert.ejs', {
-                message: '이미 로그인 중입니다.'
+                message: '이미 로그인 중입니다.',
             })
 
         return { components: 'login', user: user }
