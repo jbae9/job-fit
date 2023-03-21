@@ -23,15 +23,11 @@
 }
 
 #keyword-card {
-    color: rgb(69, 87, 117)
+    color: rgb(69, 87, 117);
 }
 
 #resetButton {
-    font-variation-settings:
-        'FILL' 0,
-        'wght' 700,
-        'GRAD' 0,
-        'opsz' 48;
+    font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 48;
     color: rgb(206, 0, 0);
     font-size: 25px;
     position: absolute;
@@ -63,9 +59,13 @@
 
 .order {
     padding: 10px 0;
-    margin: 20px 0;
     position: relative;
     display: flex;
+    align-items: center;
+}
+
+#sortDropDown {
+    display: inline-flex;
     align-items: center;
 }
 
@@ -80,22 +80,18 @@
     right: 0;
 }
 
-#orderDropdown {
-    position: absolute;
-}
-
 #pagination a {
     cursor: pointer;
 }
 
 #keywordDetail,
-details[id^=stackDetail] {
+details[id^='stackDetail'] {
     margin: 0 10px;
     padding: 5px;
 }
 
 #keywordsInput,
-input[id^=stacksInput] {
+input[id^='stacksInput'] {
     width: 80px;
     height: 30px;
     margin: 0 10px;
@@ -103,12 +99,12 @@ input[id^=stacksInput] {
 }
 
 #keywordList,
-div[id^=stacksList] {
+div[id^='stacksList'] {
     margin: 5px;
 }
 
 summary {
-    height: 40px
+    height: 40px;
 }
 
 #pagination {

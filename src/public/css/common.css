@@ -159,3 +159,33 @@ div[id^='jobpostRow'] {
 .card {
     min-height: 399.61px;
 }
+
+#mainContainer .card {
+    border: 0.5px solid #f9fafb;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    margin-bottom: var(--bs-gutter-y);
+}
+#recommendationWarning {
+    font-size: 35px;
+    color: rgb(190, 0, 0);
+    margin: 0 5;
+    -webkit-animation: glow 1s ease-in-out infinite alternate;
+    -moz-animation: glow 1s ease-in-out infinite alternate;
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+    from {
+        text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #e60073,
+            0 0 4px #e60073, 0 0 4px #e60073, 0 0 5px #e60073, 0 0 5px #e60073;
+    }
+
+    to {
+        text-shadow: 0 0 1px #fff, 0 0 2px #ff4da6, 0 0 3px #ff4da6,
+            0 0 4px #ff4da6, 0 0 5px #ff4da6, 0 0 6px #ff4da6, 0 0 8px #ff4da6;
+    }
+}
+
+.card-text .material-symbols-outlined {
+    margin-right: 5px;
+}

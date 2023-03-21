@@ -8,6 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Keyword } from 'src/entities/keyword.entity'
 import { Stack } from 'src/entities/stack.entity'
 import { CacheService } from 'src/cache/cache.service'
+import { User } from 'src/entities/user.entity'
 
 @Injectable()
 export class JobpostRepository extends Repository<Jobpost> {
@@ -19,7 +20,8 @@ export class JobpostRepository extends Repository<Jobpost> {
         @InjectRepository(Jobpost)
         private jobpostRepository: Repository<Jobpost>,
         private cacheService: CacheService,
-        @InjectRepository(Stack) private stackRepository: Repository<Stack>
+        @InjectRepository(Stack) private stackRepository: Repository<Stack>,
+        @InjectRepository(User) private userRepository: Repository<User>
     ) {
         super(Jobpost, dataSource.createEntityManager())
     }
@@ -150,6 +152,386 @@ export class JobpostRepository extends Repository<Jobpost> {
         return { keywords: contentKeywords, stacks: contentStacks }
     }
 
+    async getRecommendedJobposts(
+        sort: string,
+        order: string,
+        limit: number,
+        offset: number,
+        others: object,
+        userId: number
+    ) {
+        const likedUser = await this.cacheService.getAllLikedjobpost()
+
+        await this.query(`SET SESSION group_concat_max_len = 1000000;`)
+
+        let where = ''
+        let having = ''
+        if (others) {
+            const othersKeys = Object.keys(others)
+            for (let i = 0; i < othersKeys.length; i++) {
+                if (othersKeys[i] === 'stack') {
+                    const stacks = others[othersKeys[i]].split(',')
+                    for (let j = 0; j < stacks.length; j++) {
+                        if (having.length === 0) {
+                            having += `having stacks like '%${stacks[j]}%'`
+                        } else {
+                            having += ` and stacks like '%${stacks[j]}%'`
+                        }
+                    }
+                } else if (othersKeys[i] === 'keywordCode') {
+                    const keywordCodes = others[othersKeys[i]].split(',')
+                    for (let j = 0; j < keywordCodes.length; j++) {
+                        if (having.length === 0) {
+                            having += `having keywordCodes like '%${keywordCodes[j]}%'`
+                        } else {
+                            having += ` and keywordCodes like '%${keywordCodes[j]}%'`
+                        }
+                    }
+                } else if (othersKeys[i] === 'search') {
+                    const searchWords = others[othersKeys[i]].split(' ')
+                    for (let j = 0; j < searchWords.length; j++) {
+                        if (where.length === 0) {
+                            where += `where company_name like '%${searchWords[j]}%'
+                            or title like '%${searchWords[j]}%'
+                            or keywords like '%${searchWords[j]}%'
+                            or stacks like '%${searchWords[j]}%'
+                            or address_upper like '%${searchWords[j]}%'
+                            or address_lower like '%${searchWords[j]}%'
+                            or content like '%${searchWords[j]}%'`
+                        } else {
+                            where += ` and company_name like '%${searchWords[j]}%'
+                            or title like '%${searchWords[j]}%'
+                            or keywords like '%${searchWords[j]}%'
+                            or stacks like '%${searchWords[j]}%'
+                            or address_upper like '%${searchWords[j]}%'
+                            or address_lower like '%${searchWords[j]}%'
+                            or content like '%${searchWords[j]}%'`
+                        }
+                    }
+                } else if (othersKeys[i] === 'page') {
+                    offset = (Number(others['page']) - 1) * limit
+                } else {
+                    if (where.length === 0) {
+                        where += `where ${othersKeys[i]}='${
+                            others[othersKeys[i]]
+                        }'`
+                    } else {
+                        where += ` and ${othersKeys[i]}='${
+                            others[othersKeys[i]]
+                        }'`
+                    }
+                }
+            }
+        }
+
+        // 유저가 주소, 기술 스택, 찜을 했는지 검색
+        const hasUserAttribute = await this.userRepository.findOne({
+            relations: {
+                jobposts: true,
+                stacks: true,
+            },
+            where: { userId: userId },
+        })
+
+        let message = ''
+        let score = ''
+        // 유저가 찜한 공고가 있으면 쓰일 JOIN 문
+        let joinKeywords = `JOIN (SELECT j.jobpost_id, 
+                                group_concat(jk.keyword_code) AS jobpostKeyword, 
+                                group_concat(k.keyword_code) AS userKeyword,
+                                group_concat(ky.keyword) AS keywords,
+                                COUNT(*) AS keywordMatches,
+                                MIN(COUNT(*)) OVER () AS minKeywordMatches,
+                                MAX(COUNT(*)) OVER () AS maxKeywordMatches
+                            FROM jobpost AS j
+                            LEFT JOIN jobpostkeyword AS jk ON j.jobpost_id = jk.jobpost_id
+                            LEFT JOIN (
+                                SELECT j.jobpost_id, keyword_code
+                                FROM likedjobpost
+                                JOIN jobpostkeyword j ON likedjobpost.jobpost_id = j.jobpost_id
+                                WHERE user_id = ${userId}
+                                GROUP BY keyword_code
+                            ) AS k ON jk.keyword_code = k.keyword_code
+                            JOIN keyword ky ON k.keyword_code = ky.keyword_code
+                            WHERE jk.keyword_code IS NOT NULL
+                            GROUP BY j.jobpost_id
+                            HAVING group_concat(jk.keyword_code) IN (group_concat(k.keyword_code))) keywordStats ON j.jobpost_id = keywordStats.jobpost_id`
+
+        // 유저가 스택이 있으면 쓰일 JOIN 문 (주소 추가 유무 상관 없음)
+        let joinStacksAndDistance = `JOIN (SELECT 
+                                        jp.jobpost_id,
+                                        title,
+                                        (6371 * acos(cos(radians(u.latitude)) * cos(radians(jp.latitude)) * cos(radians(jp.longitude) - radians(u.longitude)) + sin(radians(u.latitude)) * sin(radians(jp.latitude)))) AS distance,
+                                        us.user_id,
+                                        u.longitude,
+                                        u.latitude,
+                                        GROUP_CONCAT(DISTINCT jps.stack_ids) AS jobpoststack,
+                                        GROUP_CONCAT(us.stack_id) AS userstack,
+                                        stacks,
+                                        stackimgurls,
+                                        COUNT(*) AS stackMatches,
+                                        MIN(6371 * acos(cos(radians(u.latitude)) * cos(radians(jp.latitude)) * cos(radians(jp.longitude) - radians(u.longitude)) + sin(radians(u.latitude)) * sin(radians(jp.latitude)))) OVER () as minDistance,
+                                        MAX(6371 * acos(cos(radians(u.latitude)) * cos(radians(jp.latitude)) * cos(radians(jp.longitude) - radians(u.longitude)) + sin(radians(u.latitude)) * sin(radians(jp.latitude)))) OVER () as maxDistance,
+                                        MIN(COUNT(*)) OVER () AS minStackMatches,
+                                        MAX(COUNT(*)) OVER () AS maxStackMatches,
+                                        MIN(jp.salary) OVER () as minSalary,
+                                        MAX(jp.salary) OVER () as maxSalary,
+                                        c.avg_salary,
+                                        MIN(c.avg_salary) OVER () as minAvgSalary,
+                                        MAX(c.avg_salary) OVER () as maxAvgSalary,
+                                        c.company_name
+                                    FROM 
+                                        jobpost jp 
+                                    LEFT JOIN (
+                                        SELECT 
+                                            js.jobpost_id,
+                                            GROUP_CONCAT(js.stack_id) AS stack_ids,
+                                            GROUP_CONCAT(s.stack) AS stacks,
+                                            GROUP_CONCAT(s.stack_img_url) AS stackImgUrls 
+                                        FROM 
+                                            jobpoststack js 
+                                        LEFT JOIN 
+                                            stack s ON js.stack_id = s.stack_id 
+                                        GROUP BY 
+                                            js.jobpost_id 
+                                        ORDER BY 
+                                            NULL
+                                    ) jps ON jp.jobpost_id = jps.jobpost_id 
+                                    INNER JOIN userstack us ON jps.stack_ids LIKE CONCAT('%,', us.stack_id, ',%') 
+                                    LEFT JOIN \`user\` u ON us.user_id = u.user_id 
+                                    JOIN company c ON jp.company_id = c.company_id 
+                                    WHERE 
+                                        us.user_id = ${userId}
+                                    GROUP BY 
+                                        jp.jobpost_id) distanceStacksCalculated ON j.jobpost_id = distanceStacksCalculated.jobpost_id`
+
+        // 유저 주소 X 스택 O => 주소 O 스택 O과 같은 쿼리 써도 됨
+        if (
+            !hasUserAttribute.longitude &&
+            hasUserAttribute.stacks.length !== 0
+        ) {
+            // 유저가 공고를 찜한 기록이 없으면
+            if (hasUserAttribute.jobposts.length === 0) {
+                joinKeywords = `JOIN jobpostkeyword j2 ON j.jobpost_id = j2.jobpost_id
+                                JOIN keyword k ON j2.keyword_code = k.keyword_code `
+                score = `(COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) +
+                    COALESCE(0.5 * ((stackMatches - minStackMatches) / (maxStackMatches - minStackMatches)),0) +
+                    COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
+                    COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
+                    GROUP_CONCAT(keyword) as keywords,`
+
+                message =
+                    "'마이페이지'에서 주소를 추가하고 마음에 드는 공고를 찜해서 더 나은 공고를 추천받으세요!"
+            } else {
+                score = `(COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) +
+                    COALESCE(0.5 * ((stackMatches - minStackMatches) / (maxStackMatches - minStackMatches)),0) +
+                    COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) + 
+                    COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
+                    COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
+                    keywords,`
+
+                message =
+                    "'마이페이지'에서 주소를 추가해서 더 나은 공고를 추천받으세요!"
+            }
+        }
+        // 유저 주소 O 스택 X
+        else if (
+            hasUserAttribute.longitude &&
+            hasUserAttribute.stacks.length === 0
+        ) {
+            // 유저가 공고를 찜한 기록이 없으면
+            if (hasUserAttribute.jobposts.length === 0) {
+                joinKeywords = `JOIN jobpostkeyword j2 ON j.jobpost_id = j2.jobpost_id
+                                JOIN keyword k ON j2.keyword_code = k.keyword_code `
+                score = `(COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) + 
+                    COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
+                    COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
+                    GROUP_CONCAT(keyword) as keywords,`
+
+                message =
+                    "'마이페이지'에서 기술스택을 추가하고 마음에 드는 공고를 찜해서 더 나은 공고를 추천받으세요!"
+            } else {
+                score = `(COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) +
+                    COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) + 
+                    COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
+                    COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
+                    keywords,`
+
+                message =
+                    "'마이페이지'에서 기술스택을 추가해서 더 나은 공고를 추천받으세요!"
+            }
+            joinStacksAndDistance = `JOIN (SELECT 
+                                            jp.jobpost_id,
+                                            title,
+                                            (6371 * acos(cos(radians(u.latitude)) * cos(radians(jp.latitude)) * cos(radians(jp.longitude) - radians(u.longitude)) + sin(radians(u.latitude)) * sin(radians(jp.latitude)))) AS distance,
+                                            u.longitude,
+                                            u.latitude,
+                                            GROUP_CONCAT(DISTINCT jps.stack_ids) AS jobpoststack,
+                                            stacks,
+                                            stackimgurls,
+                                            MIN(6371 * acos(cos(radians(u.latitude)) * cos(radians(jp.latitude)) * cos(radians(jp.longitude) - radians(u.longitude)) + sin(radians(u.latitude)) * sin(radians(jp.latitude)))) OVER () as minDistance,
+                                            MAX(6371 * acos(cos(radians(u.latitude)) * cos(radians(jp.latitude)) * cos(radians(jp.longitude) - radians(u.longitude)) + sin(radians(u.latitude)) * sin(radians(jp.latitude)))) OVER () as maxDistance,
+                                            MIN(jp.salary) OVER () as minSalary,
+                                            MAX(jp.salary) OVER () as maxSalary,
+                                            c.avg_salary,
+                                            MIN(c.avg_salary) OVER () as minAvgSalary,
+                                            MAX(c.avg_salary) OVER () as maxAvgSalary,
+                                            c.company_name
+                                        FROM 
+                                            \`user\` u, jobpost jp 
+                                        LEFT JOIN (
+                                            SELECT 
+                                                js.jobpost_id,
+                                                GROUP_CONCAT(js.stack_id) AS stack_ids,
+                                                GROUP_CONCAT(s.stack) AS stacks,
+                                                GROUP_CONCAT(s.stack_img_url) AS stackImgUrls 
+                                            FROM 
+                                                jobpoststack js 
+                                            LEFT JOIN 
+                                                stack s ON js.stack_id = s.stack_id 
+                                            GROUP BY 
+                                                js.jobpost_id 
+                                            ORDER BY 
+                                                NULL
+                                        ) jps ON jp.jobpost_id = jps.jobpost_id 
+                                        JOIN company c ON jp.company_id = c.company_id
+                                        GROUP BY 
+                                            jp.jobpost_id) distanceStacksCalculated ON j.jobpost_id = distanceStacksCalculated.jobpost_id`
+        }
+        // 유저 주소 O 스택 O
+        else if (
+            hasUserAttribute.longitude &&
+            hasUserAttribute.stacks.length !== 0
+        ) {
+            // 유저가 공고를 찜한 기록이 없으면
+            if (hasUserAttribute.jobposts.length === 0) {
+                joinKeywords = `JOIN jobpostkeyword j2 ON j.jobpost_id = j2.jobpost_id
+                                JOIN keyword k ON j2.keyword_code = k.keyword_code `
+                score = `(COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) +
+                    COALESCE(0.5 * ((stackMatches - minStackMatches) / (maxStackMatches - minStackMatches)),0) +
+                    COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
+                    COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
+                    GROUP_CONCAT(keyword) as keywords,`
+
+                message = '공고를 찜해서 더 나은 공고를 추천받으세요!'
+            } else {
+                score = `(COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) +
+                    COALESCE(0.5 * ((stackMatches - minStackMatches) / (maxStackMatches - minStackMatches)),0) +
+                    COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) + 
+                    COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
+                    COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
+                    keywords,`
+            }
+        }
+        // 유저 스택 X, 주소 X
+        else {
+            // 유저가 공고를 찜한 기록이 없으면
+            if (hasUserAttribute.jobposts.length === 0) {
+                joinKeywords = `JOIN jobpostkeyword j2 ON j.jobpost_id = j2.jobpost_id
+                                JOIN keyword k ON j2.keyword_code = k.keyword_code `
+                score = `(COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
+                    COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
+                    GROUP_CONCAT(keyword) as keywords,`
+
+                message =
+                    "'마이페이지'에서 주소와 기술스택을 추가하고 공고를 찜해서 더 나은 공고를 추천받으세요!"
+            } else {
+                score = `(COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) + 
+                    COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
+                    COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
+                    keywords,`
+
+                message =
+                    "'마이페이지'에서 주소와 기술스택을 추가해서 더 나은 공고를 추천받으세요!"
+            }
+            const q = `SELECT j.jobpost_id,
+                                j.title,
+                                company_name,
+                                j.address_upper,
+                                j.address_lower,
+                                j.original_address,
+                                j.salary,
+                                j.original_img_url,
+                                stacks,
+                                stackimgurls,
+                                avg_salary,
+                                ${score}
+                                COUNT(*) OVER () as totalCount
+                        FROM jobpost j
+                        JOIN (SELECT 
+                                    jp.jobpost_id,
+                                    stacks,
+                                    stackimgurls,
+                                    MIN(jp.salary) OVER () as minSalary,
+                                    MAX(jp.salary) OVER () as maxSalary,
+                                    c.avg_salary,
+                                    MIN(c.avg_salary) OVER () as minAvgSalary,
+                                    MAX(c.avg_salary) OVER () as maxAvgSalary,
+                                    c.company_name
+                                FROM 
+                                    jobpost jp 
+                                LEFT JOIN (
+                                    SELECT 
+                                        js.jobpost_id,
+                                        GROUP_CONCAT(js.stack_id) AS stack_ids,
+                                        GROUP_CONCAT(s.stack) AS stacks,
+                                        GROUP_CONCAT(s.stack_img_url) AS stackImgUrls 
+                                    FROM 
+                                        jobpoststack js 
+                                    LEFT JOIN 
+                                        stack s ON js.stack_id = s.stack_id 
+                                    GROUP BY 
+                                        js.jobpost_id 
+                                    ORDER BY 
+                                        NULL
+                                ) jps ON jp.jobpost_id = jps.jobpost_id 
+                                JOIN company c ON jp.company_id = c.company_id
+                                GROUP BY 
+                                    jp.jobpost_id) distanceStacksCalculated ON j.jobpost_id = distanceStacksCalculated.jobpost_id
+                        ${joinKeywords}
+                        GROUP BY j.jobpost_id
+                        ORDER BY score DESC
+                        LIMIT ? OFFSET ?`
+            const data = await this.query(q, [limit, offset])
+
+            return {
+                data,
+                totalCount: data[0].totalCount,
+                likedUser,
+                message,
+            }
+        }
+
+        const query = `SELECT j.jobpost_id,
+                                j.title,
+                                company_name,
+                                j.address_upper,
+                                j.address_lower,
+                                j.original_address,
+                                j.salary,
+                                j.original_img_url,
+                                stacks,
+                                stackimgurls,
+                                j.salary,
+                                ${score}
+                                COUNT(*) OVER () as totalCount
+                        FROM jobpost j
+                        ${joinStacksAndDistance} ${joinKeywords} ${where}
+                        GROUP BY j.jobpost_id ${having}
+                        ORDER BY score DESC
+                        LIMIT ? OFFSET ?`
+
+        const values = [limit, offset]
+        const data = await this.query(query, values)
+
+        return {
+            data,
+            totalCount: data[0].totalCount,
+            likedUser,
+            message,
+        }
+    }
+
     async getFilteredJobposts(
         sort: string,
         order: string,
@@ -157,6 +539,8 @@ export class JobpostRepository extends Repository<Jobpost> {
         offset: number,
         others: object
     ) {
+        await this.query(`SET SESSION group_concat_max_len = 1000000;`)
+
         let where = ''
         let having = ''
         switch (sort) {
@@ -225,27 +609,30 @@ export class JobpostRepository extends Repository<Jobpost> {
                     offset = (Number(others['page']) - 1) * limit
                 } else {
                     if (where.length === 0) {
-                        where += `where ${othersKeys[i]}='${others[othersKeys[i]]
-                            }'`
+                        where += `where ${othersKeys[i]}='${
+                            others[othersKeys[i]]
+                        }'`
                     } else {
-                        where += ` and ${othersKeys[i]}='${others[othersKeys[i]]
-                            }'`
+                        where += ` and ${othersKeys[i]}='${
+                            others[othersKeys[i]]
+                        }'`
                     }
                 }
             }
         }
 
-        let query = `select j.jobpost_id, company_name, original_img_url, title, keywords, keywordCodes, stacks, stackimgurls, likesCount, likedUsers, views, deadline_dtm, address_upper, address_lower from jobpost j 
+        let query = `select j.jobpost_id, company_name, original_img_url, title, keywords, keywordCodes, stacks, stackimgurls, likesCount, likedUsers, views, deadline_dtm, address_upper, address_lower, j.salary
+                        from jobpost j 
                         left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
-                        left join keyword k on j.keyword_code = k.keyword_code 
-                        group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
+                                    left join keyword k on j.keyword_code = k.keyword_code 
+                                    group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
                         left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
-                        left join stack s on j.stack_id = s.stack_id  
-                        group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
+                                    left join stack s on j.stack_id = s.stack_id  
+                                    group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
                         left join company c on j.company_id = c.company_id 
                         left join (select j.jobpost_id, count(user_id) as likesCount, group_concat(user_id) as likedUsers from jobfit.jobpost j 
-                        left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
-                        group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
+                                    left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
+                                    group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
                         ${having}
                         order by ${sort}
                         limit ? offset ?`
@@ -256,19 +643,19 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         // 채용공고 카운트
         query = `select count(*) as totalCount
-        from (select keywordCodes, stacks from jobpost j 
-            left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
-            left join keyword k on j.keyword_code = k.keyword_code 
-            group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
-            left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
-            left join stack s on j.stack_id = s.stack_id  
-            group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
-            left join company c on j.company_id = c.company_id 
-            left join (select j.jobpost_id, count(user_id) as likesCount, group_concat(user_id) as likedUsers from jobfit.jobpost j 
-            left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
-            group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
-            ${having}
-            order by ${sort}) as results`
+                    from (select keywordCodes, stacks from jobpost j 
+                    left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
+                    left join keyword k on j.keyword_code = k.keyword_code 
+                    group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
+                    left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
+                    left join stack s on j.stack_id = s.stack_id  
+                    group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
+                    left join company c on j.company_id = c.company_id 
+                    left join (select j.jobpost_id, count(user_id) as likesCount, group_concat(user_id) as likedUsers from jobfit.jobpost j 
+                    left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
+                    group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
+                    ${having}
+                    order by ${sort}) as results`
 
         const totalCount = await this.query(query, values)
 
@@ -389,7 +776,11 @@ export class JobpostRepository extends Repository<Jobpost> {
         })
 
         for (const { jobpostId, views } of viewCounts) {
-            await this.jobpostRepository.increment({ jobpostId }, 'views', views)
+            await this.jobpostRepository.increment(
+                { jobpostId },
+                'views',
+                views
+            )
         }
     }
 
