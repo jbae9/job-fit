@@ -9,319 +9,29 @@
                 <div id="recommendedHeader">
                     <h1>💖 <%- user.nickname %> 님을 위한 추천 공고</h1>
                 </div>
-                <a href="">
+                <a href="/jobposts?sort=recommended&order=desc">
                     <p>추천 공고 전체보기 →</p>
                 </a>
             </div>
             <div id="carouselRecommended" class="carousel carousel-dark slide">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <div class="row row-cols-1 row-cols-md-4 g-4">
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="https://grepp-programmers.s3.amazonaws.com/production/company/logo/724/hwahae_new.png"
-                                        class="card-img-top"
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            DevOps Engineer
-                                        </h5>
-                                        <p class="card-text">버드뷰</p>
-                                        <div class="card-text row">
-                                            <div class="col">
-                                                <span
-                                                    class="material-symbols-outlined"
-                                                >
-                                                    work
-                                                </span>
-                                                신입
-                                            </div>
-                                            <div class="col-8">
-                                                <span
-                                                    class="material-symbols-outlined"
-                                                >
-                                                    location_on
-                                                </span>
-                                                서울시 동작구
-                                            </div>
-                                        </div>
-                                        <p class="card-text"></p>
-                                        <p class="card-text">
-                                            <img
-                                                src="https://static.codenary.co.kr/framework_logo/javascript.png"
-                                            />
-                                            <img
-                                                src="https://static.codenary.co.kr/framework_logo/nodejs.png"
-                                            />
-                                            <img
-                                                src="https://static.codenary.co.kr/framework_logo/typescript.png"
-                                            />
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="https://grepp-programmers.s3.amazonaws.com/production/company/logo/1148/logo_closed_v.png"
-                                        class="card-img-top"
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            Computer Vision Engineer - Visual
-                                            SLAM(전문연구요원 편입 가능)
-                                        </h5>
-                                        <p class="card-text">뉴빌리티</p>
-                                        <div class="card-text row">
-                                            <div class="col">
-                                                <span
-                                                    class="material-symbols-outlined"
-                                                >
-                                                    work
-                                                </span>
-                                                신입
-                                            </div>
-                                            <div class="col-8">
-                                                <span
-                                                    class="material-symbols-outlined"
-                                                >
-                                                    location_on
-                                                </span>
-                                                서울시 동작구
-                                            </div>
-                                        </div>
-                                        <p class="card-text"></p>
-                                        <p class="card-text">
-                                            <img
-                                                src="https://static.codenary.co.kr/framework_logo/javascript.png"
-                                            />
-                                            <img
-                                                src="https://static.codenary.co.kr/framework_logo/nodejs.png"
-                                            />
-                                            <img
-                                                src="https://static.codenary.co.kr/framework_logo/typescript.png"
-                                            />
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="https://grepp-programmers.s3.amazonaws.com/production/company/logo/5691/DRIMAES_LOGO_300x97_RGB.png"
-                                        class="card-img-top"
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            소프트웨어 형상 관리자 / DevOPs
-                                            (Software Configuration Management)
-                                        </h5>
-                                        <p class="card-text">뉴빌리티</p>
-                                        <div class="card-text row">
-                                            <div class="col">
-                                                <span
-                                                    class="material-symbols-outlined"
-                                                >
-                                                    work
-                                                </span>
-                                                신입
-                                            </div>
-                                            <div class="col-8">
-                                                <span
-                                                    class="material-symbols-outlined"
-                                                >
-                                                    location_on
-                                                </span>
-                                                충청북도 뭐뭐시
-                                            </div>
-                                        </div>
-                                        <p class="card-text"></p>
-                                        <p class="card-text">
-                                            <img
-                                                src="https://static.codenary.co.kr/framework_logo/javascript.png"
-                                            />
-                                            <img
-                                                src="https://static.codenary.co.kr/framework_logo/nodejs.png"
-                                            />
-                                            <img
-                                                src="https://static.codenary.co.kr/framework_logo/typescript.png"
-                                            />
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="..."
-                                        class="card-img-top"
-                                        alt="..."
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title</h5>
-                                        <p class="card-text">
-                                            This is a longer card with
-                                            supporting text below as a natural
-                                            lead-in to additional content. This
-                                            content is a little bit longer.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div
+                            class="row row-cols-1 row-cols-md-4 g-4"
+                            id="carouselRecommended1"
+                        ></div>
                     </div>
                     <div class="carousel-item">
-                        <div class="row row-cols-1 row-cols-md-4 g-4">
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="..."
-                                        class="card-img-top"
-                                        alt="..."
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">공고 제목</h5>
-                                        <p class="card-text">
-                                            This is a longer card with
-                                            supporting text below as a natural
-                                            lead-in to additional content. This
-                                            content is a little bit longer.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="..."
-                                        class="card-img-top"
-                                        alt="..."
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title</h5>
-                                        <p class="card-text">
-                                            This is a longer card with
-                                            supporting text below as a natural
-                                            lead-in to additional content. This
-                                            content is a little bit longer.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="..."
-                                        class="card-img-top"
-                                        alt="..."
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title</h5>
-                                        <p class="card-text">
-                                            This is a longer card with
-                                            supporting text below as a natural
-                                            lead-in to additional content. This
-                                            content is a little bit longer.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="..."
-                                        class="card-img-top"
-                                        alt="..."
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title</h5>
-                                        <p class="card-text">
-                                            This is a longer card with
-                                            supporting text below as a natural
-                                            lead-in to additional content. This
-                                            content is a little bit longer.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div
+                            class="row row-cols-1 row-cols-md-4 g-4"
+                            id="carouselRecommended2"
+                        ></div>
                     </div>
                     <div class="carousel-item">
-                        <div class="row row-cols-1 row-cols-md-4 g-4">
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="..."
-                                        class="card-img-top"
-                                        alt="..."
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">공고 제목</h5>
-                                        <p class="card-text">
-                                            This is a longer card with
-                                            supporting text below as a natural
-                                            lead-in to additional content. This
-                                            content is a little bit longer.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="..."
-                                        class="card-img-top"
-                                        alt="..."
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title</h5>
-                                        <p class="card-text">
-                                            This is a longer card with
-                                            supporting text below as a natural
-                                            lead-in to additional content. This
-                                            content is a little bit longer.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="..."
-                                        class="card-img-top"
-                                        alt="..."
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title</h5>
-                                        <p class="card-text">
-                                            This is a longer card with
-                                            supporting text below as a natural
-                                            lead-in to additional content. This
-                                            content is a little bit longer.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img
-                                        src="..."
-                                        class="card-img-top"
-                                        alt="..."
-                                    />
-                                    <div class="card-body">
-                                        <h5 class="card-title">Card title</h5>
-                                        <p class="card-text">
-                                            This is a longer card with
-                                            supporting text below as a natural
-                                            lead-in to additional content. This
-                                            content is a little bit longer.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div
+                            class="row row-cols-1 row-cols-md-4 g-4"
+                            id="carouselRecommended3"
+                        ></div>
                     </div>
                 </div>
                 <button
@@ -334,7 +44,7 @@
                         class="carousel-control-prev-icon"
                         aria-hidden="true"
                     ></span>
-                    <span class="visually-hidden">Previous</span>
+                    <span class="visually-hidden">이전</span>
                 </button>
                 <button
                     class="carousel-control-next"
@@ -346,7 +56,7 @@
                         class="carousel-control-next-icon"
                         aria-hidden="true"
                     ></span>
-                    <span class="visually-hidden">Next</span>
+                    <span class="visually-hidden">다음</span>
                 </button>
             </div>
         </div>
@@ -515,27 +225,26 @@
         // 로그인 한 회원이 찜 한 채용공고 번호 리스트
         const likedJobpostIds = getUserLikeJobpost()
 
-        ;('<% if (user) { %>')
-        const userId = '<%= user.userId %>'
-        $.ajax({
-            type: 'GET',
-            url: `/api/jobpost/filter/${userId}/?sort=recommended&order=desc&limit=12`,
-            success: function (response) {
-                if (response.message) {
-                    const tempHtml = `<span class="material-symbols-outlined" id="recommendationWarning" title="${response.message}">
+        const userId = '<%= user?.userId %>'
+        if (userId) {
+            $.ajax({
+                type: 'GET',
+                url: `/api/jobpost/filter/${userId}/?sort=recommended&order=desc&limit=12`,
+                success: function (response) {
+                    if (response.message) {
+                        const tempHtml = `<span class="material-symbols-outlined" id="recommendationWarning" title="${response.message}">
                                         report
                                     </span>`
-                    $('#recommendedHeader').append(tempHtml)
-                }
-
-                showCarouselJobposts(
-                    'carouselRecommended',
-                    response.data,
-                    likedJobpostIds
-                )
-            },
-        })
-        ;('<% } %>')
+                        $('#recommendedHeader').append(tempHtml)
+                    }
+                    showCarouselJobposts(
+                        'carouselRecommended',
+                        response.data,
+                        likedJobpostIds
+                    )
+                },
+            })
+        }
 
         $.ajax({
             type: 'GET',
@@ -549,7 +258,6 @@
                 )
             },
         })
-
         $.ajax({
             type: 'GET',
             url: '/api/jobpost/filter?sort=popular&order=desc&limit=12',
@@ -562,7 +270,6 @@
                 )
             },
         })
-
         $.ajax({
             type: 'GET',
             url: '/api/jobpost/filter?sort=ending&order=asc&limit=12',
@@ -576,7 +283,6 @@
             },
         })
     })
-
     function showCarouselJobposts(carouselId, response, likedJobpostIds) {
         for (let i = 0; i < 12; i++) {
             // 채용공고 번호
@@ -584,9 +290,7 @@
             // 채용공고가 좋아요가 눌린건지 안눌린건지 boolean
             const isLiked = likedJobpostIds.includes(jobpostId) ? true : false
             console.log(isLiked)
-
             const tempHtml = createJobpostCard(response[i], isLiked)
-
             const carouselNum = Math.floor(i / 4) + 1
             $(`#${carouselId}${carouselNum}`).append(tempHtml)
         }
