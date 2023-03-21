@@ -24,17 +24,7 @@ export class SaraminSelenium {
         const options = new Options()
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL)
         options.excludeSwitches('enable-logging')
-
-        const driver = await new Builder()
-            .forBrowser('chrome')
-            .setChromeOptions(options)
-            .build()
-        const saraminScraper = new SaraminScraper(
-            `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=1&cat_mcls=2&isAjaxRequest=0&page_count=` +
-            this.pageCount +
-            `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
-        )
-        let allJobsArr = await saraminScraper.getDataAsHtml()
+        let page = 1
         let allCompanies = [
             {
                 companyName: null,
@@ -50,129 +40,151 @@ export class SaraminSelenium {
                 corporateType: null,
             },
         ]
-        try {
-            for (let i = 0; i < allJobsArr.length; i++) {
-                await driver.get(`${allJobsArr[i].originalUrl}`)
-                await driver.wait(
-                    until.elementLocated(By.className('wrap_jv_cont')),
-                    10000
-                )
-                const allJobs = await driver
-                    .findElement(By.className(`wrap_jview`))
-                    .findElement(By.css('section:first-child'))
-                let salary = '0'
-                let salaryText = await allJobs
-                    .findElement(By.className('jv_summary'))
-                    .findElement(
-                        By.css(
-                            '.cont > .col:nth-child(2) > dl:first-child > dt'
-                        )
+        let allJobsArr = []
+        const driver = await new Builder()
+            .forBrowser('chrome')
+            .setChromeOptions(options)
+            .build()
+        while (true) {
+            const saraminScraper = new SaraminScraper(
+                `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=` + page + `&cat_mcls=2&isAjaxRequest=0&page_count=` +
+                this.pageCount +
+                `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
+            )
+            console.log('페이지: ' + page)
+            allJobsArr = await saraminScraper.getDataAsHtml()
+            try {
+                for (let i = 0; i < allJobsArr.length; i++) {
+                    console.log('글: ' + (i + 1))
+                    await driver.get(`${allJobsArr[i].originalUrl}`)
+                    await driver.wait(
+                        until.elementLocated(By.className('wrap_jv_cont')),
+                        15000
                     )
-                    .getText()
-                if (salaryText === '급여') {
-                    salary = await allJobs
+                    const allJobs = await driver
+                        .findElement(By.className(`wrap_jview`))
+                        .findElement(By.css('section:first-child'))
+                    let salary = '0'
+                    let salaryText = await allJobs
                         .findElement(By.className('jv_summary'))
                         .findElement(
                             By.css(
-                                '.cont > .col:nth-child(2) > dl:first-child > dd'
+                                '.cont > .col:nth-child(2) > dl:first-child > dt'
                             )
                         )
                         .getText()
-                    if (
-                        salary === '면접 후 결정' ||
-                        salary === '회사내규에 따름'
-                    ) {
-                        salary = '0'
-                    } else {
-                        salary = salary.split(' ', 2)[1].replace(',', '')
-                    }
-                }
-                allJobsArr[i].salary = Number(salary) * 10000
-                const iframe = await allJobs
-                    .findElement(By.css('div.wrap_jv_cont'))
-                    .findElement(By.css('div.jv_detail'))
-                    .findElement(By.css('div.cont'))
-                    .getAttribute('innerHTML')
-                const iframeUrl = iframe.split('"', 21)[17]
-                const iframeData = await axios.get(
-                    'https://www.saramin.co.kr' + iframeUrl
-                )
-                const data = cheerio.load(iframeData.data)
-                const jobData = data('.user_content').html()
-                const content = jobData
-                allJobsArr[i].content = content
-                const postedDtm = await allJobs
-                    .findElement(By.className('info_period'))
-                    .findElement(By.css('dd'))
-                    .getText()
-                allJobsArr[i].postedDtm = new Date(postedDtm)
-                if (allJobsArr[i].deadlineDtm.indexOf('채용') != -1) {
-                    allJobsArr[i].deadlineDtm = null
-                } else if (allJobsArr[i].deadlineDtm.indexOf('마감') != -1) {
-                    allJobsArr[i].deadlineDtm = null
-                } else {
-                    let d = new Date(Date.now())
-                    allJobsArr[i].deadlineDtm = new Date(
-                        String(d.getFullYear()) +
-                        '/' +
-                        String(allJobsArr[i].deadlineDtm).substring(2, 7)
-                    )
-                }
-                try {
-                    const companyOptionList = await allJobs
-                        .findElement(By.className('wrap_info'))
-                        .findElements(By.css('.info > dl'))
-                    for (let j = 0; j < companyOptionList.length; j++) {
-                        const option = await companyOptionList[j]
-                            .findElement(By.css('dt'))
+                    if (salaryText === '급여') {
+                        salary = await allJobs
+                            .findElement(By.className('jv_summary'))
+                            .findElement(
+                                By.css(
+                                    '.cont > .col:nth-child(2) > dl:first-child > dd'
+                                )
+                            )
                             .getText()
-                        const optionText = await companyOptionList[j]
-                            .findElement(By.css('dd'))
-                            .getText()
-                        for (const key in companyOption) {
-                            if (option.indexOf(key) !== -1) {
-                                allCompanies[i][`${companyOption[key]}`] =
-                                    optionText
-                                break
-                            }
+                        if (
+                            salary === '면접 후 결정' ||
+                            salary === '회사내규에 따름'
+                        ) {
+                            salary = '0'
+                        } else {
+                            salary = salary.split(' ', 2)[1].replace(',', '')
                         }
                     }
-                } catch (e) {
-                    console.log('회사정보 없음')
-                }
-                if (allCompanies[i]['numberEmployees'] != null) {
-                    allCompanies[i]['numberEmployees'] = Number(
-                        allCompanies[i]['numberEmployees'].split(' ', 1)[0]
+                    allJobsArr[i].salary = Number(salary) * 10000
+                    const iframe = await allJobs
+                        .findElement(By.css('div.wrap_jv_cont'))
+                        .findElement(By.css('div.jv_detail'))
+                        .findElement(By.css('div.cont'))
+                        .getAttribute('innerHTML')
+                    const iframeUrl = iframe.split('"', 21)[17]
+                    const iframeData = await axios.get(
+                        'https://www.saramin.co.kr' + iframeUrl
                     )
-                }
-                if (allCompanies[i]['foundedYear'] != null) {
-                    allCompanies[i]['foundedYear'] = Number(
-                        allCompanies[i]['foundedYear']?.split('년', 1)[0]
-                    )
-                }
+                    const data = cheerio.load(iframeData.data)
+                    const jobData = data('.user_content').html()
+                    const content = jobData
+                    allJobsArr[i].content = content
+                    const postedDtm = await allJobs
+                        .findElement(By.className('info_period'))
+                        .findElement(By.css('dd'))
+                        .getText()
+                    allJobsArr[i].postedDtm = new Date(postedDtm)
+                    if (allJobsArr[i].deadlineDtm.indexOf('채용') != -1) {
+                        allJobsArr[i].deadlineDtm = null
+                    } else if (allJobsArr[i].deadlineDtm.indexOf('마감') != -1) {
+                        allJobsArr[i].deadlineDtm = null
+                    } else {
+                        let d = new Date(Date.now())
+                        allJobsArr[i].deadlineDtm = new Date(
+                            String(d.getFullYear()) +
+                            '/' +
+                            String(allJobsArr[i].deadlineDtm).substring(2, 7)
+                        )
+                    }
+                    try {
+                        const companyOptionList = await allJobs
+                            .findElement(By.className('wrap_info'))
+                            .findElements(By.css('.info > dl'))
+                        for (let j = 0; j < companyOptionList.length; j++) {
+                            const option = await companyOptionList[j]
+                                .findElement(By.css('dt'))
+                                .getText()
+                            const optionText = await companyOptionList[j]
+                                .findElement(By.css('dd'))
+                                .getText()
+                            for (const key in companyOption) {
+                                if (option.indexOf(key) !== -1) {
+                                    allCompanies[i][`${companyOption[key]}`] =
+                                        optionText
+                                    break
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.log('회사정보 없음')
+                    }
+                    if (allCompanies[i]['numberEmployees'] != null &&
+                        typeof (allCompanies[i]['numberEmployees']) == 'string') {
+                        console.log(typeof (allCompanies[i]['numberEmployees']))
+                        allCompanies[i]['numberEmployees'] = Number(
+                            allCompanies[i]['numberEmployees']?.split(' ', 1)[0]
+                        )
+                    }
+                    if (allCompanies[i]['foundedYear'] != null &&
+                        typeof (allCompanies[i]['foundedYear']) == 'string') {
+                        allCompanies[i]['foundedYear'] = Number(
+                            allCompanies[i]['foundedYear']?.split('년', 1)[0]
+                        )
+                    }
 
-                allCompanies[i]['companyName'] = allJobsArr[i]['companyName']
-                if (i != allJobsArr.length - 1) {
-                    allCompanies.push({
-                        companyName: null,
-                        representativeName: null,
-                        numberEmployees: null,
-                        address: null,
-                        foundedYear: null,
-                        imageUrl: null,
-                        homepageUrl: null,
-                        annualSales: null,
-                        avgSalary: null,
-                        kreditjobUrl: null,
-                        corporateType: null,
-                    })
+                    allCompanies[i]['companyName'] = allJobsArr[i]['companyName']
+                    if (i != allJobsArr.length - 1) {
+                        allCompanies.push({
+                            companyName: null,
+                            representativeName: null,
+                            numberEmployees: null,
+                            address: null,
+                            foundedYear: null,
+                            imageUrl: null,
+                            homepageUrl: null,
+                            annualSales: null,
+                            avgSalary: null,
+                            kreditjobUrl: null,
+                            corporateType: null,
+                        })
+                    }
                 }
+            } catch (err) {
+                console.log(err)
+                break
+            } finally {
+                page += 1
+                continue
             }
-        } catch (err) {
-            console.log(err)
-        } finally {
-            await driver.quit()
-            return { companies: allCompanies, jobposts: allJobsArr }
         }
+        return { companies: allCompanies, jobposts: allJobsArr }
     }
+
+
 }

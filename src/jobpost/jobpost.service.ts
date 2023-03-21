@@ -16,7 +16,7 @@ export class JobpostService {
         private logger: Logger
     ) { }
     async getSaraminJobposts() {
-        const saraminScraper = new SaraminSelenium('2000')
+        const saraminScraper = new SaraminSelenium('100')
         const { companies, jobposts } = await saraminScraper.getSaraminScraper()
 
         // 회사 데이터 넣기
