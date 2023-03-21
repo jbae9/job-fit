@@ -42,3 +42,7 @@
     min-height: auto;
     padding: 2rem 0;
 }
+
+#recommendedHeader {
+    display: inline-flex;
+}
