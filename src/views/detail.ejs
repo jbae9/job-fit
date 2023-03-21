@@ -116,7 +116,7 @@
                 <div id='like-btn-wrap-${jobpostId}'>
                     ${likedHtml}
                 </div>
-                <img src='' />
+                <img src='/images/No_Image.png' />
             `
                 : `
                 <div id='like-btn-wrap-${jobpostId}'>
@@ -188,7 +188,7 @@
             // 회사 이미지
             const companyImageHtml = !company.imageUrl
                 ? `
-                <img src='' />
+                <img src='/images/No_Image.png' />
             `
                 : `
                 <img src='${company.imageUrl}' />
