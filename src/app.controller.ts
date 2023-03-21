@@ -126,4 +126,16 @@ export class AppController {
 
         return { components: 'detail', user: user, jobpostId }
     }
+
+    // ABOUT 페이지
+    @UseGuards(JwtAuthGuard)
+    @Get('/about')
+    @Render('index')
+    about(@Req() req) {
+        const user = !req.authResult.hasOwnProperty('user')
+            ? null
+            : req.authResult.user
+
+        return { components: 'about', user: user }
+    }
 }

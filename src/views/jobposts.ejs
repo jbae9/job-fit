@@ -211,7 +211,7 @@
                 $('#addressUpperDropdown').append(tempHtml)
 
                 for (let i = 0; i < addressUpper.length; i++) {
-                    tempHtml = `<li><a class="dropdown-item" id="addressUpper${addressUpper[i].address_upper}" onclick="$('#addressLowerDropDown > li').hide(); $('#addressLowerDropDown > li.${addressUpper[i].address_upper}').show()">${addressUpper[i].address_upper}</a>
+                    tempHtml = `<li><a class="dropdown-item" id="addressUpper${addressUpper[i].address_upper}" onclick="onclickAddressUpper('${addressUpper[i].address_upper}')">${addressUpper[i].address_upper}</a>
                                 </li>`
                     $('#addressUpperDropdown').append(tempHtml)
 
@@ -226,36 +226,36 @@
                                 </li>`
                     $('#addressLowerDropdown').append(tempHtml)
                 }
+
+                let addressUpperParam = url.searchParams.get('address_upper')
+                let addressLowerParam = url.searchParams.get('address_lower')
+
+                if (addressUpperParam) {
+                    $('#currentAddressUpper').html(addressUpperParam)
+                    $(`#addressUpper${addressUpperParam}`).addClass('active')
+                    if (addressLowerParam) {
+                        $('#currentAddressLower').html(addressLowerParam)
+                        $(
+                            `#addressUpper${addressUpperParam}addressLower${addressLowerParam}`
+                        ).addClass('active')
+                        $('#addressLowerDropDown > li').hide()
+                        $(`#addressLowerDropDown > li.${addressUpperParam}`).show()
+                    } else {
+                        $('#currentAddressLower').html('전체')
+                        $(`#addressUpper${addressUpperParam}addressLower전체`).addClass(
+                            'active'
+                        )
+                        $('#addressLowerDropDown > li').hide()
+                        $(`#addressLowerDropDown > li.${addressUpperParam}`).show()
+                    }
+                } else {
+                    $('#currentAddressUpper').html('전체')
+                    $(`#addressUpper전체`).addClass('active')
+                    $('#addressLowerDropDown > li').hide()
+                    $('#currentAddressLower').html('전체')
+                }
             },
         })
-
-        let addressUpper = url.searchParams.get('address_upper')
-        let addressLower = url.searchParams.get('address_lower')
-
-        if (addressUpper) {
-            $('#currentAddressUpper').html(addressUpper)
-            $(`#addressUpper${addressUpper}`).addClass('active')
-            if (addressLower) {
-                $('#currentAddressLower').html(addressLower)
-                $(
-                    `#addressUpper${addressUpper}addressLower${addressLower}`
-                ).addClass('active')
-                $('#addressLowerDropDown > li').hide()
-                $(`#addressLowerDropDown > li.${addressUpper}`).show()
-            } else {
-                $('#currentAddressLower').html('전체')
-                $(`#addressUpper${addressUpper}addressLower전체`).addClass(
-                    'active'
-                )
-                $('#addressLowerDropDown > li').hide()
-                $(`#addressLowerDropDown > li.${addressUpper}`).show()
-            }
-        } else {
-            $('#currentAddressUpper').html('전체')
-            $(`#addressUpper전체`).addClass('active')
-            $('#addressLowerDropDown > li').hide()
-            $('#currentAddressLower').html('전체')
-        }
 
         $.ajax({
             type: 'GET',
@@ -288,6 +288,26 @@
                     stacksList[`${response[i].category}`].push(tempHtml)
                     $(`#stacksList${response[i].category}`).append(tempHtml)
                 }
+
+                let stacks = url.searchParams.get('stack')
+                if (stacks) {
+                    stacks = stacks.split(',')
+                    for (let i = 0; i < stacks.length; i++) {
+                        const stack = stacks[i].replaceAll(/\s/g, '')
+                        $(`#${stack}`).addClass('active')
+                        let category = $(`#${stack}`)
+                            .parent()
+                            .attr('id')
+                            .split('List')[1]
+                        changeActiveButton(
+                            stacksList,
+                            stacks[i],
+                            'Stack',
+                            $(`#${stack}`).text(),
+                            category
+                        )
+                    }
+                }
             },
         })
 
@@ -300,43 +320,23 @@
                     keywordsList.push(tempHtml)
                     $('#keywordList').append(tempHtml)
                 }
+
+                let keywordCode = url.searchParams.get('keywordCode')
+                if (keywordCode) {
+                    keywordCode = keywordCode.split(',')
+                    for (let i = 0; i < keywordCode.length; i++) {
+                        $(`#keywordCode${keywordCode[i]}`).addClass('active')
+                        changeActiveButton(
+                            keywordsList,
+                            `keywordCode${keywordCode[i]}`,
+                            'Keyword',
+                            $(`#keywordCode${keywordCode[i]}`).text(),
+                            ''
+                        )
+                    }
+                }
             },
         })
-
-        let stacks = url.searchParams.get('stack')
-        if (stacks) {
-            stacks = stacks.split(',')
-            for (let i = 0; i < stacks.length; i++) {
-                const stack = stacks[i].replaceAll(/\s/g, '')
-                $(`#${stack}`).addClass('active')
-                let category = $(`#${stack}`)
-                    .parent()
-                    .attr('id')
-                    .split('List')[1]
-                changeActiveButton(
-                    stacksList,
-                    stacks[i],
-                    'Stack',
-                    $(`#${stack}`).text(),
-                    category
-                )
-            }
-        }
-
-        let keywordCode = url.searchParams.get('keywordCode')
-        if (keywordCode) {
-            keywordCode = keywordCode.split(',')
-            for (let i = 0; i < keywordCode.length; i++) {
-                $(`#keywordCode${keywordCode[i]}`).addClass('active')
-                changeActiveButton(
-                    keywordsList,
-                    `keywordCode${keywordCode[i]}`,
-                    'Keyword',
-                    $(`#keywordCode${keywordCode[i]}`).text(),
-                    ''
-                )
-            }
-        }
     })
 
     function showJobposts(response, likedJobpostIds) {
@@ -611,5 +611,11 @@
                 }
             }
         }
+    }
+
+    function onclickAddressUpper(addressUpperName) {
+        $('#addressLowerDropDown > li').hide()
+        $(`#addressLowerDropDown > li.${addressUpperName}`).show()
+        $('#currentAddressUpper').text(addressUpperName)
     }
 </script>

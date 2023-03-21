@@ -496,7 +496,9 @@ export class JobpostRepository extends Repository<Jobpost> {
 
             return {
                 data,
-                totalCount: data[0].totalCount,
+                totalCount: data[0]?.totalCount
+                    ? Number(data[0].totalCount)
+                    : 0,
                 likedUser,
                 message,
             }
@@ -526,7 +528,7 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         return {
             data,
-            totalCount: data[0].totalCount,
+            totalCount: data[0]?.totalCount ? Number(data[0].totalCount) : 0,
             likedUser,
             message,
         }
@@ -656,7 +658,10 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         const data = await this.query(query, values)
 
-        return { data, totalCount: Number(data[0].totalCount) }
+        return {
+            data,
+            totalCount: data[0]?.totalCount ? Number(data[0].totalCount) : 0,
+        }
     }
 
     async getAddresses() {

@@ -12,6 +12,10 @@
     background-color: rgb(69, 87, 117, 0.2) !important;
 }
 
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: rgb(240, 115, 61, 0.9);
+}
+
 #keyword-card {
     margin: 20px;
     margin-top: 80px;
