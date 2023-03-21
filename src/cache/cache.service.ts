@@ -5,68 +5,87 @@ import { JobpostRepository } from '../jobpost/jobpost.repository'
 
 @Injectable()
 export class CacheService {
-	private readonly redisClient: Redis
-	private readonly jobpostRepository: JobpostRepository
-	constructor(private readonly redisService: RedisService) {
-		this.redisClient = redisService.getClient()
-	}
+    private readonly redisClient: Redis
+    private readonly jobpostRepository: JobpostRepository
+    constructor(private readonly redisService: RedisService) {
+        this.redisClient = redisService.getClient()
+    }
 
-	async getLikedjobpost(jobpostId: number, userId: number) {
-		return await this.redisClient.srem(
-			'likedjobposts',
-			jobpostId.toString() + ',' + userId.toString()
-		)
-	}
+    // redis 에 찜 누른 채용공고와 유저를 등록
+    async setLikedjobpost(jobpostId: number, userId: number) {
+        await this.redisClient.sadd('likedJobposts', `(${jobpostId},${userId})`)
+    }
 
-	async setLikedjobpost(jobpostId: number, userId: number) {
-		await this.redisClient.sadd(
-			'likedjobposts',
-			jobpostId.toString() + ',' + userId.toString()
-		)
-	}
+    // DB에 반영되고 난 후 찜 데이터 제거
+    async remLikedjobpost() {
+        await this.redisClient.del('likedJobposts')
+    }
 
-	async getAllLikedjobpost() {
-		return await this.redisClient.smembers('likedjobposts')
-	}
+    // redis 에 저장되어있는 찜 눌린 채용공고 리스트
+    async getAllLikedjobpost() {
+        return await this.redisClient.smembers('likedJobposts')
+    }
 
-	async saveRefreshToken(userId: number, token: string) {
-		await this.redisClient.set(userId.toString(), token)
-	}
+    // redis 에 찜 누른 요소 하나가  저장되어 있는지 체크
+    async isLikedjobpost(jobpostId: number, userId: number) {
+        return await this.redisClient.sismember(
+            'likedJobposts',
+            `(${jobpostId},${userId})`
+        )
+    }
 
-	async getRefreshToken(userId: number): Promise<string> {
-		return await this.redisClient.get(userId.toString())
-	}
+    // redis 에 찜 눌린 저장되어있는 요소 하나 제거
+    async remOneLikedjobpost(jobpostId: number, userId: number) {
+        await this.redisClient.srem('likedJobposts', `(${jobpostId},${userId})`)
+    }
 
-	async removeRedisRefreshToken(userId: number) {
-		return this.redisClient.del(userId.toString())
-	}
+    async saveRefreshToken(userId: number, token: string) {
+        await this.redisClient.set(userId.toString(), token)
+    }
 
-	async getViewCount(jobpostId: number) {
-		return await this.redisClient.hget('views', jobpostId.toString())
-	}
+    async getRefreshToken(userId: number): Promise<string> {
+        return await this.redisClient.get(userId.toString())
+    }
 
-	async setViewCount(jobpostId: number, userId: number) {
-		let pipe = this.redisClient.pipeline()
-		if (!userId) { //비회원 조회
-			userId = 0
-		}
-		let count = await this.redisClient.getbit(jobpostId.toString(), userId)
-		if (count != 1) {
-			pipe.setbit(jobpostId.toString(), userId, 1).expire(jobpostId.toString(), 5)
-			pipe.exec()
-			await this.addCountOne(jobpostId)
-		}
-	}
+    async removeRedisRefreshToken(userId: number) {
+        return this.redisClient.del(userId.toString())
+    }
 
-	async addCountOne(jobpostId: number) {
-		let count = Number(
-			await this.redisClient.hget('views', jobpostId.toString())
-		)
-		if (count > 0) {
-			count += 1
-			await this.redisClient.hset('views', jobpostId.toString(), count)
-		} else {
-			await this.redisClient.hset('views', jobpostId.toString(), 1)
-		}
-	}
+    async getViewCount(jobpostId: number) {
+        return await this.redisClient.hget('views', jobpostId.toString())
+    }
+
+    async getAllViews() {
+        return await this.redisClient.hgetall('views')
+    }
+
+    async remViewjobpost() {
+        return await this.redisClient.del('views')
+    }
+
+    async setViewCount(jobpostId: number, userId: number) {
+        let pipe = this.redisClient.pipeline()
+        if (!userId) {
+            //비회원 조회
+            userId = 0
+        }
+        let count = await this.redisClient.getbit(jobpostId.toString(), userId)
+        if (count != 1) {
+            pipe.setbit(jobpostId.toString(), userId, 1).expire(
+                jobpostId.toString(),
+                5
+            )
+            pipe.exec()
+            await this.addCountOne(jobpostId)
+        }
+    }
+
+    async addCountOne(jobpostId: number) {
+        let count = Number(this.getViewCount(jobpostId))
+        if (count > 0) {
+            await this.redisClient.hincrby('views', jobpostId.toString(), 1)
+        } else {
+            await this.redisClient.hset('views', jobpostId.toString(), 1)
+        }
+    }
 }

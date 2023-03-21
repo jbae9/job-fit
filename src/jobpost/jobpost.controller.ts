@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Query, Body, Res, Param } from '@nestjs/common'
+import {
+    Controller,
+    Get,
+    Post,
+    Query,
+    Body,
+    Param,
+    Delete,
+} from '@nestjs/common'
 import { Cron } from '@nestjs/schedule'
 import { JobpostService } from './jobpost.service'
 
@@ -22,6 +30,21 @@ export class JobpostController {
     @Get('/programmers')
     async getProgrammersJobposts() {
         return await this.jobpostService.getProgrammersJobposts()
+    }
+
+    @Get('/filter/:userId')
+    async getRecommendedJobposts(
+        @Query()
+        query: {
+            sort?: string
+            order?: string
+            limit?: string
+            offset?: string
+        },
+        @Param('userId') userId: number
+    ) {
+        console.log(userId)
+        return await this.jobpostService.getRecommendedJobposts(query, userId)
     }
 
     @Get('/filter')
@@ -52,19 +75,39 @@ export class JobpostController {
         return await this.jobpostService.getKeywords()
     }
 
-    @Post('/like')
-    async postLike(
-        @Body('userId') userId: number,
-        @Body('jobpostId') jobpostId: number,
-        @Res() res
-    ) {
-        const result = await this.jobpostService.postLike(userId, jobpostId)
-
-        return res.json({ message: result })
+    // 회원이 찜 하기 누른 채용공고 번호 리스트 가져오기
+    @Get('/likes/:userId')
+    async getUserLikeJobpostList(@Param('userId') userId: number) {
+        return await this.jobpostService.getUserLikeJobpostList(userId)
     }
 
+    // 찜 하기
+    @Post('/:jobpostId/like')
+    async createJobpostLike(
+        @Body('userId') userId: number,
+        @Param('jobpostId') jobpostId: number
+    ) {
+        return await this.jobpostService.createJobpostLike(userId, jobpostId)
+    }
+
+    // 찜 삭제
+    @Delete('/:jobpostId/like')
+    async deleteJobpostLike(
+        @Body('userId') userId: number,
+        @Param('jobpostId') jobpostId: number
+    ) {
+        return await this.jobpostService.deleteJobpostLike(userId, jobpostId)
+    }
+
+    // 채용공고 상세
     @Get('/:jobpostId')
     async getJobpostDetail(@Param('jobpostId') jobpostId: number) {
         return await this.jobpostService.getJobpostDetail(jobpostId)
+    }
+
+    //조회수 찾기
+    @Get('/view/:jobpostId')
+    async getViewJobpost(@Param('jobpostId') jobpostId: number) {
+        return await this.jobpostService.getViewJobpost(jobpostId)
     }
 }

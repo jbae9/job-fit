@@ -1,0 +1,44 @@
+<div id="modal" class="modal-overlay">
+    <div class="modal-window">
+        <div class="title">
+            <h2>알림</h2>
+        </div>
+        <div class="close-area" id="closeBtn">X</div>
+        <div class="content">
+            <p id="context"></p>
+        </div>
+        <center>
+            <button id="modalClose" class="modalClose" type="button" onclick="modalClose()">확인</button>
+        </center>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).on('click', '#closeBtn', function () {
+        $("#modal").css('display', 'none')
+    })
+
+    $(document).on('click', '#modalClose', function () {
+        $("#modal").css('display', 'none')
+    })
+
+    let url = ''
+
+    function modalOpen(str, newUrl) {
+        let scrollTop = document.scrollingElement.scrollTop
+        $('#modal').css('display', 'flex')
+        $('#modal.modal-overlay').css('top', scrollTop)        //내가 올린 스크롤만큼 밑으로 이동
+        $('#context').html(str)
+        url = newUrl
+    }
+
+    async function modalClose() {
+        $('#modal').css('display', 'none')
+        $('#modal').css('left', '0')
+        $('#modal').css('top', '0')
+        if (refresh == 1) {
+            refresh = 0
+            console.log(url)
+            location.href = url
+        }
+    }
+</script>
