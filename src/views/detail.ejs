@@ -198,7 +198,12 @@
 
             // // 회사 이름 및 링크
             document.getElementById('company-name').innerHTML = `
-                <a href='${company.homepageUrl}'>${company.companyName}</a>
+                ${company.companyName}
+                <a href='${company.homepageUrl}' target='_blink' data-bs-custom-class="custom-tooltip" data-bs-placement="bottom" data-bs-toggle="tooltip" data-bs-title="회사 홈페이지로 이동">
+                    <span class="material-symbols-outlined">
+                        exit_to_app
+                    </span>
+                </a>
             `
 
             // 회사 대표자
@@ -262,6 +267,13 @@
             document.getElementById(
                 'jobpost-link-btn'
             ).innerHTML = `${originalSiteName} 채용공고 보러가기`
+
+            const tooltipTriggerList = document.querySelectorAll(
+                '[data-bs-toggle="tooltip"]'
+            )
+            const tooltipList = [...tooltipTriggerList].map(
+                (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+            )
         })
         .catch((err) => {})
     // 프로그래머스 채용공고 내용 파싱
