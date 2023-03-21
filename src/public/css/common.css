@@ -177,3 +177,7 @@ div[id^='jobpostRow'] {
         text-shadow: 0 0 1px #fff, 0 0 2px #ff4da6, 0 0 3px #ff4da6, 0 0 4px #ff4da6, 0 0 5px #ff4da6, 0 0 6px #ff4da6, 0 0 8px #ff4da6;
     }
 }
+
+.card-text .material-symbols-outlined {
+    margin-right: 5px;
+}

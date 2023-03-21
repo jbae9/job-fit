@@ -617,7 +617,8 @@ export class JobpostRepository extends Repository<Jobpost> {
             }
         }
 
-        let query = `select j.jobpost_id, company_name, original_img_url, title, keywords, keywordCodes, stacks, stackimgurls, likesCount, likedUsers, views, deadline_dtm, address_upper, address_lower from jobpost j 
+        let query = `select j.jobpost_id, company_name, original_img_url, title, keywords, keywordCodes, stacks, stackimgurls, likesCount, likedUsers, views, deadline_dtm, address_upper, address_lower, j.salary
+                        from jobpost j 
                         left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
                                     left join keyword k on j.keyword_code = k.keyword_code 
                                     group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
