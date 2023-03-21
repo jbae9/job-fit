@@ -122,11 +122,14 @@ export class SaraminSelenium {
                             const option = await companyOptionList[j]
                                 .findElement(By.css('dt'))
                                 .getText()
-                            const optionText = await companyOptionList[j]
+                            let optionText = await companyOptionList[j]
                                 .findElement(By.css('dd'))
                                 .getText()
                             for (const key in companyOption) {
                                 if (option.indexOf(key) !== -1) {
+                                    if (option === '홈페이지' && optionText.substring(0, 4) != 'http') {
+                                        optionText = 'http://' + optionText
+                                    }
                                     this.allCompanies[index][`${companyOption[key]}`] =
                                         optionText
                                     break
@@ -168,6 +171,9 @@ export class SaraminSelenium {
                 }
             } catch (err) {
                 // 오류 날 경우 이전 데이터만 넣고 계속 진행
+                if (index === 0) {
+                    return
+                }
                 console.log(`에러난 공고: ${this.allJobsArr[index].originalUrl}`)
                 this.allCompanies = this.allCompanies.slice(0, index)
                 this.allJobsArr = this.allJobsArr.slice(0, index)
