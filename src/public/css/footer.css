@@ -1,50 +1,93 @@
 footer {
-	position: absolute;
-	background: #455775;
-	height: auto;
-	width: 100vw;
-	padding-top: 5px;
-	color: #fcfeff;
-	bottom: auto
+    position: absolute;
+    background: #455775;
+    height: auto;
+    width: 100%;
+    color: #fcfeff;
+    bottom: auto;
+}
+
+.footer-top {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
 }
 
 .footer-content {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	text-align: center;
+    width: 1200px;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 3rem;
 }
 
-.footer-content h3 {
-	font-size: 24px;
-	font-weight: 400;
-	line-height: 3rem;
+.footer-team {
+    width: 25%;
+
+    display: flex;
+    flex-direction: column;
 }
 
-.footer-content p {
-	max-width: 500px;
-	margin: 5px auto;
-	line-height: 20px;
-	font-size: 14px;
+.footer-logo {
+    margin-bottom: 1.5rem;
+}
+
+.footer-logo img {
+    height: 2rem;
+    object-fit: contain;
+}
+
+.footer-team-desc {
+    height: 1.5rem;
+}
+
+.footer-info {
+    width: 25%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-title {
+    font-size: 2rem;
+    color: lightgray;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.footer-member-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-member-info a img {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
 }
 
 .footer-bottom {
-	background: #2d3142;
-	width: 100vw;
-	padding: 10px 0;
-	text-align: center;
+    background: #2d3142;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
 }
 
 .footer-bottom p {
-	font-size: 14px;
-	word-spacing: 2px;
-	text-transform: capitalize;
-	color: #fff;
+    font-size: 14px;
+    word-spacing: 2px;
+    text-transform: capitalize;
+    color: #fff;
 }
 
 .footer-bottom span {
-	text-transform: uppercase;
-	opacity: .4;
-	font-weight: 200;
+    text-transform: uppercase;
+    opacity: 0.4;
+    font-weight: 200;
 }
