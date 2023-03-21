@@ -14,7 +14,7 @@ export class JobpostService {
         private companyRepository: CompanyRepository,
         private cacheService: CacheService,
         private logger: Logger
-    ) { }
+    ) {}
     async getSaraminJobposts() {
         const saraminScraper = new SaraminSelenium('100')
         const { companies, jobposts } = await saraminScraper.getSaraminScraper()
@@ -65,6 +65,32 @@ export class JobpostService {
             limitNum,
             offsetNum,
             others
+        )
+    }
+
+    async getRecommendedJobposts(
+        query: {
+            sort?: string
+            order?: string
+            limit?: string
+            offset?: string
+        },
+        userId
+    ) {
+        // eslint-disable-next-line prefer-const
+        let { sort, order, limit, offset, ...others } = query
+        sort = sort || 'recommended'
+        order = order || 'desc'
+        const limitNum = parseInt(limit) || 16
+        const offsetNum = parseInt(offset) || 0
+
+        return await this.jobpostRepository.getRecommendedJobposts(
+            sort,
+            order,
+            limitNum,
+            offsetNum,
+            others,
+            userId
         )
     }
 
@@ -150,10 +176,14 @@ export class JobpostService {
 
     @Cron('*/5 * * * * *')
     async jobpostViewInsert() {
-        const viewJobposts = Object.entries(await this.cacheService.getAllViews())
+        const viewJobposts = Object.entries(
+            await this.cacheService.getAllViews()
+        )
         if (viewJobposts.length === 0) return
 
-        const values = viewJobposts.map(([jobpostId, viewCount]) => `${jobpostId}, ${viewCount}`).join('/')
+        const values = viewJobposts
+            .map(([jobpostId, viewCount]) => `${jobpostId}, ${viewCount}`)
+            .join('/')
         await this.jobpostRepository.updateView(values)
 
         await this.cacheService.remViewjobpost()

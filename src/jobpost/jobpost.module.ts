@@ -10,10 +10,20 @@ import { JobpostRepository } from './jobpost.repository'
 import { JobpostService } from './jobpost.service'
 import { RedisModule } from '@liaoliaots/nestjs-redis'
 import { CacheService } from 'src/cache/cache.service'
+import { User } from 'src/entities/user.entity'
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Jobpost, Keyword, Stack]), RedisModule],
+    imports: [
+        TypeOrmModule.forFeature([Jobpost, Keyword, Stack, User]),
+        RedisModule,
+    ],
     controllers: [JobpostController],
-    providers: [JobpostService, CacheService, JobpostRepository, CompanyRepository, Logger],
+    providers: [
+        JobpostService,
+        CacheService,
+        JobpostRepository,
+        CompanyRepository,
+        Logger,
+    ],
 })
-export class JobpostModule { }
+export class JobpostModule {}
