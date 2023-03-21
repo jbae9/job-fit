@@ -621,9 +621,24 @@ export class JobpostRepository extends Repository<Jobpost> {
             }
         }
 
-        let query = `select j.jobpost_id, company_name, original_img_url, title, keywords, keywordCodes, stacks, stackimgurls, likesCount, likedUsers, views, deadline_dtm, address_upper, address_lower, j.salary
+        const query = `select j.jobpost_id,
+                            company_name,
+                            original_img_url,
+                            title,
+                            keywords,
+                            keywordCodes,
+                            stacks,
+                            stackimgurls,
+                            likesCount,
+                            likedUsers,
+                            views,
+                            deadline_dtm,
+                            address_upper,
+                            address_lower,
+                            j.salary,
+                            COUNT(*) OVER () AS totalCount
                         from jobpost j 
-                        left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
+                        left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes, group_concat(keyword) as keywords from jobpostkeyword j 
                                     left join keyword k on j.keyword_code = k.keyword_code 
                                     group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
                         left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
@@ -641,25 +656,7 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         const data = await this.query(query, values)
 
-        // 채용공고 카운트
-        query = `select count(*) as totalCount
-                    from (select keywordCodes, stacks from jobpost j 
-                    left join (select jobpost_id, j.keyword_code, group_concat(j.keyword_code) as keywordCodes ,group_concat(keyword) as keywords from jobpostkeyword j 
-                    left join keyword k on j.keyword_code = k.keyword_code 
-                    group by j.jobpost_id) j2 on j.jobpost_id = j2.jobpost_id
-                    left join (select jobpost_id, group_concat(stack) as stacks, group_concat(stack_img_url) as stackImgUrls from jobpoststack j 
-                    left join stack s on j.stack_id = s.stack_id  
-                    group by j.jobpost_id) j3 on j.jobpost_id = j3.jobpost_id
-                    left join company c on j.company_id = c.company_id 
-                    left join (select j.jobpost_id, count(user_id) as likesCount, group_concat(user_id) as likedUsers from jobfit.jobpost j 
-                    left join jobfit.likedjobpost l on j.jobpost_id = l.jobpost_id
-                    group by j.jobpost_id) l on j.jobpost_id = l.jobpost_id ${where}
-                    ${having}
-                    order by ${sort}) as results`
-
-        const totalCount = await this.query(query, values)
-
-        return { data, totalCount: Number(totalCount[0].totalCount) }
+        return { data, totalCount: Number(data[0].totalCount) }
     }
 
     async getAddresses() {
