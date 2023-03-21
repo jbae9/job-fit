@@ -159,3 +159,9 @@ div[id^='jobpostRow'] {
 .card {
     min-height: 399.61px;
 }
+
+#mainContainer .card {
+    border: 0.5px solid #f9fafb;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    margin-bottom: var(--bs-gutter-y);
+}

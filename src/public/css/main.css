@@ -5,11 +5,11 @@
 }
 
 .carousel-inner {
-    padding: 0 30px
+    padding: 0 30px;
 }
 
 .carousel {
-    margin: 10px 0 20px
+    margin: 1.5rem 0 5rem;
 }
 
 .mainHeader {
@@ -22,7 +22,7 @@
     display: flex;
     justify-content: right;
     align-items: center;
-    color: #F0723D;
+    color: #f0723d;
     font-family: 'EliceDigitalBaeum-Bd';
 }
 
@@ -33,4 +33,12 @@
 
 #mainContainer {
     min-height: 1130px;
+}
+
+.main-wrap {
+    width: 100%;
+    background-color: #f9fafb;
+
+    min-height: auto;
+    padding: 2rem 0;
 }
