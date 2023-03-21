@@ -2,9 +2,12 @@ import { Builder, By, until } from 'selenium-webdriver'
 import { Options } from 'selenium-webdriver/chrome'
 import { PageLoadStrategy } from 'selenium-webdriver/lib/capabilities'
 import { SaraminScraper } from './jobpostSaraminAxiosScraper'
+import { CompanyRepository } from 'src/company/company.repository'
+import { JobpostRepository } from '../jobpost.repository'
 const axios = require('axios')
 const cheerio = require('cheerio')
 require('chromedriver')
+
 const companyOption = {
     기업형태: 'corporateType',
     사원수: 'numberEmployees',
@@ -17,46 +20,35 @@ const companyOption = {
 
 export class SaraminSelenium {
     pageCount: string
-    constructor(count: string) {
-        this.pageCount = count
-    }
-    async getSaraminScraper() {
+    allCompanies = [{}]
+    allJobsArr = []
+    constructor(
+        private readonly companyRepository: CompanyRepository,
+        private readonly jobpostRepository: JobpostRepository
+    ) { }
+    async getSaraminScraper(pageCount: string) {
         const options = new Options()
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL)
         options.excludeSwitches('enable-logging')
         let page = 1
-        let allCompanies = [
-            {
-                companyName: null,
-                representativeName: null,
-                numberEmployees: null,
-                address: null,
-                foundedYear: null,
-                imageUrl: null,
-                homepageUrl: null,
-                annualSales: null,
-                avgSalary: null,
-                kreditjobUrl: null,
-                corporateType: null,
-            },
-        ]
-        let allJobsArr = []
+        let index = 0
+
+        this.setArr()
         const driver = await new Builder()
             .forBrowser('chrome')
             .setChromeOptions(options)
             .build()
         while (true) {
+            console.log(`사람인 ${page}페이지 스크롤 중...`)
             const saraminScraper = new SaraminScraper(
                 `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=` + page + `&cat_mcls=2&isAjaxRequest=0&page_count=` +
-                this.pageCount +
+                pageCount +
                 `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
             )
-            console.log('페이지: ' + page)
-            allJobsArr = await saraminScraper.getDataAsHtml()
+            this.allJobsArr = await saraminScraper.getDataAsHtml()
             try {
-                for (let i = 0; i < allJobsArr.length; i++) {
-                    console.log('글: ' + (i + 1))
-                    await driver.get(`${allJobsArr[i].originalUrl}`)
+                for (index = 0; index < this.allJobsArr.length; index++) {
+                    await driver.get(`${this.allJobsArr[index].originalUrl}`)
                     await driver.wait(
                         until.elementLocated(By.className('wrap_jv_cont')),
                         15000
@@ -91,7 +83,7 @@ export class SaraminSelenium {
                             salary = salary.split(' ', 2)[1].replace(',', '')
                         }
                     }
-                    allJobsArr[i].salary = Number(salary) * 10000
+                    this.allJobsArr[index].salary = Number(salary) * 10000
                     const iframe = await allJobs
                         .findElement(By.css('div.wrap_jv_cont'))
                         .findElement(By.css('div.jv_detail'))
@@ -104,22 +96,22 @@ export class SaraminSelenium {
                     const data = cheerio.load(iframeData.data)
                     const jobData = data('.user_content').html()
                     const content = jobData
-                    allJobsArr[i].content = content
+                    this.allJobsArr[index].content = content
                     const postedDtm = await allJobs
                         .findElement(By.className('info_period'))
                         .findElement(By.css('dd'))
                         .getText()
-                    allJobsArr[i].postedDtm = new Date(postedDtm)
-                    if (allJobsArr[i].deadlineDtm.indexOf('채용') != -1) {
-                        allJobsArr[i].deadlineDtm = null
-                    } else if (allJobsArr[i].deadlineDtm.indexOf('마감') != -1) {
-                        allJobsArr[i].deadlineDtm = null
+                    this.allJobsArr[index].postedDtm = new Date(postedDtm)
+                    if (this.allJobsArr[index].deadlineDtm.indexOf('채용') != -1) {
+                        this.allJobsArr[index].deadlineDtm = null
+                    } else if (this.allJobsArr[index].deadlineDtm.indexOf('마감') != -1) {
+                        this.allJobsArr[index].deadlineDtm = null
                     } else {
                         let d = new Date(Date.now())
-                        allJobsArr[i].deadlineDtm = new Date(
+                        this.allJobsArr[index].deadlineDtm = new Date(
                             String(d.getFullYear()) +
                             '/' +
-                            String(allJobsArr[i].deadlineDtm).substring(2, 7)
+                            String(this.allJobsArr[index].deadlineDtm).substring(2, 7)
                         )
                     }
                     try {
@@ -135,7 +127,7 @@ export class SaraminSelenium {
                                 .getText()
                             for (const key in companyOption) {
                                 if (option.indexOf(key) !== -1) {
-                                    allCompanies[i][`${companyOption[key]}`] =
+                                    this.allCompanies[index][`${companyOption[key]}`] =
                                         optionText
                                     break
                                 }
@@ -144,23 +136,22 @@ export class SaraminSelenium {
                     } catch (e) {
                         console.log('회사정보 없음')
                     }
-                    if (allCompanies[i]['numberEmployees'] != null &&
-                        typeof (allCompanies[i]['numberEmployees']) == 'string') {
-                        console.log(typeof (allCompanies[i]['numberEmployees']))
-                        allCompanies[i]['numberEmployees'] = Number(
-                            allCompanies[i]['numberEmployees']?.split(' ', 1)[0]
+                    if (this.allCompanies[index]['numberEmployees'] != null &&
+                        typeof (this.allCompanies[index]['numberEmployees']) == 'string') {
+                        this.allCompanies[index]['numberEmployees'] = Number(
+                            this.allCompanies[index]['numberEmployees']?.split(' ', 1)[0]
                         )
                     }
-                    if (allCompanies[i]['foundedYear'] != null &&
-                        typeof (allCompanies[i]['foundedYear']) == 'string') {
-                        allCompanies[i]['foundedYear'] = Number(
-                            allCompanies[i]['foundedYear']?.split('년', 1)[0]
+                    if (this.allCompanies[index]['foundedYear'] != null &&
+                        typeof (this.allCompanies[index]['foundedYear']) == 'string') {
+                        this.allCompanies[index]['foundedYear'] = Number(
+                            this.allCompanies[index]['foundedYear']?.split('년', 1)[0]
                         )
                     }
 
-                    allCompanies[i]['companyName'] = allJobsArr[i]['companyName']
-                    if (i != allJobsArr.length - 1) {
-                        allCompanies.push({
+                    this.allCompanies[index]['companyName'] = this.allJobsArr[index]['companyName']
+                    if (index != this.allJobsArr.length - 1) {
+                        this.allCompanies.push({
                             companyName: null,
                             representativeName: null,
                             numberEmployees: null,
@@ -176,15 +167,49 @@ export class SaraminSelenium {
                     }
                 }
             } catch (err) {
-                console.log(err)
-                break
+                // 오류 날 경우 이전 데이터만 넣고 계속 진행
+                console.log(`에러난 공고: ${this.allJobsArr[index].originalUrl}`)
+                this.allCompanies = this.allCompanies.slice(0, index)
+                this.allJobsArr = this.allJobsArr.slice(0, index)
+                page = await this.insertData(page, this.allCompanies, this.allJobsArr)
+                continue
             } finally {
-                page += 1
+                page = await this.insertData(page, this.allCompanies, this.allJobsArr)
                 continue
             }
         }
-        return { companies: allCompanies, jobposts: allJobsArr }
     }
 
+    setArr() {
+        this.allCompanies = [
+            {
+                companyName: null,
+                representativeName: null,
+                numberEmployees: null,
+                address: null,
+                foundedYear: null,
+                imageUrl: null,
+                homepageUrl: null,
+                annualSales: null,
+                avgSalary: null,
+                kreditjobUrl: null,
+                corporateType: null,
+            },
+        ]
+        this.allJobsArr = []
+    }
 
+    async insertData(page: number, companiesArr: {}[], jobsArr: any[]) {
+        page += 1
+
+        // 회사 데이터 넣기
+        await this.companyRepository.createCompanies(companiesArr)
+        // 채용공고 데이터 넣기
+        await this.jobpostRepository.createJobposts(jobsArr)
+
+        console.log(`사람인 ${page}페이지 데이터 생성 완료`)
+        this.setArr()
+
+        return page
+    }
 }
