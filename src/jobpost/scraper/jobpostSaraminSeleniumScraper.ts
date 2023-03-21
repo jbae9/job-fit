@@ -174,11 +174,10 @@ export class SaraminSelenium {
                 if (index === 0) {
                     return
                 }
+                console.log(err)
                 console.log(`에러난 공고: ${this.allJobsArr[index].originalUrl}`)
                 this.allCompanies = this.allCompanies.slice(0, index)
                 this.allJobsArr = this.allJobsArr.slice(0, index)
-                page = await this.insertData(page, this.allCompanies, this.allJobsArr)
-                continue
             } finally {
                 page = await this.insertData(page, this.allCompanies, this.allJobsArr)
                 continue
