@@ -196,14 +196,17 @@
             document.getElementById('company-image').innerHTML =
                 companyImageHtml
 
-            // // 회사 이름 및 링크
-            document.getElementById('company-name').innerHTML = `
-                ${company.companyName}
-                <a href='${company.homepageUrl}' target='_blink' data-bs-custom-class="custom-tooltip" data-bs-placement="bottom" data-bs-toggle="tooltip" data-bs-title="회사 홈페이지로 이동">
+            // 회사 이름 및 링크
+            const homepageUrlHtml = !company.homepageUrl
+                ? ''
+                : `<a href='${company.homepageUrl}' target='_blink' data-bs-custom-class="custom-tooltip" data-bs-placement="bottom" data-bs-toggle="tooltip" data-bs-title="회사 홈페이지로 이동">
                     <span class="material-symbols-outlined">
                         exit_to_app
                     </span>
-                </a>
+                </a>`
+            document.getElementById('company-name').innerHTML = `
+                ${company.companyName}
+                ${homepageUrlHtml}
             `
 
             // 회사 대표자
