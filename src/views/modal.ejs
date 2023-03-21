@@ -8,7 +8,7 @@
             <p id="context"></p>
         </div>
         <center>
-            <button id="modalClose" class="modalClose" type="button" onclick="modalClose()">확인</button>
+            <button id="modalClose" class="modalClose" type="button">확인</button>
         </center>
     </div>
 </div>
@@ -21,23 +21,22 @@
         $("#modal").css('display', 'none')
     })
 
-    let url = ''
-
     function modalOpen(str, newUrl) {
+        console.log(newUrl)
         let scrollTop = document.scrollingElement.scrollTop
         $('#modal').css('display', 'flex')
         $('#modal.modal-overlay').css('top', scrollTop)        //내가 올린 스크롤만큼 밑으로 이동
         $('#context').html(str)
-        url = newUrl
+        $('#modalClose').removeAttr('onclick')   // 사전에 modalOpen 함수가 쓰였다면 전에 쓴 modalClose 함수에 newUrl 매개변수 지우기
+        $('#modalClose').attr('onclick', `modalClose('${newUrl}')`)
     }
 
-    async function modalClose() {
+    function modalClose(url) {
         $('#modal').css('display', 'none')
         $('#modal').css('left', '0')
         $('#modal').css('top', '0')
-        if (refresh == 1) {
-            refresh = 0
-            console.log(url)
+
+        if (url !== 'undefined') {
             location.href = url
         }
     }
