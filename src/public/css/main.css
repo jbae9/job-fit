@@ -34,3 +34,7 @@
 #mainContainer {
     min-height: 1130px;
 }
+
+#recommendedHeader {
+    display: inline-flex;
+}
