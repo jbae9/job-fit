@@ -183,7 +183,7 @@
             $.ajax({
                 type: 'GET',
                 async: false,
-                url: `/ api / jobpost / likes / ${userId} `,
+                url: `/api/jobpost/likes/${userId} `,
                 success: function (response) {
                     for (let jobpostId of response) {
                         likedJobpostIds.push(jobpostId.jobpost_id)
@@ -198,7 +198,7 @@
     function createJobpostLike(jobpostId) {
         const userId = Number('<%- user?.userId %>')
         axios
-            .post(`/ api / jobpost / ${jobpostId} /like`, { userId })
+            .post(`/api/jobpost/${jobpostId}/like`, { userId })
             .then((res) => {
                 refresh = 1
                 modalOpen(res.data.message, location.href)
