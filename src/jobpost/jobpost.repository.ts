@@ -162,6 +162,8 @@ export class JobpostRepository extends Repository<Jobpost> {
     ) {
         const likedUser = await this.cacheService.getAllLikedjobpost()
 
+        await this.query(`SET SESSION group_concat_max_len = 1000000;`)
+
         let where = ''
         let having = ''
         if (others) {
@@ -537,6 +539,8 @@ export class JobpostRepository extends Repository<Jobpost> {
         offset: number,
         others: object
     ) {
+        await this.query(`SET SESSION group_concat_max_len = 1000000;`)
+
         let where = ''
         let having = ''
         switch (sort) {
