@@ -231,6 +231,7 @@ export class JobpostRepository extends Repository<Jobpost> {
             where: { userId: userId },
         })
 
+        let message = ''
         let score = ''
         // 유저가 찜한 공고가 있으면 쓰일 JOIN 문
         let joinKeywords = `JOIN (SELECT j.jobpost_id, 
@@ -316,6 +317,9 @@ export class JobpostRepository extends Repository<Jobpost> {
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
                     GROUP_CONCAT(keyword) as keywords,`
+
+                message =
+                    "'마이페이지'에서 주소를 추가하고 마음에 드는 공고를 찜해서 더 나은 공고를 추천받으세요!"
             } else {
                 score = `(COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) +
                     COALESCE(0.5 * ((stackMatches - minStackMatches) / (maxStackMatches - minStackMatches)),0) +
@@ -323,6 +327,9 @@ export class JobpostRepository extends Repository<Jobpost> {
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
                     keywords,`
+
+                message =
+                    "'마이페이지'에서 주소를 추가해서 더 나은 공고를 추천받으세요!"
             }
         }
         // 유저 주소 O 스택 X
@@ -338,12 +345,18 @@ export class JobpostRepository extends Repository<Jobpost> {
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
                     GROUP_CONCAT(keyword) as keywords,`
+
+                message =
+                    "'마이페이지'에서 기술스택을 추가하고 마음에 드는 공고를 찜해서 더 나은 공고를 추천받으세요!"
             } else {
                 score = `(COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) +
                     COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) + 
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
                     keywords,`
+
+                message =
+                    "'마이페이지'에서 기술스택을 추가해서 더 나은 공고를 추천받으세요!"
             }
             joinStacksAndDistance = `JOIN (SELECT 
                                             jp.jobpost_id,
@@ -386,7 +399,7 @@ export class JobpostRepository extends Repository<Jobpost> {
         // 유저 주소 O 스택 O
         else if (
             hasUserAttribute.longitude &&
-            hasUserAttribute.stacks.length != 0
+            hasUserAttribute.stacks.length !== 0
         ) {
             // 유저가 공고를 찜한 기록이 없으면
             if (hasUserAttribute.jobposts.length === 0) {
@@ -397,6 +410,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
                     GROUP_CONCAT(keyword) as keywords,`
+
+                message = '공고를 찜해서 더 나은 공고를 추천받으세요!'
             } else {
                 score = `(COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) +
                     COALESCE(0.5 * ((stackMatches - minStackMatches) / (maxStackMatches - minStackMatches)),0) +
@@ -415,11 +430,17 @@ export class JobpostRepository extends Repository<Jobpost> {
                 score = `(COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
                     GROUP_CONCAT(keyword) as keywords,`
+
+                message =
+                    "'마이페이지'에서 주소와 기술스택을 추가하고 공고를 찜해서 더 나은 공고를 추천받으세요!"
             } else {
                 score = `(COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) + 
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
                     keywords,`
+
+                message =
+                    "'마이페이지'에서 주소와 기술스택을 추가해서 더 나은 공고를 추천받으세요!"
             }
             const q = `SELECT j.jobpost_id,
                                 j.title,
@@ -475,6 +496,7 @@ export class JobpostRepository extends Repository<Jobpost> {
                 data,
                 totalCount: data[0].totalCount,
                 likedUser,
+                message,
             }
         }
 
@@ -504,6 +526,7 @@ export class JobpostRepository extends Repository<Jobpost> {
             data,
             totalCount: data[0].totalCount,
             likedUser,
+            message,
         }
     }
 

@@ -63,9 +63,13 @@
 
 .order {
     padding: 10px 0;
-    margin: 20px 0;
     position: relative;
     display: flex;
+    align-items: center;
+}
+
+#sortDropDown {
+    display: inline-flex;
     align-items: center;
 }
 
@@ -78,10 +82,6 @@
 #searchCount {
     position: absolute;
     right: 0;
-}
-
-#orderDropdown {
-    position: absolute;
 }
 
 #pagination a {

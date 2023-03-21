@@ -65,37 +65,39 @@
         <div class="col-8" id="mainContainer">
             <div id="searchResult"></div>
             <div class="order">
-                <div class="dropdown" id="orderDropdown">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false" id="currentOrder"></button>
-                    <ul class="dropdown-menu">
-                        <% if (!user) { %>
-                            <li title="기술스택에 딱 맞는 현재 공고를 보고싶으면 로그인해주세요!">
-                                <a class="dropdown-item disabled">추천순</a>
-                            </li>
-                            <% } else { %>
-                                <li>
-                                    <a class="dropdown-item"
-                                        onclick="appendQueryParameter({sort: 'recommended', order: 'desc', page: null, limit: null, offset: null})"
-                                        id="recommend">추천순</a>
+                <div id="sortDropdown">
+                    <div class="dropdown" id="orderDropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false" id="currentOrder"></button>
+                        <ul class="dropdown-menu">
+                            <% if (!user) { %>
+                                <li title="기술스택에 딱 맞는 현재 공고를 보고싶으면 로그인해주세요!">
+                                    <a class="dropdown-item disabled">추천순</a>
                                 </li>
-                                <% } %>
+                                <% } else { %>
                                     <li>
                                         <a class="dropdown-item"
-                                            onclick="appendQueryParameter({sort: 'recent', order: 'desc', page: null, limit: null, offset: null})"
-                                            id="recent">최신순</a>
+                                            onclick="appendQueryParameter({sort: 'recommended', order: 'desc', page: null, limit: null, offset: null})"
+                                            id="recommend">추천순</a>
                                     </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                            onclick="appendQueryParameter({sort: 'popular', order: 'desc', page: null, limit: null, offset: null})"
-                                            id="popular">인기순</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                            onclick="appendQueryParameter({sort: 'ending', order: 'asc', page: null, limit: null, offset: null})"
-                                            id="ending">마감순</a>
-                                    </li>
-                    </ul>
+                                    <% } %>
+                                        <li>
+                                            <a class="dropdown-item"
+                                                onclick="appendQueryParameter({sort: 'recent', order: 'desc', page: null, limit: null, offset: null})"
+                                                id="recent">최신순</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                                onclick="appendQueryParameter({sort: 'popular', order: 'desc', page: null, limit: null, offset: null})"
+                                                id="popular">인기순</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                                onclick="appendQueryParameter({sort: 'ending', order: 'asc', page: null, limit: null, offset: null})"
+                                                id="ending">마감순</a>
+                                        </li>
+                        </ul>
+                    </div>
                 </div>
                 <div id="searchCount"></div>
             </div>
@@ -166,6 +168,13 @@
                     type: "GET",
                     url: `/api/jobpost/filter/${userId}/${url.search}`,
                     success: function (response) {
+                        if (response.message) {
+                            const tempHtml = `<span class="material-symbols-outlined" id="recommendationWarning" title="${response.message}">
+                                        report
+                                    </span>`
+                            $('#sortDropdown').append(tempHtml)
+                        }
+
                         $('#searchCount').html(
                             `${response.totalCount}개의 공고를 찾았습니다`
                         )

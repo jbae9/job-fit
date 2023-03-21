@@ -2,8 +2,7 @@
 
 @font-face {
     font-family: 'EliceDigitalBaeum-Bd';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2')
-        format('woff2');
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
@@ -158,4 +157,23 @@ div[id^='jobpostRow'] {
 
 .card {
     min-height: 399.61px;
+}
+
+#recommendationWarning {
+    font-size: 35px;
+    color: rgb(190, 0, 0);
+    margin: 0 5;
+    -webkit-animation: glow 1s ease-in-out infinite alternate;
+    -moz-animation: glow 1s ease-in-out infinite alternate;
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+    from {
+        text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #e60073, 0 0 4px #e60073, 0 0 4px #e60073, 0 0 5px #e60073, 0 0 5px #e60073;
+    }
+
+    to {
+        text-shadow: 0 0 1px #fff, 0 0 2px #ff4da6, 0 0 3px #ff4da6, 0 0 4px #ff4da6, 0 0 5px #ff4da6, 0 0 6px #ff4da6, 0 0 8px #ff4da6;
+    }
 }
