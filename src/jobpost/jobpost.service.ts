@@ -16,11 +16,11 @@ export class JobpostService {
         private logger: Logger
     ) {}
     async getSaraminJobposts() {
-        // let saraminScraper = new SaraminSelenium(
-        //     this.companyRepository,
-        //     this.jobpostRepository
-        // )
-        // saraminScraper.getSaraminScraper('50')
+        let saraminScraper = new SaraminSelenium(
+            this.companyRepository,
+            this.jobpostRepository
+        )
+        await saraminScraper.getSaraminScraper('50')
     }
 
     async getWantedJobposts() {

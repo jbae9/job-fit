@@ -8,6 +8,7 @@ dotenv.config({ path: '../../../.env' })
 
 export class SaraminScraper {
     url: string
+    exit: number | 0
     constructor(url: string) {
         this.url = url
     }
@@ -26,11 +27,17 @@ export class SaraminScraper {
         const jobData = data('.list_body').children('div')
 
         for (let jobpost of jobData) {
-            const title = data(jobpost).find('.job_tit a span').text()
+            const title = await data(jobpost).find('.job_tit a span').text()
             const url = data(jobpost).find('.job_tit a').attr('href')
             const deadlineDtm = data(jobpost).find('.deadlines').text()
             let companyName = data(jobpost).find('.company_nm a span').text()
             let address = data(jobpost).find('.work_place').text()
+
+            // title이 없을 때 마지막 페이지에 도달함
+            if (!title) {
+                this.exit = 1
+                break
+            }
 
             let addressUpper: string | null
             let addressLower: string | null
