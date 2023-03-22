@@ -8,6 +8,7 @@ dotenv.config({ path: '../../../.env' })
 
 export class SaraminScraper {
     url: string
+    exit: number | 0
     constructor(url: string) {
         this.url = url
     }
@@ -25,8 +26,13 @@ export class SaraminScraper {
         const data = cheerio.load(html.data)
         const jobData = data('.list_body').children('div')
 
+
         for (let jobpost of jobData) {
-            const title = data(jobpost).find('.job_tit a span').text()
+            const title = await data(jobpost).find('.job_tit a span').text()
+            if (!title) {
+                this.exit = 1
+                break
+            }
             const url = data(jobpost).find('.job_tit a').attr('href')
             const deadlineDtm = data(jobpost).find('.deadlines').text()
             let companyName = data(jobpost).find('.company_nm a span').text()
