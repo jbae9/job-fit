@@ -25,7 +25,7 @@ export class SaraminSelenium {
     constructor(
         private readonly companyRepository: CompanyRepository,
         private readonly jobpostRepository: JobpostRepository
-    ) { }
+    ) {}
     async getSaraminScraper(pageCount: string) {
         const options = new Options()
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL)
@@ -41,18 +41,43 @@ export class SaraminSelenium {
         while (true) {
             console.log(`사람인 ${page}페이지 스크롤 중...`)
             const saraminScraper = new SaraminScraper(
-                `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=` + page + `&cat_mcls=2&isAjaxRequest=0&page_count=` +
-                pageCount +
-                `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
+                `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=` +
+                    page +
+                    `&cat_mcls=2&isAjaxRequest=0&page_count=` +
+                    pageCount +
+                    `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
             )
             this.allJobsArr = await saraminScraper.getDataAsHtml()
             try {
                 for (index = 0; index < this.allJobsArr.length; index++) {
-                    await driver.get(`${this.allJobsArr[index].originalUrl}`)
-                    await driver.wait(
-                        until.elementLocated(By.className('wrap_jv_cont')),
-                        15000
-                    )
+                    let tries = 0
+                    while (tries < 10) {
+                        try {
+                            await driver.get(
+                                `${this.allJobsArr[index].originalUrl}`
+                            )
+                            console.log(
+                                `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=` +
+                                    page +
+                                    `&cat_mcls=2&isAjaxRequest=0&page_count=` +
+                                    pageCount +
+                                    `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
+                            )
+                            console.log(`${this.allJobsArr[index].originalUrl}`)
+                            await driver.wait(
+                                until.elementLocated(
+                                    By.className('wrap_jv_cont')
+                                ),
+                                15000
+                            )
+
+                            break
+                        } catch (error) {
+                            tries++
+                        }
+                    }
+                    if (tries === 9) continue
+
                     const allJobs = await driver
                         .findElement(By.className(`wrap_jview`))
                         .findElement(By.css('section:first-child'))
@@ -102,16 +127,22 @@ export class SaraminSelenium {
                         .findElement(By.css('dd'))
                         .getText()
                     this.allJobsArr[index].postedDtm = new Date(postedDtm)
-                    if (this.allJobsArr[index].deadlineDtm.indexOf('채용') != -1) {
+                    if (
+                        this.allJobsArr[index].deadlineDtm.indexOf('채용') != -1
+                    ) {
                         this.allJobsArr[index].deadlineDtm = null
-                    } else if (this.allJobsArr[index].deadlineDtm.indexOf('마감') != -1) {
+                    } else if (
+                        this.allJobsArr[index].deadlineDtm.indexOf('마감') != -1
+                    ) {
                         this.allJobsArr[index].deadlineDtm = null
                     } else {
                         let d = new Date(Date.now())
                         this.allJobsArr[index].deadlineDtm = new Date(
                             String(d.getFullYear()) +
-                            '/' +
-                            String(this.allJobsArr[index].deadlineDtm).substring(2, 7)
+                                '/' +
+                                String(
+                                    this.allJobsArr[index].deadlineDtm
+                                ).substring(2, 7)
                         )
                     }
                     try {
@@ -127,8 +158,9 @@ export class SaraminSelenium {
                                 .getText()
                             for (const key in companyOption) {
                                 if (option.indexOf(key) !== -1) {
-                                    this.allCompanies[index][`${companyOption[key]}`] =
-                                        optionText
+                                    this.allCompanies[index][
+                                        `${companyOption[key]}`
+                                    ] = optionText
                                     break
                                 }
                             }
@@ -136,20 +168,33 @@ export class SaraminSelenium {
                     } catch (e) {
                         console.log('회사정보 없음')
                     }
-                    if (this.allCompanies[index]['numberEmployees'] != null &&
-                        typeof (this.allCompanies[index]['numberEmployees']) == 'string') {
+                    if (
+                        this.allCompanies[index]['numberEmployees'] != null &&
+                        typeof this.allCompanies[index]['numberEmployees'] ==
+                            'string'
+                    ) {
                         this.allCompanies[index]['numberEmployees'] = Number(
-                            this.allCompanies[index]['numberEmployees']?.split(' ', 1)[0]
+                            this.allCompanies[index]['numberEmployees']?.split(
+                                ' ',
+                                1
+                            )[0]
                         )
                     }
-                    if (this.allCompanies[index]['foundedYear'] != null &&
-                        typeof (this.allCompanies[index]['foundedYear']) == 'string') {
+                    if (
+                        this.allCompanies[index]['foundedYear'] != null &&
+                        typeof this.allCompanies[index]['foundedYear'] ==
+                            'string'
+                    ) {
                         this.allCompanies[index]['foundedYear'] = Number(
-                            this.allCompanies[index]['foundedYear']?.split('년', 1)[0]
+                            this.allCompanies[index]['foundedYear']?.split(
+                                '년',
+                                1
+                            )[0]
                         )
                     }
 
-                    this.allCompanies[index]['companyName'] = this.allJobsArr[index]['companyName']
+                    this.allCompanies[index]['companyName'] =
+                        this.allJobsArr[index]['companyName']
                     if (index != this.allJobsArr.length - 1) {
                         this.allCompanies.push({
                             companyName: null,
@@ -166,17 +211,32 @@ export class SaraminSelenium {
                         })
                     }
                 }
+                // this.allCompanies = this.allCompanies.slice(0, index-1)
+                // this.allJobsArr = this.allJobsArr.slice(0, index-1)
+                page = await this.insertData(
+                    page,
+                    this.allCompanies,
+                    this.allJobsArr
+                )
             } catch (err) {
                 // 오류 날 경우 이전 데이터만 넣고 계속 진행
-                console.log(`에러난 공고: ${this.allJobsArr[index].originalUrl}`)
-                this.allCompanies = this.allCompanies.slice(0, index)
-                this.allJobsArr = this.allJobsArr.slice(0, index)
-                page = await this.insertData(page, this.allCompanies, this.allJobsArr)
-                continue
-            } finally {
-                page = await this.insertData(page, this.allCompanies, this.allJobsArr)
+                console.log(
+                    `에러난 공고: ${this.allJobsArr[index].originalUrl}`
+                )
+                console.log(err)
+
                 continue
             }
+            // finally {
+            //     console.log('FINALLY 문구')
+            //     console.log(this.allCompanies)
+            //     page = await this.insertData(
+            //         page,
+            //         this.allCompanies,
+            //         this.allJobsArr
+            //     )
+            //     continue
+            // }
         }
     }
 
