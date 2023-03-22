@@ -20,7 +20,7 @@ export class JobpostService {
             this.companyRepository,
             this.jobpostRepository
         )
-        saraminScraper.getSaraminScraper('50')
+        await saraminScraper.getSaraminScraper('50')
     }
 
     async getWantedJobposts() {
