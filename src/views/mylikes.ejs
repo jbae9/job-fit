@@ -1,9 +1,6 @@
 <div class="mypage-content-wrap">
     <div class="mypage-content-title">내 찜 목록</div>
-    <div
-        id="mypage-content-mylikes-wrap"
-        class="mypage-content-mylikes-wrap"
-    ></div>
+    <div id="mypage-content-mylikes-wrap" class="mypage-content-mylikes-wrap"></div>
 </div>
 
 <script>
@@ -28,10 +25,14 @@
             } else {
                 let jobpostsHtml = ''
                 for (let jobpost of jobposts) {
+                    const jobpostImgUrl = !jobpost.originalImgUrl
+                        ? '/images/No_Image.png'
+                        : jobpost.originalImgUrl
+
                     jobpostsHtml += `
                     <div class='mylikes-container'>
                         <div class='mylikes'>
-                            <img class='mylikes-jobpost-img' src='${jobpost.originalImgUrl}' />
+                            <img class='mylikes-jobpost-img' src='${jobpostImgUrl}' />
                             <a href='/jobpost/${jobpost.jobpostId}'><div class='mylikes-jobpost-title'>${jobpost.title}</div></a>
                             <div class='mylikes-jobpost-company'>${jobpost.company.companyName}</div>
                         </div>    
@@ -44,5 +45,5 @@
                 ).innerHTML = jobpostsHtml
             }
         })
-        .catch((err) => {})
+        .catch((err) => { })
 </script>

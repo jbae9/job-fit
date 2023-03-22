@@ -6,7 +6,7 @@ dotenv.config({ path: '../../../.env' })
 
 export async function wantedScraper() {
     const startDate = new Date(Date.now())
-    console.log(startDate.toTimeString())
+    console.log('원티드 스크레이핑 시작' + startDate.toTimeString())
     try {
         const { data } = await getAxios(
             'https://www.wanted.co.kr/api/v4/jobs?country=kr&tag_type_ids=518&locations=all&years=-1&limit=100&offset=0&job_sort=job.latest_order'
@@ -107,8 +107,11 @@ export async function wantedScraper() {
 
                         const companyImgUrl =
                             companyDetails.company.logo_img.thumb
-                        const companyHomepageUrl =
+                        let companyHomepageUrl =
                             companyDetails.company.detail.link
+                        if (!companyHomepageUrl.startsWith('http')) {
+                            companyHomepageUrl = 'http://' + companyHomepageUrl
+                        }
 
                         // Kreditjob 회사 연봉 정보
                         const companyKreditjobId =
@@ -209,7 +212,7 @@ export async function wantedScraper() {
         }
 
         const endDate = new Date(Date.now())
-        console.log(endDate.toTimeString())
+        console.log('원티드 스크레이핑 완료' + endDate.toTimeString())
 
         return { companies: allCompanies, jobposts: allJobsArr }
     } catch (error) {

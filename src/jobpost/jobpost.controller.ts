@@ -43,7 +43,6 @@ export class JobpostController {
         },
         @Param('userId') userId: number
     ) {
-        console.log(userId)
         return await this.jobpostService.getRecommendedJobposts(query, userId)
     }
 
