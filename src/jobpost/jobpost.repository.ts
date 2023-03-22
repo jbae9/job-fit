@@ -488,8 +488,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                                 JOIN company c ON jp.company_id = c.company_id
                                 GROUP BY 
                                     jp.jobpost_id) distanceStacksCalculated ON j.jobpost_id = distanceStacksCalculated.jobpost_id
-                        ${joinKeywords}
-                        GROUP BY j.jobpost_id
+                        ${joinKeywords} ${where}
+                        GROUP BY j.jobpost_id ${having}
                         ORDER BY score DESC
                         LIMIT ? OFFSET ?`
             const data = await this.query(q, [limit, offset])
