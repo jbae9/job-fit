@@ -41,6 +41,18 @@
                         </div>`
         }
 
+        // address
+        let address = ''
+        if (!addressLower) {
+            if (!addressUpper) {
+                address = '전체'
+            } else {
+                address = addressUpper + '전체'
+            }
+        } else {
+            address = addressUpper + ' ' + addressLower
+        }
+
         let wordAndAddressCol = ``
         if (keywords !== null) {
             if (keywords.includes('신입')) {
@@ -49,7 +61,7 @@
                                         <span class="material-symbols-outlined">
                                             location_on
                                         </span>
-                                        ${addressUpper} ${addressLower}
+                                        ${address}
                                         </a>
                                     </div>
                                     <div class="col">
@@ -66,7 +78,7 @@
                                         <span class="material-symbols-outlined">
                                             location_on
                                         </span>
-                                        ${addressUpper} ${addressLower}
+                                        ${address}
                                         </a>
                                     </div>
                                     <div class="col">
@@ -83,7 +95,7 @@
                                         <span class="material-symbols-outlined">
                                             location_on
                                         </span>
-                                        ${addressUpper} ${addressLower}
+                                        ${address}
                                         </a>
                                     </div>`
             }
@@ -93,7 +105,7 @@
                                         <span class="material-symbols-outlined">
                                             location_on
                                         </span>
-                                        ${addressUpper} ${addressLower}
+                                        ${address}
                                         </a>
                                     </div>`
         }
