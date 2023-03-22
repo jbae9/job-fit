@@ -153,11 +153,20 @@ export class SaraminSelenium {
                             const option = await companyOptionList[j]
                                 .findElement(By.css('dt'))
                                 .getText()
-                            const optionText = await companyOptionList[j]
+                            let optionText = await companyOptionList[j]
                                 .findElement(By.css('dd'))
                                 .getText()
                             for (const key in companyOption) {
                                 if (option.indexOf(key) !== -1) {
+                                    this.allCompanies[index][
+                                        `${companyOption[key]}`
+                                    ] = optionText
+                                    if (
+                                        option === '홈페이지' &&
+                                        optionText.substring(0, 4) != 'http'
+                                    ) {
+                                        optionText = 'http://' + optionText
+                                    }
                                     this.allCompanies[index][
                                         `${companyOption[key]}`
                                     ] = optionText
@@ -259,7 +268,7 @@ export class SaraminSelenium {
         this.allJobsArr = []
     }
 
-    async insertData(page: number, companiesArr: {}[], jobsArr: any[]) {
+    async insertData(page: number, companiesArr: object[], jobsArr: any[]) {
         page += 1
 
         // 회사 데이터 넣기
