@@ -202,9 +202,6 @@
         axios
             .post(`/api/jobpost/${jobpostId}/like`, { userId })
             .then((res) => {
-                refresh = 1
-                modalOpen(res.data.message, location.href)
-
                 // 요소 변경
                 const likedHtml = `
                     <a style="cursor:pointer" onclick="deleteJobpostLike(${jobpostId})">
@@ -213,9 +210,12 @@
                         </span>
                     </a>`
 
-                document.getElementById(
-                    `like-btn-wrap-${jobpostId}`
-                ).innerHTML = likedHtml
+                let itemList = document.querySelectorAll(
+                    `#like-btn-wrap-${jobpostId}`
+                )
+                itemList.forEach((el) => {
+                    el.innerHTML = likedHtml
+                })
             })
             .catch((err) => {
                 alert(err.response.data.message)
@@ -229,9 +229,6 @@
         axios
             .delete(`/api/jobpost/${jobpostId}/like`, { data: { userId } })
             .then((res) => {
-                refresh = 1
-                modalOpen(res.data.message, location.href)
-
                 // 요소 변경
                 const likedHtml = `
                     <a style="cursor:pointer" onclick="createJobpostLike(${jobpostId})">
@@ -240,9 +237,12 @@
                         </span>
                     </a>`
 
-                document.getElementById(
-                    `like-btn-wrap-${jobpostId}`
-                ).innerHTML = likedHtml
+                let itemList = document.querySelectorAll(
+                    `#like-btn-wrap-${jobpostId}`
+                )
+                itemList.forEach((el) => {
+                    el.innerHTML = likedHtml
+                })
             })
             .catch((err) => {
                 alert(err.response.data.message)
