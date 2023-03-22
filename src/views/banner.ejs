@@ -17,7 +17,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 <script>
-    const subtitle = '지금 로그인해서 채용공고를 추천 받아보세요!'
+    const userId = '<%= user?.userId %>'
+    const subtitle = !userId
+        ? '지금 로그인해서 채용공고를 추천 받아보세요!'
+        : '맞춤형 채용공고로 당신의 미래를 디자인하세요!'
     const subtitleDOM = document.querySelector('.banner-subtitle')
 
     let i = 0
@@ -30,7 +33,7 @@
 
     setInterval(subtitleTyping, 75)
 
-    // 스택 다불러오기
+    // 기술 스택 리스트 불러오기
     axios
         .get(`/api/stack`)
         .then((res) => {
