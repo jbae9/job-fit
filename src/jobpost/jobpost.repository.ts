@@ -240,6 +240,7 @@ export class JobpostRepository extends Repository<Jobpost> {
                                 group_concat(jk.keyword_code) AS jobpostKeyword, 
                                 group_concat(k.keyword_code) AS userKeyword,
                                 group_concat(ky.keyword) AS keywords,
+                                group_concat(ky.keyword_code) AS keywordCodes,
                                 COUNT(*) AS keywordMatches,
                                 MIN(COUNT(*)) OVER () AS minKeywordMatches,
                                 MAX(COUNT(*)) OVER () AS maxKeywordMatches
@@ -346,7 +347,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                 score = `(COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) + 
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
-                    GROUP_CONCAT(keyword) as keywords,`
+                    GROUP_CONCAT(keyword) as keywords,
+                    GROUP_CONCAT(keyword_code) as keywordCodes,`
 
                 message =
                     "'마이페이지'에서 기술스택을 추가하고 마음에 드는 공고를 찜해서 더 나은 공고를 추천받으세요!"
@@ -355,7 +357,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                     COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) + 
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
-                    keywords,`
+                    keywords,
+                    keywordCodes,`
 
                 message =
                     "'마이페이지'에서 기술스택을 추가해서 더 나은 공고를 추천받으세요!"
@@ -411,7 +414,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                     COALESCE(0.5 * ((stackMatches - minStackMatches) / (maxStackMatches - minStackMatches)),0) +
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
-                    GROUP_CONCAT(keyword) as keywords,`
+                    GROUP_CONCAT(keyword) as keywords,
+                    GROUP_CONCAT(keyword_code) as keywordCodes,`
 
                 message = '공고를 찜해서 더 나은 공고를 추천받으세요!'
             } else {
@@ -420,7 +424,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                     COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) + 
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
-                    keywords,`
+                    keywords,
+                    keywordCodes,`
             }
         }
         // 유저 스택 X, 주소 X
@@ -431,7 +436,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                                 JOIN keyword k ON j2.keyword_code = k.keyword_code `
                 score = `(COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
-                    GROUP_CONCAT(keyword) as keywords,`
+                    GROUP_CONCAT(keyword) as keywords,
+                    GROUP_CONCAT(keyword_code) as keywordCodes,`
 
                 message =
                     "'마이페이지'에서 주소와 기술스택을 추가하고 공고를 찜해서 더 나은 공고를 추천받으세요!"
@@ -439,7 +445,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                 score = `(COALESCE(0.3 * ((keywordMatches - minKeywordMatches) / (maxKeywordMatches - minKeywordMatches)),0) + 
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
-                    keywords,`
+                    keywords,
+                    keywordCodes,`
 
                 message =
                     "'마이페이지'에서 주소와 기술스택을 추가해서 더 나은 공고를 추천받으세요!"
@@ -515,6 +522,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                                 stacks,
                                 stackimgurls,
                                 j.salary,
+                                keywords,
+                                keywordCodes,
                                 ${score}
                                 COUNT(*) OVER () as totalCount
                         FROM jobpost j

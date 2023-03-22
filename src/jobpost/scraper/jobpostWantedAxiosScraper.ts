@@ -107,8 +107,11 @@ export async function wantedScraper() {
 
                         const companyImgUrl =
                             companyDetails.company.logo_img.thumb
-                        const companyHomepageUrl =
+                        let companyHomepageUrl =
                             companyDetails.company.detail.link
+                        if (!companyHomepageUrl.startsWith('http')) {
+                            companyHomepageUrl = 'http://' + companyHomepageUrl
+                        }
 
                         // Kreditjob 회사 연봉 정보
                         const companyKreditjobId =
