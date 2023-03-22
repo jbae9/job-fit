@@ -2,11 +2,7 @@
     <div class="mypage-content-title">내 정보 관리</div>
     <div class="mypage-content-subtitle">내 정보</div>
     <div class="mypage-content-myinfo">
-        <img
-            id="profile-image"
-            class="mypage-content-myinfo-profile-image"
-            src=""
-        />
+        <img id="profile-image" class="mypage-content-myinfo-profile-image" src="" />
         <div id="nickname" class="mypage-content-myinfo-nickname"></div>
         <div id="email" class="mypage-content-myinfo-email"></div>
     </div>
@@ -16,21 +12,11 @@
     </div>
     <div class="mypage-content-myaddress">
         <div id="address-wrap" class="mypage-content-myaddress-wrap">
-            <div
-                id="address-upper"
-                class="mypage-content-myaddress-upper"
-            ></div>
-            <div
-                id="address-lower"
-                class="mypage-content-myaddress-lower"
-            ></div>
+            <div id="address-upper" class="mypage-content-myaddress-upper"></div>
+            <div id="address-lower" class="mypage-content-myaddress-lower"></div>
         </div>
-        <button
-            type="button"
-            class="mypage-content-myaddress-btn"
-            data-bs-toggle="modal"
-            data-bs-target="#address-modal"
-        >
+        <button type="button" class="mypage-content-myaddress-btn" data-bs-toggle="modal"
+            data-bs-target="#address-modal">
             수정
         </button>
     </div>
@@ -41,88 +27,46 @@
     <div class="mypage-content-mystack">
         <div class="mypage-content-mystack-input-wrap">
             <div class="stack-search-box">
-                <input
-                    type="text"
-                    id="mypage-content-mystack-id-input"
-                    class="mypage-content-mystack-id-input"
-                    hidden
-                />
-                <input
-                    type="text"
-                    id="mypage-content-mystack-name-input"
-                    class="mypage-content-mystack-name-input"
-                    placeholder="기술 스택"
-                />
+                <input type="text" id="mypage-content-mystack-id-input" class="mypage-content-mystack-id-input"
+                    hidden />
+                <input type="text" id="mypage-content-mystack-name-input" class="mypage-content-mystack-name-input"
+                    placeholder="기술 스택" />
                 <div id="stack-list-box" class="stack-list-box hide"></div>
             </div>
-            <button
-                type="button"
-                class="mypage-content-mystack-btn"
-                onclick="insertStack()"
-            >
+            <button type="button" class="mypage-content-mystack-btn" onclick="insertStack()">
                 추가
             </button>
         </div>
-        <div
-            id="mypage-content-mystack-list-wrap"
-            class="mypage-content-mystack-list-wrap"
-        ></div>
+        <div id="mypage-content-mystack-list-wrap" class="mypage-content-mystack-list-wrap"></div>
     </div>
 </div>
 
 <div class="hide"></div>
 
 <!-- Modal -->
-<div
-    class="modal fade"
-    id="address-modal"
-    tabindex="-1"
-    aria-labelledby="address-modal-label"
-    aria-hidden="true"
->
+<div class="modal fade" id="address-modal" tabindex="-1" aria-labelledby="address-modal-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title">내 주소 수정</div>
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                ></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="modal-address-wrap">
                     <div class="modal-address-title">내 주소 :</div>
-                    <input
-                        id="modal-address-input"
-                        class="modal-address-input"
-                        disabled
-                    />
+                    <input id="modal-address-input" class="modal-address-input" disabled />
                 </div>
                 <div class="modal-address-search-wrap">
-                    <button
-                        id="modal-address-search-btn"
-                        type="button"
-                        class="modal-address-search-btn"
-                    >
+                    <button id="modal-address-search-btn" type="button" class="modal-address-search-btn">
                         주소 검색
                     </button>
                 </div>
             </div>
             <div class="modal-footer">
-                <button
-                    type="button"
-                    class="modal-close"
-                    data-bs-dismiss="modal"
-                >
+                <button type="button" class="modal-close" data-bs-dismiss="modal">
                     취소
                 </button>
-                <button
-                    type="button"
-                    class="address-update-btn"
-                    onclick="addressUpdate()"
-                >
+                <button type="button" class="address-update-btn" onclick="addressUpdate()">
                     수정
                 </button>
             </div>
@@ -232,7 +176,6 @@
             }
         })
         .catch((err) => {
-            console.log(err)
             window.location.href = '/'
         })
 

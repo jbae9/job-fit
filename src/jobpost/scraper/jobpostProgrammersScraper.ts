@@ -135,8 +135,6 @@ export async function programmersScraper() {
             }
         }
 
-        // console.log(companies)
-
         // 회사 데이터 중복 제거
         const companiesSetArray = companies.filter(
             (arr, index, callback) =>

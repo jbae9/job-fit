@@ -164,7 +164,12 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         await this.query(`SET SESSION group_concat_max_len = 1000000;`)
 
-        let where = ''
+        const todayDate = new Date(Date.now())
+
+        let where = `WHERE j.updated_dtm > '${todayDate.getFullYear()}-${
+            todayDate.getMonth() + 1
+        }-${todayDate.getDate() - 1}'`
+
         let having = ''
         if (others) {
             const othersKeys = Object.keys(others)
@@ -347,8 +352,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                 score = `(COALESCE(0.4 * (1 - (distance - minDistance) / (maxDistance - minDistance)),0) + 
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
-                    GROUP_CONCAT(keyword) as keywords,
-                    GROUP_CONCAT(keyword_code) as keywordCodes,`
+                    GROUP_CONCAT(k.keyword) as keywords,
+                    GROUP_CONCAT(k.keyword_code) as keywordCodes,`
 
                 message =
                     "'마이페이지'에서 기술스택을 추가하고 마음에 드는 공고를 찜해서 더 나은 공고를 추천받으세요!"
@@ -414,8 +419,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                     COALESCE(0.5 * ((stackMatches - minStackMatches) / (maxStackMatches - minStackMatches)),0) +
                     COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
-                    GROUP_CONCAT(keyword) as keywords,
-                    GROUP_CONCAT(keyword_code) as keywordCodes,`
+                    GROUP_CONCAT(k.keyword) as keywords,
+                    GROUP_CONCAT(k.keyword_code) as keywordCodes,`
 
                 message = '공고를 찜해서 더 나은 공고를 추천받으세요!'
             } else {
@@ -436,8 +441,8 @@ export class JobpostRepository extends Repository<Jobpost> {
                                 JOIN keyword k ON j2.keyword_code = k.keyword_code `
                 score = `(COALESCE(0.1 * ((j.salary - minSalary) / (maxSalary - minSalary)),0) +
                     COALESCE(0.05 * (avg_salary - minAvgSalary) / (maxAvgSalary - minAvgSalary),0)) as score,
-                    GROUP_CONCAT(keyword) as keywords,
-                    GROUP_CONCAT(keyword_code) as keywordCodes,`
+                    GROUP_CONCAT(k.keyword) as keywords,
+                    GROUP_CONCAT(k.keyword_code) as keywordCodes,`
 
                 message =
                     "'마이페이지'에서 주소와 기술스택을 추가하고 공고를 찜해서 더 나은 공고를 추천받으세요!"
@@ -522,8 +527,6 @@ export class JobpostRepository extends Repository<Jobpost> {
                                 stacks,
                                 stackimgurls,
                                 j.salary,
-                                keywords,
-                                keywordCodes,
                                 ${score}
                                 COUNT(*) OVER () as totalCount
                         FROM jobpost j
@@ -552,7 +555,12 @@ export class JobpostRepository extends Repository<Jobpost> {
     ) {
         await this.query(`SET SESSION group_concat_max_len = 1000000;`)
 
-        let where = ''
+        const todayDate = new Date(Date.now())
+
+        let where = `WHERE j.updated_dtm > '${todayDate.getFullYear()}-${
+            todayDate.getMonth() + 1
+        }-${todayDate.getDate() - 1}'`
+
         let having = ''
         switch (sort) {
             case 'recent':
@@ -674,16 +682,22 @@ export class JobpostRepository extends Repository<Jobpost> {
     }
 
     async getAddresses() {
+        const todayDate = new Date(Date.now())
+
+        const where = `AND j.updated_dtm > '${todayDate.getFullYear()}-${
+            todayDate.getMonth() + 1
+        }-${todayDate.getDate() - 1}'`
+
         const addressUpper = await this.query(`select address_upper
                                                 from jobpost j
-                                                where address_upper is not null
+                                                where address_upper is not null ${where}
                                                 group by address_upper 
                                                 order by address_upper asc`)
 
         const addressLower = await this
             .query(`select address_upper, address_lower
                     from jobpost j 
-                    where address_lower is not null and address_upper is not null
+                    where address_lower is not null and address_upper is not null ${where}
                     group by address_lower 
                     order by address_upper asc, address_lower asc`)
 
@@ -691,20 +705,34 @@ export class JobpostRepository extends Repository<Jobpost> {
     }
 
     async getStacks() {
+        const todayDate = new Date(Date.now())
+
+        const where = `AND j.updated_dtm > '${todayDate.getFullYear()}-${
+            todayDate.getMonth() + 1
+        }-${todayDate.getDate() - 1}'`
+
         return await this.query(`select j2.stack, j2.category
                                 from jobpost j
                                 left join (select j.stack_id, j.jobpost_id, stack, category
                                 from jobpoststack j 
                                 left join stack s on j.stack_id = s.stack_id) j2 on j.jobpost_id = j2.jobpost_id
-                                where j2.stack is not null
+                                where j2.stack is not null ${where}
                                 group by j2.stack
                                 order by j2.category asc, j2.stack asc`)
     }
 
     async getKeywords() {
+        const todayDate = new Date(Date.now())
+
+        const where = `WHERE jp.updated_dtm > '${todayDate.getFullYear()}-${
+            todayDate.getMonth() + 1
+        }-${todayDate.getDate() - 1}'`
+
         return await this
-            .query(`select jobpost_id, j.keyword_code, keyword from jobpostkeyword j 
+            .query(`select j.jobpost_id, j.keyword_code, keyword from jobpostkeyword j 
                     left join keyword k on j.keyword_code = k.keyword_code 
+                    left join jobpost jp on j.jobpost_id = jp.jobpost_id
+                    ${where}
                     group by keyword_code
                     order by keyword asc`)
     }
@@ -749,7 +777,6 @@ export class JobpostRepository extends Repository<Jobpost> {
         let query = `insert into likedjobpost(jobpost_id, user_id) values ${likedJobpostsData}`
         try {
             await this.query(query)
-            console.log('db반영완료')
         } catch (err) {
             console.log(err)
         }
