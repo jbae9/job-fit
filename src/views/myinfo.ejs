@@ -12,7 +12,7 @@
     </div>
     <div class="mypage-content-subtitle">
         내 주소
-        <span class="content-desc">( 시/도, 시/군/구 까지 표시됩니다. )</span>
+        <div class="mypage-content-myaddress-message"></div>
     </div>
     <div class="mypage-content-myaddress">
         <div id="address-wrap" class="mypage-content-myaddress-wrap">
@@ -34,7 +34,10 @@
             수정
         </button>
     </div>
-    <div class="mypage-content-subtitle">내 스택</div>
+    <div class="mypage-content-subtitle">
+        내 스택
+        <div class="mypage-content-mystack-message"></div>
+    </div>
     <div class="mypage-content-mystack">
         <div class="mypage-content-mystack-input-wrap">
             <div class="stack-search-box">
@@ -159,41 +162,61 @@
                 stacks,
             } = res.data
 
-            console.log(stacks)
-
             document
                 .querySelector('.mypage-content-myinfo img')
                 .setAttribute('src', `${profileImage}`)
             document.getElementById('nickname').innerHTML = `${nickname}`
             document.getElementById('email').innerHTML = `${email}`
 
-            if (addressUpper)
+            if (addressUpper) {
                 document.getElementById(
                     'address-upper'
                 ).innerHTML = `${addressUpper}`
+            }
 
-            if (addressLower)
+            if (addressLower) {
                 document.getElementById(
                     'address-lower'
                 ).innerHTML = `${addressLower}`
+            }
 
-            if (!addressUpper && !addressLower)
-                document.getElementById('address-wrap').innerHTML = '선택없음'
+            if (!addressUpper && !addressLower) {
+                document.querySelector(
+                    '.mypage-content-myaddress-message'
+                ).innerHTML = `
+                    <span class="material-symbols-outlined warning-icon">
+                        error
+                    </span>
+                    <span class="address-message">주소를 입력해서 더 나은 공고를 추천받으세요!</span>
+                `
+                document.getElementById('address-wrap').innerHTML = `선택 없음`
+            }
 
             // 내 기술스택
-            let myStacksHtml = ''
-            for (let myStack of stacks) {
-                myStacksHtml += `<div class='mypage-content-mystack-list'>
+            if (!stacks.length) {
+                document.querySelector(
+                    '.mypage-content-mystack-message'
+                ).innerHTML = `
+                    <span class="material-symbols-outlined warning-icon">
+                        error
+                    </span>
+                    <span class="mystack-message">기술 스택을 선택하고 더 나은 공고를 추천받으세요!</span>
+                `
+            } else {
+                let myStacksHtml = ''
+                for (let myStack of stacks) {
+                    myStacksHtml += `<div class='mypage-content-mystack-list'>
                                     <div class='mypage-content-mystack-list-stack-info-wrap'>
                                         <img src='${myStack.stackImgUrl}' />
                                         ${myStack.stack}
-                                    </div>                                    
+                                    </div>
                                     <button type='button' onclick='deleteMyStack(${myStack.stackId})'>X</button>
                                 </div>`
+                }
+                document.getElementById(
+                    'mypage-content-mystack-list-wrap'
+                ).innerHTML = myStacksHtml
             }
-            document.getElementById(
-                'mypage-content-mystack-list-wrap'
-            ).innerHTML = myStacksHtml
         })
         .catch((err) => {
             alert('회원의 정보를 찾을 수 없습니다.')

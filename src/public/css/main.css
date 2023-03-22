@@ -44,5 +44,14 @@
 }
 
 #recommendedHeader {
-    display: inline-flex;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.main-recommendation-warning {
+    display: flex;
+    align-items: center;
+    font-weight: bold !important;
 }

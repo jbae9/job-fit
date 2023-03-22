@@ -31,6 +31,7 @@ footer {
 
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .footer-logo {
@@ -51,6 +52,7 @@ footer {
 
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .footer-title {
@@ -77,6 +79,7 @@ footer {
 
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .footer-develop-info {

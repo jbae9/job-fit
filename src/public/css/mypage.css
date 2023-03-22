@@ -64,6 +64,12 @@
     font-size: 1.25rem;
     color: #4f5d75;
     margin-bottom: 1rem;
+
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2rem;
 }
 
 .content-desc {
@@ -356,6 +362,27 @@
     font-size: 0.875rem;
     color: gray;
     padding: 0.5rem 0;
+}
+
+.mypage-content-myaddress-message,
+.mypage-content-mystack-message {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.material-symbols-outlined.warning-icon {
+    color: red !important;
+    font-size: 1rem !important;
+}
+
+.address-message,
+.mystack-message,
+.mylikes-message {
+    font-size: 1rem !important;
+    color: black;
+    font-weight: bold;
 }
 
 @media (max-width: 768px) {
