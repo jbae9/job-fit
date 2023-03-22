@@ -72,6 +72,30 @@ footer {
     object-fit: contain;
 }
 
+.footer-develop {
+    width: 25%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-develop-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.footer-develop-info a img {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+}
+
+.footer-develop-info .material-symbols-outlined {
+    font-size: 1.5rem !important;
+    color: #000000;
+}
+
 .footer-bottom {
     background: #2d3142;
     width: 100%;
