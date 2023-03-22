@@ -14,19 +14,19 @@ import { JobpostService } from './jobpost.service'
 export class JobpostController {
     constructor(private readonly jobpostService: JobpostService) {}
 
-    @Cron('0 0 19 * * *') // 매일 오후 7시
+    @Cron('0 0 5 * * *') // 매일 새벽 5시
     @Get('/saramin')
     async getSaraminData() {
         return await this.jobpostService.getSaraminJobposts()
     }
 
-    @Cron('0 30 9,19 * * *') // 매일 오전 9시30분, 오후 7시30분
+    @Cron('0 0 4 * * *') // 매일 새벽 4시
     @Get('/wanted')
     async getWantedJobposts() {
         return await this.jobpostService.getWantedJobposts()
     }
 
-    @Cron('0 0 10,20 * * *') // 매일 오전 10시, 오후 8시
+    @Cron('0 0 3 * * *') // 매일 새벽 3시
     @Get('/programmers')
     async getProgrammersJobposts() {
         return await this.jobpostService.getProgrammersJobposts()
