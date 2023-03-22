@@ -1,0 +1,22 @@
+h1 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+#mainWrap {
+    background-color: #f9fafb;
+}
+
+#aboutContainer {
+    padding: 40 50;
+    background-color: white;
+}
+
+#intro {
+    text-align: center;
+    font-size: 25;
+}

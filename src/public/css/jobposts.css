@@ -12,9 +12,13 @@
     background-color: rgb(69, 87, 117, 0.2) !important;
 }
 
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: rgb(240, 115, 61, 0.9);
+}
+
 #keyword-card {
     margin: 20px;
-    margin-top: 80px;
+    margin-top: 100px;
 }
 
 #keyword-card .row {
@@ -29,9 +33,7 @@
 #resetButton {
     font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 48;
     color: rgb(206, 0, 0);
-    font-size: 25px;
-    position: absolute;
-    right: 0;
+    font-size: 28px;
     padding: 0 10px;
 }
 
@@ -54,7 +56,7 @@
 
 #searchResult {
     font-size: 25px;
-    padding: 10px 0;
+    padding: 20px 0;
 }
 
 .order {
@@ -111,4 +113,11 @@ summary {
     display: flex;
     justify-content: center;
     margin: 10px 5px;
+}
+
+#filterTitle {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
 }

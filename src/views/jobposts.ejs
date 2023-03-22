@@ -3,13 +3,17 @@
         <div class="col-2" id="keyword-card">
             <div class="card">
                 <div class="row">
-                    <p class="keyword-text">
-                        필터
+                    <div id="filterTitle">
+                        <p class="keyword-text" style="font-size: 25;">
+                            필터
+                        </p>
                         <a title="초기화" onclick="resetKeywords()" style="cursor: pointer">
                             <span class="material-symbols-outlined" id="resetButton">
                                 restart_alt
-                            </span></a>
-                    </p>
+                            </span>
+                        </a>
+                    </div>
+
                 </div>
                 <div class="row">
                     <p class="keyword-text">
@@ -137,10 +141,6 @@
         let search = url.searchParams.get('search')
         let page = url.searchParams.get('page') || 1
 
-        if (search) {
-            $('#searchResult').html(`"${search}"의 검색 결과입니다.`)
-        }
-
         switch (sort) {
             case 'popular':
                 $('#currentOrder').html('인기순')
@@ -211,7 +211,7 @@
                 $('#addressUpperDropdown').append(tempHtml)
 
                 for (let i = 0; i < addressUpper.length; i++) {
-                    tempHtml = `<li><a class="dropdown-item" id="addressUpper${addressUpper[i].address_upper}" onclick="$('#addressLowerDropDown > li').hide(); $('#addressLowerDropDown > li.${addressUpper[i].address_upper}').show()">${addressUpper[i].address_upper}</a>
+                    tempHtml = `<li><a class="dropdown-item" id="addressUpper${addressUpper[i].address_upper}" onclick="onclickAddressUpper('${addressUpper[i].address_upper}')">${addressUpper[i].address_upper}</a>
                                 </li>`
                     $('#addressUpperDropdown').append(tempHtml)
 
@@ -226,36 +226,36 @@
                                 </li>`
                     $('#addressLowerDropdown').append(tempHtml)
                 }
+
+                let addressUpperParam = url.searchParams.get('address_upper')
+                let addressLowerParam = url.searchParams.get('address_lower')
+
+                if (addressUpperParam) {
+                    $('#currentAddressUpper').html(addressUpperParam)
+                    $(`#addressUpper${addressUpperParam}`).addClass('active')
+                    if (addressLowerParam) {
+                        $('#currentAddressLower').html(addressLowerParam)
+                        $(
+                            `#addressUpper${addressUpperParam}addressLower${addressLowerParam}`
+                        ).addClass('active')
+                        $('#addressLowerDropDown > li').hide()
+                        $(`#addressLowerDropDown > li.${addressUpperParam}`).show()
+                    } else {
+                        $('#currentAddressLower').html('전체')
+                        $(`#addressUpper${addressUpperParam}addressLower전체`).addClass(
+                            'active'
+                        )
+                        $('#addressLowerDropDown > li').hide()
+                        $(`#addressLowerDropDown > li.${addressUpperParam}`).show()
+                    }
+                } else {
+                    $('#currentAddressUpper').html('전체')
+                    $(`#addressUpper전체`).addClass('active')
+                    $('#addressLowerDropDown > li').hide()
+                    $('#currentAddressLower').html('전체')
+                }
             },
         })
-
-        let addressUpper = url.searchParams.get('address_upper')
-        let addressLower = url.searchParams.get('address_lower')
-
-        if (addressUpper) {
-            $('#currentAddressUpper').html(addressUpper)
-            $(`#addressUpper${addressUpper}`).addClass('active')
-            if (addressLower) {
-                $('#currentAddressLower').html(addressLower)
-                $(
-                    `#addressUpper${addressUpper}addressLower${addressLower}`
-                ).addClass('active')
-                $('#addressLowerDropDown > li').hide()
-                $(`#addressLowerDropDown > li.${addressUpper}`).show()
-            } else {
-                $('#currentAddressLower').html('전체')
-                $(`#addressUpper${addressUpper}addressLower전체`).addClass(
-                    'active'
-                )
-                $('#addressLowerDropDown > li').hide()
-                $(`#addressLowerDropDown > li.${addressUpper}`).show()
-            }
-        } else {
-            $('#currentAddressUpper').html('전체')
-            $(`#addressUpper전체`).addClass('active')
-            $('#addressLowerDropDown > li').hide()
-            $('#currentAddressLower').html('전체')
-        }
 
         $.ajax({
             type: 'GET',
@@ -288,54 +288,83 @@
                     stacksList[`${response[i].category}`].push(tempHtml)
                     $(`#stacksList${response[i].category}`).append(tempHtml)
                 }
+
+                let stacks = url.searchParams.get('stack')
+                if (stacks) {
+                    stacks = stacks.split(',')
+                    for (let i = 0; i < stacks.length; i++) {
+                        const stack = stacks[i].replaceAll(/\s/g, '')
+                        $(`#${stack}`).addClass('active')
+                        let category = $(`#${stack}`)
+                            .parent()
+                            .attr('id')
+                            .split('List')[1]
+                        changeActiveButton(
+                            stacksList,
+                            stacks[i],
+                            'Stack',
+                            $(`#${stack}`).text(),
+                            category
+                        )
+                    }
+                }
             },
         })
 
         $.ajax({
             type: 'GET',
             url: `/api/jobpost/keywords`,
+            async: false,
             success: function (response) {
                 for (let i = 0; i < response.length; i++) {
                     const tempHtml = `<button class="btn btn-outline-secondary filterButton" id="keywordCode${response[i].keyword_code}" type="button" data-bs-toggle="button" onclick="appendKeywordQueryParameter($(this).hasClass('active'),'${response[i].keyword_code}')">${response[i].keyword}</button>`
                     keywordsList.push(tempHtml)
                     $('#keywordList').append(tempHtml)
                 }
+
+                let keywordCode = url.searchParams.get('keywordCode')
+                if (keywordCode) {
+                    keywordCode = keywordCode.split(',')
+                    for (let i = 0; i < keywordCode.length; i++) {
+                        $(`#keywordCode${keywordCode[i]}`).addClass('active')
+                        changeActiveButton(
+                            keywordsList,
+                            `keywordCode${keywordCode[i]}`,
+                            'Keyword',
+                            $(`#keywordCode${keywordCode[i]}`).text(),
+                            ''
+                        )
+                    }
+                }
             },
         })
 
+        // 검색 결과 문구 표시
+        let addressUpperParam = url.searchParams.get('address_upper')
+        let addressLowerParam = url.searchParams.get('address_lower')
         let stacks = url.searchParams.get('stack')
-        if (stacks) {
-            stacks = stacks.split(',')
-            for (let i = 0; i < stacks.length; i++) {
-                const stack = stacks[i].replaceAll(/\s/g, '')
-                $(`#${stack}`).addClass('active')
-                let category = $(`#${stack}`)
-                    .parent()
-                    .attr('id')
-                    .split('List')[1]
-                changeActiveButton(
-                    stacksList,
-                    stacks[i],
-                    'Stack',
-                    $(`#${stack}`).text(),
-                    category
-                )
-            }
-        }
-
         let keywordCode = url.searchParams.get('keywordCode')
-        if (keywordCode) {
-            keywordCode = keywordCode.split(',')
-            for (let i = 0; i < keywordCode.length; i++) {
-                $(`#keywordCode${keywordCode[i]}`).addClass('active')
-                changeActiveButton(
-                    keywordsList,
-                    `keywordCode${keywordCode[i]}`,
-                    'Keyword',
-                    $(`#keywordCode${keywordCode[i]}`).text(),
-                    ''
-                )
+        if (search || stacks || keywordCode || addressUpperParam || addressLowerParam) {
+            if (keywordCode) {
+                keywordCode = keywordCode.split(',')
+                keywordCode = keywordCode.map(code => {
+                    return $(`#keywordCode${code}`).text()
+                })
+                keywordCode = keywordCode.join(',')
             }
+
+            let searchedBy = (search || '') + ',' + (stacks || '') + ',' + (keywordCode || '') + ',' + (addressUpperParam || '') + ',' + (addressLowerParam || '')
+            searchedBy = searchedBy.split(',').filter(val => val !== '')
+            let searchedByStr = ''
+            for (let i = 0; i < searchedBy.length; i++) {
+                if (i === searchedBy.length - 1 && searchedBy[i].length !== 0) {
+                    searchedByStr += `"${searchedBy[i]}"`
+                } else if (searchedBy[i].length !== 0) {
+                    searchedByStr += `"${searchedBy[i]}",`
+                }
+            }
+
+            $('#searchResult').html(`${searchedByStr}의 검색 결과입니다.`)
         }
     })
 
@@ -611,5 +640,11 @@
                 }
             }
         }
+    }
+
+    function onclickAddressUpper(addressUpperName) {
+        $('#addressLowerDropDown > li').hide()
+        $(`#addressLowerDropDown > li.${addressUpperName}`).show()
+        $('#currentAddressUpper').text(addressUpperName)
     }
 </script>
