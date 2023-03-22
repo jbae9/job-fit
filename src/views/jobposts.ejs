@@ -3,13 +3,17 @@
         <div class="col-2" id="keyword-card">
             <div class="card">
                 <div class="row">
-                    <p class="keyword-text">
-                        필터
+                    <div id="filterTitle">
+                        <p class="keyword-text" style="font-size: 25;">
+                            필터
+                        </p>
                         <a title="초기화" onclick="resetKeywords()" style="cursor: pointer">
                             <span class="material-symbols-outlined" id="resetButton">
                                 restart_alt
-                            </span></a>
-                    </p>
+                            </span>
+                        </a>
+                    </div>
+
                 </div>
                 <div class="row">
                     <p class="keyword-text">
@@ -136,10 +140,6 @@
         let offset = url.searchParams.get('offset')
         let search = url.searchParams.get('search')
         let page = url.searchParams.get('page') || 1
-
-        if (search) {
-            $('#searchResult').html(`"${search}"의 검색 결과입니다.`)
-        }
 
         switch (sort) {
             case 'popular':
@@ -314,6 +314,7 @@
         $.ajax({
             type: 'GET',
             url: `/api/jobpost/keywords`,
+            async: false,
             success: function (response) {
                 for (let i = 0; i < response.length; i++) {
                     const tempHtml = `<button class="btn btn-outline-secondary filterButton" id="keywordCode${response[i].keyword_code}" type="button" data-bs-toggle="button" onclick="appendKeywordQueryParameter($(this).hasClass('active'),'${response[i].keyword_code}')">${response[i].keyword}</button>`
@@ -337,6 +338,34 @@
                 }
             },
         })
+
+        // 검색 결과 문구 표시
+        let addressUpperParam = url.searchParams.get('address_upper')
+        let addressLowerParam = url.searchParams.get('address_lower')
+        let stacks = url.searchParams.get('stack')
+        let keywordCode = url.searchParams.get('keywordCode')
+        if (search || stacks || keywordCode || addressUpperParam || addressLowerParam) {
+            if (keywordCode) {
+                keywordCode = keywordCode.split(',')
+                keywordCode = keywordCode.map(code => {
+                    return $(`#keywordCode${code}`).text()
+                })
+                keywordCode = keywordCode.join(',')
+            }
+
+            let searchedBy = (search || '') + ',' + (stacks || '') + ',' + (keywordCode || '') + ',' + (addressUpperParam || '') + ',' + (addressLowerParam || '')
+            searchedBy = searchedBy.split(',').filter(val => val !== '')
+            let searchedByStr = ''
+            for (let i = 0; i < searchedBy.length; i++) {
+                if (i === searchedBy.length - 1 && searchedBy[i].length !== 0) {
+                    searchedByStr += `"${searchedBy[i]}"`
+                } else if (searchedBy[i].length !== 0) {
+                    searchedByStr += `"${searchedBy[i]}",`
+                }
+            }
+
+            $('#searchResult').html(`${searchedByStr}의 검색 결과입니다.`)
+        }
     })
 
     function showJobposts(response, likedJobpostIds) {
