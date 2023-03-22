@@ -3,7 +3,9 @@
         const jobpostId = data.jobpost_id
         const title = data.title
         const companyName = data.company_name
-        const jobpostImgUrl = data.original_img_url
+        const jobpostImgUrl = !data.original_img_url
+            ? '/images/No_Image.png'
+            : data.original_img_url
         const addressUpper = data.address_upper
         const addressLower = data.address_lower
         const stackImgUrlArr =

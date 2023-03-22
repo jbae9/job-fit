@@ -144,16 +144,10 @@
     font-size: 1.5rem;
     color: gray;
     font-weight: bold;
-}
 
-.jobpost-detail-company-name a {
-    font-size: 1.5rem;
-    color: gray !important;
-    font-weight: bold;
-}
-
-.jobpost-detail-company-name a:hover {
-    color: #bfc0c0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .jobpost-detail-company-employees,
@@ -193,4 +187,9 @@
     border-radius: 10px;
     padding: 1.25rem;
     font-size: 1.25rem;
+}
+
+.custom-tooltip {
+    --bs-tooltip-max-width: 20rem;
+    --bs-tooltip-bg: gray;
 }
