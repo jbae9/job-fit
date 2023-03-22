@@ -58,16 +58,6 @@ export class SaraminSelenium {
                     let tries = 0
                     while (tries < 10) {
                         try {
-                            console.log(`TRIES ${tries}`)
-                            console.log(
-                                `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=` +
-                                    page +
-                                    `&cat_mcls=2&isAjaxRequest=0&page_count=` +
-                                    pageCount +
-                                    `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`
-                            )
-                            console.log(`${this.allJobsArr[index].originalUrl}`)
-
                             await driver.get(
                                 `${this.allJobsArr[index].originalUrl}`
                             )
@@ -255,20 +245,18 @@ export class SaraminSelenium {
                     }
                     if (tries === 9) continue
                 }
-                // this.allCompanies = this.allCompanies.slice(0, index-1)
-                // this.allJobsArr = this.allJobsArr.slice(0, index-1)
+
+                if (Number(this.pageCount) - 1 > index) {
+                    this.allCompanies = this.allCompanies.slice(0, index - 1)
+                    this.allJobsArr = this.allJobsArr.slice(0, index - 1)
+                }
                 page = await this.insertData(
                     page,
                     this.allCompanies,
                     this.allJobsArr
                 )
             } catch (err) {
-                // 오류 날 경우 이전 데이터만 넣고 계속 진행
-                // console.log(
-                //     `에러난 공고: ${this.allJobsArr[index].originalUrl}`
-                // )
                 console.log(err)
-
                 continue
             }
         }
