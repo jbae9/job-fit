@@ -1,6 +1,9 @@
 <div class="mypage-content-wrap">
     <div class="mypage-content-title">내 찜 목록</div>
-    <div id="mypage-content-mylikes-wrap" class="mypage-content-mylikes-wrap"></div>
+    <div
+        id="mypage-content-mylikes-wrap"
+        class="mypage-content-mylikes-wrap"
+    ></div>
 </div>
 
 <script>
@@ -12,11 +15,20 @@
         .get(`/api/user/myinfo/${userId}/likes`)
         .then((res) => {
             const { jobposts } = res.data
-            console.log(jobposts)
 
-            let jobpostsHtml = ''
-            for (let jobpost of jobposts) {
-                jobpostsHtml += `
+            if (!jobposts.length) {
+                document.getElementById(
+                    'mypage-content-mylikes-wrap'
+                ).innerHTML = `
+                    <span class="material-symbols-outlined warning-icon">
+                        error
+                    </span>
+                    <span class="mylikes-message">채용공고를 찜하고 더 나은 공고를 추천받으세요!</span>
+                `
+            } else {
+                let jobpostsHtml = ''
+                for (let jobpost of jobposts) {
+                    jobpostsHtml += `
                     <div class='mylikes-container'>
                         <div class='mylikes'>
                             <img class='mylikes-jobpost-img' src='${jobpost.originalImgUrl}' />
@@ -25,10 +37,12 @@
                         </div>    
                     </div>
                 `
-            }
+                }
 
-            document.getElementById('mypage-content-mylikes-wrap').innerHTML =
-                jobpostsHtml
+                document.getElementById(
+                    'mypage-content-mylikes-wrap'
+                ).innerHTML = jobpostsHtml
+            }
         })
-        .catch((err) => { })
+        .catch((err) => {})
 </script>

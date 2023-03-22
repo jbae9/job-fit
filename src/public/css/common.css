@@ -166,12 +166,12 @@ div[id^='jobpostRow'] {
     margin-bottom: var(--bs-gutter-y);
 }
 #recommendationWarning {
-    font-size: 35px;
-    color: rgb(190, 0, 0);
+    color: red;
     margin: 0 5;
     -webkit-animation: glow 1s ease-in-out infinite alternate;
     -moz-animation: glow 1s ease-in-out infinite alternate;
     animation: glow 1s ease-in-out infinite alternate;
+    cursor: pointer;
 }
 
 @-webkit-keyframes glow {
