@@ -1,0 +1,42 @@
+<div id="modal" class="modal-overlay">
+    <div class="modal-window">
+        <div class="title">
+            <h2>알림</h2>
+        </div>
+        <div class="close-area" id="closeBtn">X</div>
+        <div class="content">
+            <p id="context"></p>
+        </div>
+        <center>
+            <button id="modalClose" class="modalClose" type="button">확인</button>
+        </center>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).on('click', '#closeBtn', function () {
+        $("#modal").css('display', 'none')
+    })
+
+    $(document).on('click', '#modalClose', function () {
+        $("#modal").css('display', 'none')
+    })
+
+    function modalOpen(str, newUrl) {
+        let scrollTop = document.scrollingElement.scrollTop
+        $('#modal').css('display', 'flex')
+        $('#modal.modal-overlay').css('top', scrollTop)        //내가 올린 스크롤만큼 밑으로 이동
+        $('#context').html(str)
+        $('#modalClose').removeAttr('onclick')   // 사전에 modalOpen 함수가 쓰였다면 전에 쓴 modalClose 함수에 newUrl 매개변수 지우기
+        $('#modalClose').attr('onclick', `modalClose('${newUrl}')`)
+    }
+
+    function modalClose(url) {
+        $('#modal').css('display', 'none')
+        $('#modal').css('left', '0')
+        $('#modal').css('top', '0')
+
+        if (url !== 'undefined') {
+            location.href = url
+        }
+    }
+</script>

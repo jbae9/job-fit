@@ -5,20 +5,62 @@ import {
     DeleteDateColumn,
     Entity,
     Index,
+    JoinColumn,
+    JoinTable,
+    ManyToMany,
     ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm'
+import { Keyword } from './keyword.entity'
+import { Stack } from './stack.entity'
+import { User } from './user.entity'
 
-@Entity({ schema: 'JobBoard', name: 'Jobpost' })
+@Index(['companyId', 'title'], { unique: true })
+@Entity({ schema: 'jobfit', name: 'jobpost' })
 export class Jobpost {
     @PrimaryGeneratedColumn({ type: 'int' })
-    jobPostId: number
+    jobpostId: number
 
-    // @ManyToOne((type) => Company, (company) => company.companyId)
-    // company: Company
+    @ManyToOne(() => Company)
+    @JoinColumn({ name: 'company_id' })
+    company: Company
 
-    @Column('text')
+    @ManyToMany(() => Keyword, (keyword) => keyword.jobposts, { cascade: true })
+    @JoinTable({
+        name: 'jobpostkeyword',
+        joinColumn: {
+            name: 'jobpost_id',
+            referencedColumnName: 'jobpostId',
+        },
+        inverseJoinColumn: {
+            name: 'keyword_code',
+            referencedColumnName: 'keywordCode',
+        },
+    })
+    keywords: Keyword[]
+
+    @ManyToMany(() => User, (user) => user.jobposts, { cascade: true })
+    users: User[]
+
+    @ManyToMany(() => Stack, (stack) => stack.jobposts, { cascade: true })
+    @JoinTable({
+        name: 'jobpoststack',
+        joinColumn: {
+            name: 'jobpost_id',
+            referencedColumnName: 'jobpostId',
+        },
+        inverseJoinColumn: {
+            name: 'stack_id',
+            referencedColumnName: 'stackId',
+        },
+    })
+    stacks: Stack[]
+
+    @Column('int')
+    companyId: number
+
+    @Column('varchar')
     title: string
 
     @Column('mediumtext')
@@ -39,14 +81,28 @@ export class Jobpost {
     @Column('datetime', { nullable: true })
     postedDtm: Date | null
 
-    @Column('datetime')
-    deadlineDtm: Date
-
-    @Column('varchar', { length: 100, nullable: true })
-    preferenceCondition: string | null
+    @Column('datetime', { nullable: true })
+    deadlineDtm: Date | null
 
     @Column('int', { nullable: true })
     views: number | null
+
+    @Column({ type: 'varchar', length: 1000, nullable: true })
+    originalAddress: string | null
+
+    @Column({ type: 'varchar', nullable: true })
+    addressUpper: string | null
+
+    @Column({ type: 'varchar', nullable: true })
+    addressLower: string | null
+
+    // 경도
+    @Column({ type: 'double', nullable: true })
+    longitude: number | null
+
+    // 위도
+    @Column({ type: 'double', nullable: true })
+    latitude: number | null
 
     @CreateDateColumn()
     createdDtm: Date

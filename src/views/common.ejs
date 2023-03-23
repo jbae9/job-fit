@@ -1,0 +1,264 @@
+<script>
+    function createJobpostCard(data, isLiked) {
+        const jobpostId = data.jobpost_id
+        const title = data.title
+        const companyName = data.company_name
+        const jobpostImgUrl = !data.original_img_url
+            ? '/images/No_Image.png'
+            : data.original_img_url
+        const addressUpper = data.address_upper
+        const addressLower = data.address_lower
+        const stackImgUrlArr =
+            data.stackimgurls === null ? null : data.stackimgurls.split(',')
+        const stackArr = data.stacks === null ? null : data.stacks.split(',')
+        const keywords = data.keywords
+        let salary = data.salary
+
+        let deadlineDtm
+        if (data.deadline_dtm) {
+            const date = new Date(data.deadline_dtm)
+            deadlineDtm = date.toLocaleDateString('ko-KR', {
+                dateStyle: 'long',
+            })
+        } else {
+            deadlineDtm = '상시 채용'
+        }
+
+        let salaryCol = ''
+        if (salary) {
+            if (Number(salary) < 100000000) {
+                salary = (Number(salary) / 10000000).toString() + '천만원'
+            } else if (Number(salary) >= 100000000) {
+                salary = (Number(salary) / 100000000).toString() + '억원'
+            }
+            salaryCol = `<div class="col">
+                            <a class="card-col" title="연봉">
+                                <span class="material-symbols-outlined">
+                                    payments
+                                </span>
+                                ${salary}
+                            </a>
+                        </div>`
+        }
+
+        // address
+        let address = ''
+        if (!addressLower) {
+            if (!addressUpper) {
+                address = '전체'
+            } else {
+                address = addressUpper + '전체'
+            }
+        } else {
+            address = addressUpper + ' ' + addressLower
+        }
+
+        let wordAndAddressCol = ``
+        if (keywords !== null) {
+            if (keywords.includes('신입')) {
+                wordAndAddressCol = `<div class="col-7">
+                                        <a class="card-col" title="주소">
+                                        <span class="material-symbols-outlined">
+                                            location_on
+                                        </span>
+                                        ${address}
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a class="card-col">
+                                        <span class="material-symbols-outlined">
+                                            work
+                                        </span>
+                                        신입
+                                        </a>
+                                    </div>`
+            } else if (keywords.includes('경력')) {
+                wordAndAddressCol = `<div class="col-7">
+                                        <a class="card-col" title="주소">
+                                        <span class="material-symbols-outlined">
+                                            location_on
+                                        </span>
+                                        ${address}
+                                        </a>
+                                    </div>
+                                    <div class="col">
+                                        <a class="card-col">
+                                        <span class="material-symbols-outlined">
+                                            work
+                                        </span>
+                                        경력
+                                        </a>
+                                    </div>`
+            } else {
+                wordAndAddressCol = `<div class="col-7">
+                                        <a class="card-col" title="주소">
+                                        <span class="material-symbols-outlined">
+                                            location_on
+                                        </span>
+                                        ${address}
+                                        </a>
+                                    </div>`
+            }
+        } else {
+            wordAndAddressCol = `<div class="col-7">
+                                        <a class="card-col" title="주소">
+                                        <span class="material-symbols-outlined">
+                                            location_on
+                                        </span>
+                                        ${address}
+                                        </a>
+                                    </div>`
+        }
+
+        // 좋아요
+        let likedSpan = !isLiked
+            ? `<a style="cursor:pointer" onclick="createJobpostLike(${jobpostId})">
+                    <span class="material-symbols-outlined likeIcon" id="${jobpostId}">
+                        star
+                    </span>
+                </a>`
+            : `<a style="cursor:pointer" onclick="deleteJobpostLike(${jobpostId})">
+                    <span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
+                        star
+                    </span>
+                </a>`
+
+        let tempHtml = ``
+        tempHtml += `<div class="col">
+                        <div class="card">
+                            <%if(user) {%>
+                                <div id="like-btn-wrap-${jobpostId}">
+                                    ${likedSpan}
+                                </div>
+                            <% } else { %>                            
+                                <div id="like-btn-wrap-${jobpostId}">
+                                    <span class="material-symbols-outlined likeIcon" title="로그인해서 공고를 찜해보세요!">
+                                        star
+                                    </span>
+                                </div>
+                            <% } %>
+                            <img src="${jobpostImgUrl}"
+                                class="card-img-top" alt="${companyName}" title="${companyName}">
+                            <div class="card-body">
+                                <a href='/jobpost/${jobpostId}'>
+                                    <h5 class="card-title">${title}</h5>
+                                </a>
+                                <p class="card-text companyName">
+                                    ${companyName}
+                                </p>
+                                <div class="card-text row">
+                                    ${wordAndAddressCol}
+                                    <div class="col-7">
+                                        <a class="card-col" title="마감일자">
+                                        <span class="material-symbols-outlined">
+                                            calendar_month
+                                        </span>
+                                        ${deadlineDtm}
+                                        </a>
+                                    </div >`
+        if (salaryCol.length > 0) tempHtml += salaryCol
+        tempHtml += `
+                                </div >
+        <div class="card-text">
+            `
+        const tooltipTag = `<div class="tooltip">▲
+                <span class="tooltiptext tooltip-top card-text">`
+        if (stackImgUrlArr !== null) {
+            for (let j = 0; j < stackImgUrlArr.length; j++) {
+                const imgTag = `<img src="${stackImgUrlArr[j]}" alt="${stackArr[j]}" title="${stackArr[j]}">`
+                if (j < 11) {
+                    tempHtml += imgTag
+                } else if (j == 11) {
+                    tempHtml += tooltipTag
+                    tempHtml += imgTag
+                } else if (j > 11) {
+                    tempHtml += imgTag
+                    if (j == stackImgUrlArr.length - 1) {
+                        tempHtml += `                   </span>
+                                                    </div>`
+                    }
+                }
+            }
+        }
+
+        tempHtml += `              </div>
+            </div>
+        </div>
+                                    </div > `
+        return tempHtml
+    }
+
+    // 로그인 되어있다면 내가 찜 한 채용공고 번호 리스트 불러오기
+    // 채용공고들이 불려지기전 반드시 완료되어야 하므로 동기
+    function getUserLikeJobpost() {
+        const userId = Number('<%- user?.userId %>')
+        let likedJobpostIds = []
+        if (userId) {
+            $.ajax({
+                type: 'GET',
+                async: false,
+                url: `/api/jobpost/likes/${userId} `,
+                success: function (response) {
+                    for (let jobpostId of response) {
+                        likedJobpostIds.push(jobpostId.jobpost_id)
+                    }
+                },
+            })
+        }
+        return likedJobpostIds
+    }
+
+    // 찜 하기
+    function createJobpostLike(jobpostId) {
+        const userId = Number('<%- user?.userId %>')
+        axios
+            .post(`/api/jobpost/${jobpostId}/like`, { userId })
+            .then((res) => {
+                // 요소 변경
+                const likedHtml = `
+                    <a style="cursor:pointer" onclick="deleteJobpostLike(${jobpostId})">
+                        <span class="material-symbols-outlined likeIcon liked" style="color:#FFEA00" id="${jobpostId}">
+                            star
+                        </span>
+                    </a>`
+
+                let itemList = document.querySelectorAll(
+                    `#like-btn-wrap-${jobpostId}`
+                )
+                itemList.forEach((el) => {
+                    el.innerHTML = likedHtml
+                })
+            })
+            .catch((err) => {
+                alert(err.response.data.message)
+                location.reload()
+            })
+    }
+
+    // 찜 삭제
+    function deleteJobpostLike(jobpostId) {
+        const userId = Number('<%- user?.userId %>')
+        axios
+            .delete(`/api/jobpost/${jobpostId}/like`, { data: { userId } })
+            .then((res) => {
+                // 요소 변경
+                const likedHtml = `
+                    <a style="cursor:pointer" onclick="createJobpostLike(${jobpostId})">
+                        <span class="material-symbols-outlined likeIcon" id="${jobpostId}">
+                            star
+                        </span>
+                    </a>`
+
+                let itemList = document.querySelectorAll(
+                    `#like-btn-wrap-${jobpostId}`
+                )
+                itemList.forEach((el) => {
+                    el.innerHTML = likedHtml
+                })
+            })
+            .catch((err) => {
+                alert(err.response.data.message)
+                location.reload()
+            })
+    }
+</script>

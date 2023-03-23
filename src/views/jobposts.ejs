@@ -1,0 +1,647 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2" id="keyword-card">
+            <div class="card">
+                <div class="row">
+                    <div id="filterTitle">
+                        <p class="keyword-text" style="font-size: 25;">
+                            필터
+                        </p>
+                        <a title="초기화" onclick="resetKeywords()" style="cursor: pointer">
+                            <span class="material-symbols-outlined" id="resetButton">
+                                restart_alt
+                            </span>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <p class="keyword-text">
+                        <span class="material-symbols-outlined">
+                            location_on
+                        </span>
+                        주소
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false" id="currentAddressUpper"></button>
+                            <ul class="dropdown-menu" id="addressUpperDropdown"></ul>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false" id="currentAddressLower"></button>
+                            <ul class="dropdown-menu" id="addressLowerDropdown"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <p class="keyword-text">
+                        <span class="material-symbols-outlined">
+                            format_list_bulleted
+                        </span>
+                        직업 분류
+                    </p>
+                </div>
+                <details id="keywordDetail">
+                    <summary>
+                        키워드
+                        <input type="text" class="form-control" id="keywordsInput" oninput="keywordInput('keyword', '')"
+                            aria-label="검색" aria-describedby="button-addon2" />
+                    </summary>
+                    <div id="keywordList"></div>
+                </details>
+                <div class="row">
+                    <p class="keyword-text">
+                        <span class="material-symbols-outlined">
+                            code_blocks
+                        </span>
+                        기술 스택
+                    </p>
+                </div>
+                <div id="stackList"></div>
+            </div>
+        </div>
+        <div class="col-8" id="mainContainer">
+            <div id="searchResult"></div>
+            <div class="order">
+                <div id="sortDropdown">
+                    <div class="dropdown" id="orderDropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false" id="currentOrder"></button>
+                        <ul class="dropdown-menu">
+                            <% if (!user) { %>
+                                <li title="기술스택에 딱 맞는 현재 공고를 보고싶으면 로그인해주세요!">
+                                    <a class="dropdown-item disabled">추천순</a>
+                                </li>
+                                <% } else { %>
+                                    <li>
+                                        <a class="dropdown-item"
+                                            onclick="appendQueryParameter({sort: 'recommended', order: 'desc', page: null, limit: null, offset: null})"
+                                            id="recommend">추천순</a>
+                                    </li>
+                                    <% } %>
+                                        <li>
+                                            <a class="dropdown-item"
+                                                onclick="appendQueryParameter({sort: 'recent', order: 'desc', page: null, limit: null, offset: null})"
+                                                id="recent">최신순</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                                onclick="appendQueryParameter({sort: 'popular', order: 'desc', page: null, limit: null, offset: null})"
+                                                id="popular">인기순</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                                onclick="appendQueryParameter({sort: 'ending', order: 'asc', page: null, limit: null, offset: null})"
+                                                id="ending">마감순</a>
+                                        </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="searchCount"></div>
+            </div>
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow1"></div>
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow2"></div>
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow3"></div>
+            <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow4"></div>
+        </div>
+    </div>
+    <nav class="pagination" id="pagination" aria-label="Page navigation">
+        <ul></ul>
+    </nav>
+</div>
+
+<script>
+    let keywordsList = []
+    let stacksList = {
+        데브옵스: [],
+        데이터: [],
+        데이터베이스: [],
+        모바일: [],
+        백엔드: [],
+        언어: [],
+        테스팅툴: [],
+        프론트엔드: [],
+        협업툴: [],
+    }
+    $(document).ready(function () {
+        // 로그인 한 회원이 찜 한 채용공고 번호 리스트
+        const likedJobpostIds = getUserLikeJobpost()
+
+        let url = new URL(window.location.href)
+        let sort = url.searchParams.get('sort') || 'recent'
+        let order = url.searchParams.get('order') || 'desc'
+        let limit = url.searchParams.get('limit')
+        let offset = url.searchParams.get('offset')
+        let search = url.searchParams.get('search')
+        let page = url.searchParams.get('page') || 1
+
+        switch (sort) {
+            case 'popular':
+                $('#currentOrder').html('인기순')
+                $('#popular').addClass('active')
+                break
+            case 'ending':
+                $('#currentOrder').html('마감순')
+                $('#ending').addClass('active')
+                break
+            case 'recommended':
+                $('#currentOrder').html('추천순')
+                $('#recommend').addClass('active')
+                break
+            case 'recent':
+            default:
+                $('#currentOrder').html('최신순')
+                $('#recent').addClass('active')
+                break
+        }
+
+        if (sort === 'recommended') {
+            const userId = '<%= user?.userId %>'
+            if (userId) {
+                $.ajax({
+                    type: "GET",
+                    url: `/api/jobpost/filter/${userId}/${url.search}`,
+                    success: function (response) {
+                        if (response.message) {
+                            const tempHtml = `<span class="material-symbols-outlined" id="recommendationWarning" title="${response.message}">
+                                        report
+                                    </span>`
+                            $('#sortDropdown').append(tempHtml)
+                        }
+
+                        $('#searchCount').html(
+                            `${response.totalCount}개의 공고를 찾았습니다`
+                        )
+                        showJobposts(response.data, likedJobpostIds)
+                        showPagination(response.totalCount, page)
+                    }
+                })
+            } else {
+                modalOpen('로그인해서 공고를 추천 받아보세요!', '/')
+            }
+        } else {
+            $.ajax({
+                type: 'GET',
+                url: `/api/jobpost/filter${url.search}`,
+                success: function (response) {
+                    $('#searchCount').html(
+                        `${response.totalCount}개의 공고를 찾았습니다`
+                    )
+                    showJobposts(response.data, likedJobpostIds)
+                    showPagination(response.totalCount, page)
+                },
+            })
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: `/api/jobpost/addresses`,
+            success: function (response) {
+                const { addressUpper, addressLower } = response
+
+                let tempHtml = `<li><a class="dropdown-item" id="addressUpper전체" onclick="appendQueryParameter({address_upper: null, address_lower: null})">전체</a>
+                                </li>`
+                $('#addressUpperDropdown').append(tempHtml)
+
+                for (let i = 0; i < addressUpper.length; i++) {
+                    tempHtml = `<li><a class="dropdown-item" id="addressUpper${addressUpper[i].address_upper}" onclick="onclickAddressUpper('${addressUpper[i].address_upper}')">${addressUpper[i].address_upper}</a>
+                                </li>`
+                    $('#addressUpperDropdown').append(tempHtml)
+
+                    tempHtml = `<li class="${addressUpper[i].address_upper}"><a class="dropdown-item" id="addressUpper${addressUpper[i].address_upper}addressLower전체" onclick="appendQueryParameter({address_upper: '${addressUpper[i].address_upper}', address_lower: null})">전체</a>
+                                </li>`
+                    $('#addressLowerDropdown').append(tempHtml)
+                }
+
+                for (let i = 0; i < addressLower.length; i++) {
+                    if (addressLower[i].address_lower === '전체') continue
+                    tempHtml = `<li class="${addressLower[i].address_upper}"><a class="dropdown-item" id="addressUpper${addressLower[i].address_upper}addressLower${addressLower[i].address_lower}" onclick="appendQueryParameter({address_upper: '${addressLower[i].address_upper}', address_lower: '${addressLower[i].address_lower}'})">${addressLower[i].address_lower}</a>
+                                </li>`
+                    $('#addressLowerDropdown').append(tempHtml)
+                }
+
+                let addressUpperParam = url.searchParams.get('address_upper')
+                let addressLowerParam = url.searchParams.get('address_lower')
+
+                if (addressUpperParam) {
+                    $('#currentAddressUpper').html(addressUpperParam)
+                    $(`#addressUpper${addressUpperParam}`).addClass('active')
+                    if (addressLowerParam) {
+                        $('#currentAddressLower').html(addressLowerParam)
+                        $(
+                            `#addressUpper${addressUpperParam}addressLower${addressLowerParam}`
+                        ).addClass('active')
+                        $('#addressLowerDropDown > li').hide()
+                        $(`#addressLowerDropDown > li.${addressUpperParam}`).show()
+                    } else {
+                        $('#currentAddressLower').html('전체')
+                        $(`#addressUpper${addressUpperParam}addressLower전체`).addClass(
+                            'active'
+                        )
+                        $('#addressLowerDropDown > li').hide()
+                        $(`#addressLowerDropDown > li.${addressUpperParam}`).show()
+                    }
+                } else {
+                    $('#currentAddressUpper').html('전체')
+                    $(`#addressUpper전체`).addClass('active')
+                    $('#addressLowerDropDown > li').hide()
+                    $('#currentAddressLower').html('전체')
+                }
+            },
+        })
+
+        $.ajax({
+            type: 'GET',
+            url: `/api/jobpost/stacks`,
+            success: function (response) {
+                let categories = []
+                let tempHtml = ``
+                for (let i = 0; i < response.length; i++) {
+                    if (!categories.includes(response[i].category)) {
+                        categories.push(response[i].category)
+                        tempHtml = `<details id="stackDetail${response[i].category}">
+                                        <summary>${response[i].category}
+                                            <input type="text" class="form-control" id="stacksInput${response[i].category}" oninput="keywordInput('stack', '${response[i].category}')"
+                                                aria-label="검색" aria-describedby="button-addon2">
+                                        </summary>
+                                        <div id="stacksList${response[i].category}">
+                                        </div>
+                                    </details>`
+
+                        $('#stackList').append(tempHtml)
+                    }
+
+                    tempHtml = `<button class="btn btn-outline-secondary filterButton" id="${response[
+                        i
+                    ].stack.replaceAll(
+                        /\s/g,
+                        ''
+                    )}" type="button" data-bs-toggle="button" onclick="appendStackQueryParameter($(this).hasClass('active'),'${response[i].stack
+                        }')">${response[i].stack}</button>`
+                    stacksList[`${response[i].category}`].push(tempHtml)
+                    $(`#stacksList${response[i].category}`).append(tempHtml)
+                }
+
+                let stacks = url.searchParams.get('stack')
+                if (stacks) {
+                    stacks = stacks.split(',')
+                    for (let i = 0; i < stacks.length; i++) {
+                        const stack = stacks[i].replaceAll(/\s/g, '')
+                        $(`#${stack}`).addClass('active')
+                        let category = $(`#${stack}`)
+                            .parent()
+                            .attr('id')
+                            .split('List')[1]
+                        changeActiveButton(
+                            stacksList,
+                            stacks[i],
+                            'Stack',
+                            $(`#${stack}`).text(),
+                            category
+                        )
+                    }
+                }
+            },
+        })
+
+        $.ajax({
+            type: 'GET',
+            url: `/api/jobpost/keywords`,
+            async: false,
+            success: function (response) {
+                for (let i = 0; i < response.length; i++) {
+                    const tempHtml = `<button class="btn btn-outline-secondary filterButton" id="keywordCode${response[i].keyword_code}" type="button" data-bs-toggle="button" onclick="appendKeywordQueryParameter($(this).hasClass('active'),'${response[i].keyword_code}')">${response[i].keyword}</button>`
+                    keywordsList.push(tempHtml)
+                    $('#keywordList').append(tempHtml)
+                }
+
+                let keywordCode = url.searchParams.get('keywordCode')
+                if (keywordCode) {
+                    keywordCode = keywordCode.split(',')
+                    for (let i = 0; i < keywordCode.length; i++) {
+                        $(`#keywordCode${keywordCode[i]}`).addClass('active')
+                        changeActiveButton(
+                            keywordsList,
+                            `keywordCode${keywordCode[i]}`,
+                            'Keyword',
+                            $(`#keywordCode${keywordCode[i]}`).text(),
+                            ''
+                        )
+                    }
+                }
+            },
+        })
+
+        // 검색 결과 문구 표시
+        let addressUpperParam = url.searchParams.get('address_upper')
+        let addressLowerParam = url.searchParams.get('address_lower')
+        let stacks = url.searchParams.get('stack')
+        let keywordCode = url.searchParams.get('keywordCode')
+        if (search || stacks || keywordCode || addressUpperParam || addressLowerParam) {
+            if (keywordCode) {
+                keywordCode = keywordCode.split(',')
+                keywordCode = keywordCode.map(code => {
+                    return $(`#keywordCode${code}`).text()
+                })
+                keywordCode = keywordCode.join(',')
+            }
+
+            let searchedBy = (search || '') + ',' + (stacks || '') + ',' + (keywordCode || '') + ',' + (addressUpperParam || '') + ',' + (addressLowerParam || '')
+            searchedBy = searchedBy.split(',').filter(val => val !== '')
+            let searchedByStr = ''
+            for (let i = 0; i < searchedBy.length; i++) {
+                if (i === searchedBy.length - 1 && searchedBy[i].length !== 0) {
+                    searchedByStr += `"${searchedBy[i]}"`
+                } else if (searchedBy[i].length !== 0) {
+                    searchedByStr += `"${searchedBy[i]}",`
+                }
+            }
+
+            $('#searchResult').html(`${searchedByStr}의 검색 결과입니다.`)
+        }
+    })
+
+    function showJobposts(response, likedJobpostIds) {
+        for (let i = 0; i < response.length; i++) {
+            // 채용공고 번호
+            const jobpostId = response[i].jobpost_id
+            // 채용공고가 좋아요가 눌린건지 안눌린건지 boolean
+            const isLiked = likedJobpostIds.includes(jobpostId) ? true : false
+            const tempHtml = createJobpostCard(response[i], isLiked)
+
+            $(`#jobpostRow${Math.floor(i / 4) + 1}`).append(tempHtml)
+        }
+    }
+
+    function appendQueryParameter(queries) {
+        const params = Object.keys(queries)
+        let url = new URL(window.location.href)
+
+        for (let i = 0; i < params.length; i++) {
+            if (queries[params[i]] === null) {
+                url.searchParams.delete(params[i])
+            } else {
+                url.searchParams.set(params[i], queries[params[i]])
+            }
+        }
+
+        window.location.href = url.href
+    }
+
+    function appendStackQueryParameter(hasClassActive, stack) {
+        let url = new URL(window.location.href)
+        let stackParam = url.searchParams.get('stack')
+
+        // hasClassActive = true => 버튼 선택
+        if (hasClassActive) {
+            // If there is no 'stack' query parameter
+            if (!stackParam) {
+                url.searchParams.append('stack', stack)
+            } else {
+                // If there is the 'stack' query parameter
+                stackParam += `,${stack}`
+                url.searchParams.set('stack', stackParam)
+            }
+        }
+
+        // hasClassActive = false => 버튼 선택 취소
+        if (!hasClassActive) {
+            const newStackParam = stackParam
+                .split(',')
+                .filter((value, _i, _a) => {
+                    return value !== stack
+                })
+                .join(',')
+            if (newStackParam.length === 0) {
+                url.searchParams.delete('stack')
+            } else {
+                url.searchParams.set('stack', [newStackParam])
+            }
+        }
+
+        window.location.href = url.href
+    }
+
+    function appendKeywordQueryParameter(hasClassActive, keywordCode) {
+        let url = new URL(window.location.href)
+        let keywordCodeParam = url.searchParams.get('keywordCode')
+
+        // hasClassActive = true => 버튼 선택
+        if (hasClassActive) {
+            if (!keywordCodeParam) {
+                url.searchParams.append('keywordCode', keywordCode)
+            } else {
+                keywordCodeParam += `,${keywordCode}`
+                url.searchParams.set('keywordCode', keywordCodeParam)
+            }
+        }
+
+        // hasClassActive = false => 버튼 선택 취소
+        if (!hasClassActive) {
+            const newKeywordCodeParam = keywordCodeParam
+                .split(',')
+                .filter((value, _i, _a) => {
+                    return value !== keywordCode
+                })
+                .join(',')
+            if (newKeywordCodeParam.length === 0) {
+                url.searchParams.delete('keywordCode')
+            } else {
+                url.searchParams.set('keywordCode', [newKeywordCodeParam])
+            }
+        }
+
+        window.location.href = url.href
+    }
+
+    function resetKeywords() {
+        let url = new URL(window.location.href)
+        const keys = Array.from(url.searchParams.keys())
+
+        for (const key of keys) {
+            if (key === 'sort' || key === 'order') {
+                continue
+            }
+            url.searchParams.delete(key)
+        }
+
+        window.location.href = url.href
+    }
+
+    function showPagination(totalCount, currentPage) {
+        totalCount = Number(totalCount)
+        const lastPage = Math.ceil(totalCount / 16)
+        const pagesInPageGroup = 5
+
+        // 1~2페이지는 그룹1, 3~4페이지는 그룹2
+        const pageGroup = Math.ceil(currentPage / pagesInPageGroup)
+
+        // 페이지 그룹1의 마지막 페이지는 2
+        const pageGroupLast =
+            pageGroup * pagesInPageGroup > lastPage
+                ? lastPage
+                : pageGroup * pagesInPageGroup
+
+        // 페이지 그룹1의 첫번째 페이지는 1
+        // => 마지막 페이지 숫자(2) - 한 페이지 그룹에 들어가는 페이지 수(2) - 1
+        // const pageGroupFirst = pageGroupLast - (pagesInPageGroup - 1) < 1 ? 1 : pageGroupLast - (pagesInPageGroup -1)
+        const pageGroupFirst =
+            pageGroup === 1 ? 1 : (pageGroup - 1) * pagesInPageGroup + 1
+
+        const pages = []
+
+        // 전 페이지 그룹으로 가기
+        if (pageGroup > 1) {
+            // 이전 페이지 그룹 - 1 => 이전 페이지 그룹의 마지막 페이지는 (pageGroup-1)*2
+            pages.push(
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${(pageGroup - 1) * pagesInPageGroup
+                }})"><<</a></li>`
+            )
+        }
+
+        // 페이지 그룹의 첫번 째 페이지가 1보다 크면 이전 화살 만들기
+        if (currentPage > 1) {
+            pages.push(
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${currentPage - 1
+                }})"><</a></li>`
+            )
+        }
+
+        // 페이지 그룹의 마지막 페이지까지 페이지 숫자 렌더링 하기
+        for (i = pageGroupFirst; i <= pageGroupLast; i++) {
+            pages.push(
+                `<li class="page-item" id="page${i}"><a class="page-link" onclick="appendQueryParameter({page:${i}})">${i}</a></li>`
+            )
+        }
+
+        // 페이지 그룹의 마지막 페이지가 총 마지막 페이지보다 작을 때 다음 화살 만들기
+        if (currentPage < lastPage) {
+            pages.push(
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${currentPage + 1
+                }})">></a></li>`
+            )
+        }
+
+        // 다음 페이지 그룹으로 가기
+        if (pageGroupLast < lastPage) {
+            // 다음 페이지 그룹 + 2 => 다음 페이지 그룹의 첫 페이지는 pageGroup * pagesInPageGroup + 1
+            pages.push(
+                `<li class="page-item"><a class="page-link" onclick="appendQueryParameter({page:${pageGroup * pagesInPageGroup + 1
+                }})">>></a></li>`
+            )
+        }
+
+        document.getElementById('pagination').innerHTML = pages.join('')
+
+        $(`#page${currentPage}`).addClass('active')
+    }
+    async function keywordInput(key, stackCategory) {
+        if (key == 'keyword') {
+            keywordSearch(
+                `keywordList${stackCategory}`,
+                `keywordsInput${stackCategory}`,
+                `keywordDetail${stackCategory}`,
+                keywordsList,
+                stackCategory
+            )
+        } else if (key == 'stack') {
+            keywordSearch(
+                `stacksList${stackCategory}`,
+                `stacksInput${stackCategory}`,
+                `stackDetail${stackCategory}`,
+                stacksList,
+                stackCategory
+            )
+        }
+    }
+
+    function keywordSearch(listId, inputId, detailId, keywordArray, category) {
+        let result = false
+        let keywordList = document.getElementById(listId)
+        keywordList.replaceChildren()
+        if (category != '') {
+            for (let i = 0; i < keywordArray[category].length; i++) {
+                let tempHtml = ''
+                let keyword = keywordArray[category][i]
+                    .split('<')[1]
+                    .split('>')[1]
+                if (
+                    keyword.match(new RegExp($(`#${inputId}`).val(), 'i')) ==
+                    null
+                ) {
+                    continue
+                } else {
+                    result = true
+                    tempHtml = keywordArray[category][i]
+                    $(`#${listId}`).append(tempHtml)
+                }
+            }
+        } else {
+            for (let i = 0; i < keywordArray.length; i++) {
+                let tempHtml = ''
+                let keyword = keywordArray[i].split('<')[1].split('>')[1]
+                if (
+                    keyword.match(new RegExp($(`#${inputId}`).val(), 'i')) ==
+                    null
+                ) {
+                    continue
+                } else {
+                    result = true
+                    tempHtml = keywordArray[i]
+                    $(`#${listId}`).append(tempHtml)
+                }
+            }
+        }
+
+        if (!result) {
+            $(`#${listId}`).append('<p>검색 결과가 없습니다.</p>')
+        }
+        $(`#${detailId}`).attr('open', true)
+    }
+    function changeActiveButton(list, code, key, keyword, category) {
+        if (key == 'Stack') {
+            let stackList = list[category]
+            for (let i = 0; i < stackList.length; i++) {
+                let buttonKeyCode = stackList[i]
+                    .split('type')[0]
+                    .split('id=')[1]
+                    .split('"')[1]
+                if (code.replace(' ', '') === buttonKeyCode) {
+                    stackList[
+                        i
+                    ] = `<button class="btn btn-outline-secondary filterButton active" 
+                        id="${code}" type="button" data-bs-toggle="button" 
+                        onclick="append${key}QueryParameter($(this).hasClass('active'),'${code}')">${keyword}
+                        </button>`
+                }
+            }
+        } else {
+            for (let i = 0; i < list.length; i++) {
+                let buttonKeyCode = list[i]
+                    .split('type')[0]
+                    .split('id=')[1]
+                    .split('"')[1]
+                if (code.replace(' ', '') === buttonKeyCode) {
+                    list[
+                        i
+                    ] = `<button class="btn btn-outline-secondary filterButton active" 
+                        id="${code}" type="button" data-bs-toggle="button" 
+                        onclick="append${key}QueryParameter($(this).hasClass('active'),'${code}')">${keyword}
+                        </button>`
+                }
+            }
+        }
+    }
+
+    function onclickAddressUpper(addressUpperName) {
+        $('#addressLowerDropDown > li').hide()
+        $(`#addressLowerDropDown > li.${addressUpperName}`).show()
+        $('#currentAddressUpper').text(addressUpperName)
+    }
+</script>

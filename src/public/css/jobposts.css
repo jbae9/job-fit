@@ -1,0 +1,123 @@
+.dropdown-item {
+    color: rgb(69, 87, 117) !important;
+    padding-bottom: 8px;
+}
+
+.dropdown-item.active {
+    background-color: rgb(240, 115, 61, 0.9);
+    color: white !important;
+}
+
+.dropdown-item.disabled {
+    background-color: rgb(69, 87, 117, 0.2) !important;
+}
+
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: rgb(240, 115, 61, 0.9);
+}
+
+#keyword-card {
+    margin: 20px;
+    margin-top: 100px;
+}
+
+#keyword-card .row {
+    align-items: center;
+    padding: 10px;
+}
+
+#keyword-card {
+    color: rgb(69, 87, 117);
+}
+
+#resetButton {
+    font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 48;
+    color: rgb(206, 0, 0);
+    font-size: 28px;
+    padding: 0 10px;
+}
+
+.filterButton {
+    border-radius: 50px;
+    width: auto;
+    --bs-btn-active-bg: rgb(240, 115, 61, 0.9) !important;
+    --bs-btn-hover-bg: rgb(240, 115, 61, 0.9) !important;
+    --bs-btn-hover-border-color: rgb(240, 115, 61, 0.9) !important;
+}
+
+.filterButton.active {
+    color: white !important;
+}
+
+.row .keyword-text {
+    display: flex;
+    align-items: center;
+}
+
+#searchResult {
+    font-size: 25px;
+    padding: 20px 0;
+}
+
+.order {
+    padding: 10px 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#sortDropDown {
+    display: inline-flex;
+    align-items: center;
+}
+
+.page-item {
+    --bs-pagination-active-bg: rgb(240, 115, 61, 0.9) !important;
+    --bs-pagination-active-border-color: rgb(240, 115, 61, 0.9) !important;
+    --bs-pagination-active-color: white;
+}
+
+#searchCount {
+    position: absolute;
+    right: 0;
+}
+
+#pagination a {
+    cursor: pointer;
+}
+
+#keywordDetail,
+details[id^='stackDetail'] {
+    margin: 0 10px;
+    padding: 5px;
+}
+
+#keywordsInput,
+input[id^='stacksInput'] {
+    width: 80px;
+    height: 30px;
+    margin: 0 10px;
+    float: right;
+}
+
+#keywordList,
+div[id^='stacksList'] {
+    margin: 5px;
+}
+
+summary {
+    height: 40px;
+}
+
+#pagination {
+    display: flex;
+    justify-content: center;
+    margin: 10px 5px;
+}
+
+#filterTitle {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}

@@ -1,0 +1,392 @@
+.mypage-wrap {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f9fafb;
+
+    display: flex;
+    justify-content: center;
+}
+
+.mypage-container {
+    width: 1200px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    gap: 3rem;
+}
+
+.mypage-category-wrap {
+    flex-basis: 11rem;
+    margin-top: 3rem;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.mypage-content-wrap {
+    flex-grow: 1;
+    margin-top: 3rem;
+}
+
+.mypage-category-container {
+    width: 15rem;
+    border: 0.75px solid #bfc0c0;
+    border-radius: 10px;
+    background-color: #ffffff;
+
+    padding: 2rem 1rem;
+}
+
+.mypage-category {
+    padding: 1rem 0;
+    border-bottom: 0.75px solid #bfc0c0;
+}
+
+.mypage-category:last-child {
+    border-bottom: none;
+}
+
+.mypage-category a {
+    font-size: 1.25rem;
+    color: #4f5d75 !important;
+}
+
+.mypage-content-title {
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 1.25rem;
+}
+
+.mypage-content-subtitle {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #4f5d75;
+    margin-bottom: 1rem;
+
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2rem;
+}
+
+.content-desc {
+    margin-left: 1rem;
+    font-weight: normal;
+    font-size: 1rem;
+}
+
+.mypage-content-myinfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+
+    padding: 2rem;
+    border: 0.75px solid #bfc0c0;
+    border-radius: 10px;
+    background-color: #ffffff;
+    margin-bottom: 2.5rem;
+}
+
+.mypage-content-myinfo img {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 10px;
+}
+
+.mypage-content-myinfo-nickname {
+    color: #263747;
+    font-size: 1.375rem;
+    font-weight: bold;
+}
+
+.mypage-content-myinfo-email {
+    color: #4f5d75;
+}
+
+.mypage-content-myaddress {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+
+    padding: 2rem;
+    border: 0.75px solid #bfc0c0;
+    border-radius: 10px;
+    background-color: #ffffff;
+    margin-bottom: 2.5rem;
+}
+
+.mypage-content-myaddress-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+}
+
+.mypage-content-myaddress-btn {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: #1f7a8c;
+    font-weight: bold;
+    color: #ffffff !important;
+    border-radius: 5px;
+}
+
+.modal-address-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 3rem;
+}
+
+.modaal-address-title {
+    flex-basis: 3rem;
+}
+
+.modal-address-input {
+    flex-grow: 1;
+}
+
+.modal-address-search-wrap {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.modal-address-search-btn {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: #4f5d75;
+    font-weight: bold;
+    color: #ffffff !important;
+    border-radius: 5px;
+}
+
+.modal-close {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: red;
+    font-weight: bold;
+    color: #ffffff !important;
+    border-radius: 5px;
+}
+
+.address-update-btn {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: #1f7a8c;
+    font-weight: bold;
+    color: #ffffff !important;
+    border-radius: 5px;
+}
+
+.mypage-content-mystack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    padding: 2rem;
+    border: 0.75px solid #bfc0c0;
+    border-radius: 10px;
+    background-color: #ffffff;
+    margin-bottom: 2.5rem;
+}
+
+.mypage-content-mystack-input-wrap {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+}
+
+.mypage-content-mystack-name-input {
+    padding: 0.5rem 1rem;
+    border: 0.75px solid #bfc0c0;
+    border-radius: 10px;
+}
+
+.mypage-content-mystack-name-input::placeholder {
+    color: #bfc0c0;
+}
+
+.mypage-content-mystack-name-input:focus {
+    outline: none;
+}
+
+.mypage-content-mystack-btn {
+    padding: 0.75rem 1.25rem;
+    border: none;
+    background-color: #1f7a8c;
+    font-weight: bold;
+    color: #ffffff !important;
+    border-radius: 5px;
+}
+
+.stack-search-box {
+    position: relative;
+}
+
+.stack-list-box {
+    position: absolute;
+    width: 100%;
+    height: 10rem;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    border-radius: 10px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    display: none;
+}
+
+.stack-list-box::-webkit-scrollbar {
+    width: 1rem;
+    border-radius: 10px;
+}
+
+.stack-list-box::-webkit-scrollbar-thumb {
+    background-color: #1f7a8c;
+    border-radius: 10px;
+}
+
+.stack-list-box::-webkit-scrollbar-track {
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.stack-list {
+    width: 100%;
+    height: 3rem;
+    padding: 0 1rem;
+    font-size: 0.75rem;
+    color: gray;
+
+    display: flex;
+    align-items: center;
+}
+
+.stack-list:hover {
+    background-color: lightblue;
+    cursor: pointer;
+}
+
+.stack-list img {
+    height: 100%;
+}
+
+.mypage-content-mystack-list-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mypage-content-mystack-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+
+    padding: 0.5rem 1rem;
+    border: 0.75px solid lightgray;
+    border-radius: 10px;
+}
+
+.mypage-content-mystack-list-stack-info-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2rem;
+
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.mypage-content-mystack-list-stack-info-wrap img {
+    width: 8rem;
+}
+
+.mypage-content-mystack-list button {
+    border: 0.75px solid lightgray;
+    padding: 0.5rem;
+    background: none;
+    border-radius: 5px;
+}
+
+.mypage-content-mylikes-wrap {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.mylikes-container {
+    width: 25%;
+    height: 15rem;
+    padding: 0.5rem;
+}
+
+.mylikes {
+    height: 100%;
+    border: 0.75px solid #bfc0c0;
+    border-radius: 10px;
+    padding: 0.5rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+}
+
+.mylikes-jobpost-img {
+    height: 7rem;
+    object-fit: contain;
+}
+
+.mylikes-jobpost-title {
+    width: 100%;
+    font-weight: bold;
+    font-size: 1rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0.5rem 0;
+}
+
+.mylikes-jobpost-company {
+    font-size: 0.875rem;
+    color: gray;
+    padding: 0.5rem 0;
+}
+
+.mypage-content-myaddress-message,
+.mypage-content-mystack-message {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.material-symbols-outlined.warning-icon {
+    color: red !important;
+    font-size: 1rem !important;
+}
+
+.address-message,
+.mystack-message,
+.mylikes-message {
+    font-size: 1rem !important;
+    color: black;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .mylikes-container {
+        width: 100%;
+    }
+}

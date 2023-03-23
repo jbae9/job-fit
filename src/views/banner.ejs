@@ -1,0 +1,63 @@
+<div class="banner-container">
+    <div class="banner-wrap">
+        <div class="banner-title">
+            열심히 공부한 당신
+            <br />
+            힘들게 취업 할 필요는 없습니다
+        </div>
+        <div class="banner-subtitle"></div>
+        <!-- Swiper -->
+        <div class="swiper-container">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<script>
+    const userId = '<%= user?.userId %>'
+    const subtitle = !userId
+        ? '지금 로그인해서 채용공고를 추천 받아보세요!'
+        : '맞춤형 채용공고로 당신의 미래를 디자인하세요!'
+    const subtitleDOM = document.querySelector('.banner-subtitle')
+
+    let i = 0
+    async function subtitleTyping() {
+        if (i < subtitle.length) {
+            subtitleDOM.innerHTML += subtitle[i]
+            i++
+        }
+    }
+
+    setInterval(subtitleTyping, 75)
+
+    // 기술 스택 리스트 불러오기
+    axios
+        .get(`/api/stack`)
+        .then((res) => {
+            let stackImageHtml = ``
+            for (let stack of res.data) {
+                stackImageHtml += `
+                    <div class='swiper-slide'>
+                        <img class='banner-stack-img' src='${stack.stackImgUrl}' />
+                    </div>
+                `
+            }
+
+            document.querySelector('.swiper-wrapper').innerHTML = stackImageHtml
+
+            const swiper = new Swiper('.mySwiper', {
+                slidesPerView: 10,
+                loopAdditionalSlides: 1,
+                speed: 2000,
+                loop: true,
+                autoplay: {
+                    delay: 0,
+                    disableOnInteraction: false,
+                },
+            })
+        })
+        .catch((err) => {})
+</script>

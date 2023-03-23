@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+@font-face {
+    font-family: 'EliceDigitalBaeum-Bd';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2')
+        format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+a {
+    text-decoration: none !important;
+    color: #000000 !important;
+}
+
+h1 {
+    font-size: 30px;
+    font-weight: 500;
+    font-family: 'EliceDigitalBaeum-Bd';
+}
+
+button {
+    border-color: rgb(69, 87, 117, 0.3) !important;
+    color: rgb(69, 87, 117) !important;
+    --bs-btn-active-bg: rgb(69, 87, 117, 0.8) !important;
+    --bs-btn-active-border-color: rgb(69, 87, 117, 0.3) !important;
+    --bs-btn-hover-bg: rgb(69, 87, 117, 0.8) !important;
+    --bs-btn-hover-border-color: rgb(69, 87, 117, 0.3) !important;
+}
+
+button:hover,
+button:focus {
+    color: white !important;
+}
+
+button .muted {
+    color: rgb(69, 87, 117, 0.8);
+}
+
+.card-title {
+    font-size: 22px;
+    font-weight: 600;
+    word-break: keep-all;
+}
+
+.card-text {
+    color: rgb(69, 87, 117, 0.8);
+    padding: 5px 0;
+    font-size: 15px;
+}
+
+.card-text img {
+    height: 30px;
+    padding-right: 3px;
+}
+
+.card-text .row {
+    display: flex;
+    align-items: center;
+}
+
+.card-col {
+    display: flex;
+    align-items: center;
+    color: rgb(69, 87, 117, 0.8) !important;
+    padding: 5px 0;
+    font-size: 15px;
+}
+
+.card-text.companyName {
+    font-size: 18px;
+}
+
+.card-img-top {
+    min-height: 150px;
+    max-height: 150px;
+    max-width: fit-content;
+    margin: auto;
+    padding: 10px;
+    position: relative;
+    object-fit: contain;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+    color: rgb(69, 87, 117, 0.8);
+    font-size: 18px;
+}
+
+.material-symbols-outlined.likeIcon {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+    color: rgb(69, 87, 117, 0.8);
+    font-size: 30px;
+    position: absolute;
+    padding: 10px;
+    right: 0;
+    z-index: 2;
+}
+
+.material-symbols-outlined.liked {
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+    color: #ffea00;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    opacity: 1;
+    font-size: larger;
+    bottom: 5px;
+    height: 27px;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #ffffff;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    border: 2px solid #000000;
+
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltip .tooltip-top {
+    width: 10vw;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip .tooltip-top::after {
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-color: black transparent transparent transparent;
+}
+
+div[id^='jobpostRow'] {
+    margin-bottom: 20px;
+}
+
+.card {
+    min-height: 399.61px;
+}
+
+#mainContainer .card {
+    border: 0.5px solid #f9fafb;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    margin-bottom: var(--bs-gutter-y);
+}
+#recommendationWarning {
+    color: red;
+    margin: 0 5;
+    -webkit-animation: glow 1s ease-in-out infinite alternate;
+    -moz-animation: glow 1s ease-in-out infinite alternate;
+    animation: glow 1s ease-in-out infinite alternate;
+    cursor: pointer;
+}
+
+@-webkit-keyframes glow {
+    from {
+        text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #e60073,
+            0 0 4px #e60073, 0 0 4px #e60073, 0 0 5px #e60073, 0 0 5px #e60073;
+    }
+
+    to {
+        text-shadow: 0 0 1px #fff, 0 0 2px #ff4da6, 0 0 3px #ff4da6,
+            0 0 4px #ff4da6, 0 0 5px #ff4da6, 0 0 6px #ff4da6, 0 0 8px #ff4da6;
+    }
+}
+
+.card-text .material-symbols-outlined {
+    margin-right: 5px;
+}

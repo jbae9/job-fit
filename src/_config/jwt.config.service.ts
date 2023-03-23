@@ -9,7 +9,6 @@ export class JwtConfigService implements JwtOptionsFactory {
     createJwtOptions(): JwtModuleOptions {
         return {
             secret: this.configService.get<string>('JWT_SECRET'),
-            signOptions: { expiresIn: '3600s' }, // 토큰의 만료시간은 1시간
         }
     }
 }

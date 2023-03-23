@@ -1,0 +1,49 @@
+<div class="mypage-content-wrap">
+    <div class="mypage-content-title">내 찜 목록</div>
+    <div id="mypage-content-mylikes-wrap" class="mypage-content-mylikes-wrap"></div>
+</div>
+
+<script>
+    // 회원 고유번호
+    const userId = '<%- JSON.stringify(user.userId) %>'
+
+    // 찜 목록 가져오기
+    axios
+        .get(`/api/user/myinfo/${userId}/likes`)
+        .then((res) => {
+            const { jobposts } = res.data
+
+            if (!jobposts.length) {
+                document.getElementById(
+                    'mypage-content-mylikes-wrap'
+                ).innerHTML = `
+                    <span class="material-symbols-outlined warning-icon">
+                        error
+                    </span>
+                    <span class="mylikes-message">채용공고를 찜하고 더 나은 공고를 추천받으세요!</span>
+                `
+            } else {
+                let jobpostsHtml = ''
+                for (let jobpost of jobposts) {
+                    const jobpostImgUrl = !jobpost.originalImgUrl
+                        ? '/images/No_Image.png'
+                        : jobpost.originalImgUrl
+
+                    jobpostsHtml += `
+                    <div class='mylikes-container'>
+                        <div class='mylikes'>
+                            <img class='mylikes-jobpost-img' src='${jobpostImgUrl}' />
+                            <a href='/jobpost/${jobpost.jobpostId}'><div class='mylikes-jobpost-title'>${jobpost.title}</div></a>
+                            <div class='mylikes-jobpost-company'>${jobpost.company.companyName}</div>
+                        </div>    
+                    </div>
+                `
+                }
+
+                document.getElementById(
+                    'mypage-content-mylikes-wrap'
+                ).innerHTML = jobpostsHtml
+            }
+        })
+        .catch((err) => { })
+</script>

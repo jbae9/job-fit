@@ -1,0 +1,284 @@
+<div class="mypage-content-wrap">
+    <div class="mypage-content-title">내 정보 관리</div>
+    <div class="mypage-content-subtitle">내 정보</div>
+    <div class="mypage-content-myinfo">
+        <img id="profile-image" class="mypage-content-myinfo-profile-image" src="" />
+        <div id="nickname" class="mypage-content-myinfo-nickname"></div>
+        <div id="email" class="mypage-content-myinfo-email"></div>
+    </div>
+    <div class="mypage-content-subtitle">
+        내 주소
+        <div class="mypage-content-myaddress-message"></div>
+    </div>
+    <div class="mypage-content-myaddress">
+        <div id="address-wrap" class="mypage-content-myaddress-wrap">
+            <div id="address-upper" class="mypage-content-myaddress-upper"></div>
+            <div id="address-lower" class="mypage-content-myaddress-lower"></div>
+        </div>
+        <button type="button" class="mypage-content-myaddress-btn" data-bs-toggle="modal"
+            data-bs-target="#address-modal">
+            수정
+        </button>
+    </div>
+    <div class="mypage-content-subtitle">
+        내 스택
+        <div class="mypage-content-mystack-message"></div>
+    </div>
+    <div class="mypage-content-mystack">
+        <div class="mypage-content-mystack-input-wrap">
+            <div class="stack-search-box">
+                <input type="text" id="mypage-content-mystack-id-input" class="mypage-content-mystack-id-input"
+                    hidden />
+                <input type="text" id="mypage-content-mystack-name-input" class="mypage-content-mystack-name-input"
+                    placeholder="기술 스택" />
+                <div id="stack-list-box" class="stack-list-box hide"></div>
+            </div>
+            <button type="button" class="mypage-content-mystack-btn" onclick="insertStack()">
+                추가
+            </button>
+        </div>
+        <div id="mypage-content-mystack-list-wrap" class="mypage-content-mystack-list-wrap"></div>
+    </div>
+</div>
+
+<div class="hide"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="address-modal" tabindex="-1" aria-labelledby="address-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">내 주소 수정</div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-address-wrap">
+                    <div class="modal-address-title">내 주소 :</div>
+                    <input id="modal-address-input" class="modal-address-input" disabled />
+                </div>
+                <div class="modal-address-search-wrap">
+                    <button id="modal-address-search-btn" type="button" class="modal-address-search-btn">
+                        주소 검색
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-close" data-bs-dismiss="modal">
+                    취소
+                </button>
+                <button type="button" class="address-update-btn" onclick="addressUpdate()">
+                    수정
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    // 회원 고유번호
+    const userId = '<%- JSON.stringify(user.userId) %>'
+    // 기술 스택 저장 배열
+    let stacks = []
+    // 주소 검색 버튼
+    const addressSearchBtn = document.getElementById('modal-address-search-btn')
+    // 기술 스택 id input
+    const stackIdInput = document.getElementById(
+        'mypage-content-mystack-id-input'
+    )
+    // 기슬 스택 name input
+    const stackNameInput = document.getElementById(
+        'mypage-content-mystack-name-input'
+    )
+    // 기술 스택 리스트 박스
+    const stackListBox = document.getElementById('stack-list-box')
+
+    // 회원 정보 가져오기
+    axios
+        .get(`/api/user/myinfo/${userId}`)
+        .then((res) => {
+            const {
+                profileImage,
+                nickname,
+                email,
+                addressUpper,
+                addressLower,
+                stacks,
+            } = res.data
+
+            document
+                .querySelector('.mypage-content-myinfo img')
+                .setAttribute('src', `${profileImage}`)
+            document.getElementById('nickname').innerHTML = `${nickname}`
+            document.getElementById('email').innerHTML = `${email}`
+
+            if (addressUpper) {
+                document.getElementById(
+                    'address-upper'
+                ).innerHTML = `${addressUpper}`
+            }
+
+            if (addressLower) {
+                document.getElementById(
+                    'address-lower'
+                ).innerHTML = `${addressLower}`
+            }
+
+            if (!addressUpper && !addressLower) {
+                document.querySelector(
+                    '.mypage-content-myaddress-message'
+                ).innerHTML = `
+                    <span class="material-symbols-outlined warning-icon">
+                        error
+                    </span>
+                    <span class="address-message">주소를 입력해서 더 나은 공고를 추천받으세요!</span>
+                `
+                document.getElementById('address-wrap').innerHTML = `선택 없음`
+            }
+
+            // 내 기술스택
+            if (!stacks.length) {
+                document.querySelector(
+                    '.mypage-content-mystack-message'
+                ).innerHTML = `
+                    <span class="material-symbols-outlined warning-icon">
+                        error
+                    </span>
+                    <span class="mystack-message">기술 스택을 선택하고 더 나은 공고를 추천받으세요!</span>
+                `
+            } else {
+                let myStacksHtml = ''
+                for (let myStack of stacks) {
+                    myStacksHtml += `<div class='mypage-content-mystack-list'>
+                                    <div class='mypage-content-mystack-list-stack-info-wrap'>
+                                        <img src='${myStack.stackImgUrl}' />
+                                        ${myStack.stack}
+                                    </div>
+                                    <button type='button' onclick='deleteMyStack(${myStack.stackId})'>X</button>
+                                </div>`
+                }
+                document.getElementById(
+                    'mypage-content-mystack-list-wrap'
+                ).innerHTML = myStacksHtml
+            }
+        })
+        .catch((err) => {
+            alert('회원의 정보를 찾을 수 없습니다.')
+            window.location.href = '/'
+        })
+
+    // 기술 스택 리스트 불러와서 배열에 넣기
+    axios
+        .get('/api/stack')
+        .then((res) => {
+            for (let stack of res.data) {
+                stacks.push(stack)
+            }
+        })
+        .catch((err) => {
+            window.location.href = '/'
+        })
+
+    // 다음 주소검색 API
+    addressSearchBtn.addEventListener('click', function () {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                document.getElementById('modal-address-input').value =
+                    data.address
+            },
+        }).open()
+    })
+
+    // 주소 업데이트
+    function addressUpdate() {
+        const address = document.getElementById('modal-address-input').value
+
+        if (!address) return alert('주소를 입력해주세요.')
+
+        const body = { address }
+        axios
+            .put(`/api/user/myinfo/${userId}/address`, body)
+            .then((res) => {
+                alert(res.data.message)
+                window.location.reload()
+            })
+            .catch((err) => {
+                alert(err.response.data.message)
+                window.location.reload()
+            })
+    }
+
+    // 기술스택 input 태그 focus 시
+    stackNameInput.addEventListener('click', function () {
+        let stackListHtml = ''
+        for (let stack of stacks) {
+            stackListHtml += `<div data-index=${stack.stackId} id='stack-list' class='stack-list' onclick="selectStack(${stack.stackId}, '${stack.stack}')">${stack.stack}</div>`
+        }
+
+        stackListBox.innerHTML = stackListHtml
+        stackListBox.style.display = 'block'
+    })
+
+    // 기술스택 input 태그 입력 시
+    stackNameInput.addEventListener('input', function (e) {
+        const text = e.target.value
+
+        let stackListHtml = ''
+        for (let stack of stacks) {
+            const stackName = stack.stack
+
+            if (stackName.toLowerCase().includes(text.toLowerCase())) {
+                stackListHtml += `<div data-index=${stack.stackId} id='stack-list' class='stack-list' onclick="selectStack(${stack.stackId},'${stack.stack}')">${stack.stack}</div>`
+            }
+        }
+
+        if (stackListHtml === '') {
+            stackListHtml += `<div id='stack-list' class='stack-list'>검색결과가 없습니다.</div>`
+        }
+
+        stackListBox.innerHTML = stackListHtml
+    })
+
+    // 기술스택 선택 시
+    function selectStack(stackId, stack) {
+        stackIdInput.value = stackId
+        stackNameInput.value = stack
+        stackListBox.style.display = 'none'
+    }
+
+    // 기술스택 등록
+    function insertStack() {
+        const stackId = stackIdInput.value
+        const stackName = stackNameInput.value
+
+        if (!stackId || !stackName) {
+            stackIdInput.value = ''
+            stackNameInput.value = ''
+            stackNameInput.focus()
+            stackListBox.style.display = 'none'
+        }
+
+        axios
+            .post(`/api/user/myinfo/${userId}/stack`, { stackId })
+            .then((res) => {
+                window.location.reload()
+            })
+            .catch((err) => {
+                alert(err.response.data.message)
+                window.location.reload()
+            })
+    }
+
+    // 기술스택 삭제
+    function deleteMyStack(stackId) {
+        axios
+            .delete(`/api/user/myinfo/${userId}/stack/${stackId}`)
+            .then((res) => {
+                window.location.reload()
+            })
+            .catch((err) => {
+                alert(err.response.data.message)
+                window.location.reload()
+            })
+    }
+</script>
