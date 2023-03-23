@@ -4,6 +4,7 @@ import { PageLoadStrategy } from 'selenium-webdriver/lib/capabilities'
 import { SaraminScraper } from './jobpostSaraminAxiosScraper'
 import { CompanyRepository } from 'src/company/company.repository'
 import { JobpostRepository } from '../jobpost.repository'
+import chrome from 'selenium-webdriver/chrome'
 const axios = require('axios')
 const cheerio = require('cheerio')
 
@@ -27,7 +28,6 @@ export class SaraminSelenium {
     ) {}
     async getSaraminScraper(pageCount: string) {
         const options = new Options()
-        options.setChromeBinaryPath('/usr/bin/chromedriver')
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL)
         options.excludeSwitches('enable-logging')
         let page = 1
@@ -37,6 +37,9 @@ export class SaraminSelenium {
         const driver = await new Builder()
             .forBrowser('chrome')
             .setChromeOptions(options)
+            .setChromeService(
+                new chrome.ServiceBuilder('../../../chromedriver')
+            )
             .build()
         while (true) {
             console.log(`사람인 ${page}페이지 스크롤 중...`)
