@@ -37,9 +37,7 @@ export class SaraminSelenium {
         const driver = await new Builder()
             .forBrowser('chrome')
             .setChromeOptions(options)
-            .setChromeService(
-                new chrome.ServiceBuilder('../../../chromedriver')
-            )
+            .setChromeService(new chrome.ServiceBuilder('../chromedriver'))
             .build()
         while (true) {
             console.log(`사람인 ${page}페이지 스크롤 중...`)
