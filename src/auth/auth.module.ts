@@ -9,6 +9,8 @@ import { AuthService } from './auth.service'
 import { JwtStrategy } from './strategy/jwt.strategy'
 import { KakaoStrategy } from './strategy/kakao.strategy'
 import redisStore from 'cache-manager-redis-store'
+import { RedisModule } from '@liaoliaots/nestjs-redis'
+import { CacheService } from 'src/cache/cache.service'
 
 @Module({
     imports: [
@@ -21,19 +23,9 @@ import redisStore from 'cache-manager-redis-store'
             useClass: JwtConfigService,
             inject: [ConfigService],
         }),
-        CacheModule.registerAsync({
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            useFactory: (configService: ConfigService) => ({
-                isGlobal: true,
-                store: redisStore,
-                host: configService.get('REDIS_HOST'),
-                port: Number(configService.get('REDIS_PORT')),
-                password: configService.get('REDIS_PASSWORD'),
-            }),
-        }),
+        RedisModule,
     ],
-    providers: [AuthService, KakaoStrategy, JwtStrategy],
+    providers: [AuthService, KakaoStrategy, JwtStrategy, CacheService],
     exports: [PassportModule, JwtModule, AuthService],
 })
 export class AuthModule {}

@@ -7,6 +7,7 @@ import {
 import { CACHE_MANAGER } from '@nestjs/common/cache'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Cache } from 'cache-manager'
+import { CacheService } from 'src/cache/cache.service'
 import { Stack } from 'src/entities/stack.entity'
 import { User } from 'src/entities/user.entity'
 import { getAddress } from 'src/jobpost/common/getAddress'
@@ -16,14 +17,15 @@ import { GetUserInfoDto } from './dto/get-userInfo.dto'
 
 @Injectable()
 export class UserService {
+    cacheManager: any
     constructor(
         @InjectRepository(User) private userRepository: Repository<User>,
         @InjectRepository(Stack) private stackRepository: Repository<Stack>,
-        @Inject(CACHE_MANAGER) private cacheManager: Cache
+        private cacheService: CacheService
     ) {}
 
-    async removeRedisRefreshToken(userId: number): Promise<boolean> {
-        return this.cacheManager.del(userId.toString())
+    async removeRedisRefreshToken(userId: number) {
+        return this.cacheService.removeRedisRefreshToken(userId)
     }
 
     async getMyInfo(userId: number): Promise<GetUserInfoDto> {
