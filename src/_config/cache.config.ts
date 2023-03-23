@@ -12,7 +12,7 @@ export class RedisConfigService implements RedisOptionsFactory {
     async createRedisOptions(): Promise<RedisModuleOptions> {
         return {
             config: {
-                url: this.configService.get('REDIS_URL'),
+                url: 'redis://jobfit-redis.usn2ar.ng.0001.apn2.cache.amazonaws.com:6379',
             },
         }
     }
