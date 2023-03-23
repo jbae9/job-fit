@@ -12,7 +12,7 @@ export class RedisConfigService implements RedisOptionsFactory {
     async createRedisOptions(): Promise<RedisModuleOptions> {
         return {
             config: {
-                url: this.configService.get<string>('REDIS_URL'),
+                url: 'redis://' + this.configService.get('REDIS_URL'),
             },
         }
     }
