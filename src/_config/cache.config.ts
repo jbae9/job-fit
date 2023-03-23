@@ -1,21 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common'
 import {
-	RedisOptionsFactory,
-	RedisModuleOptions,
-} from '@liaoliaots/nestjs-redis';
-import { ConfigService } from '@nestjs/config';
+    RedisOptionsFactory,
+    RedisModuleOptions,
+} from '@liaoliaots/nestjs-redis'
+import { ConfigService } from '@nestjs/config'
 
 @Injectable()
 export class RedisConfigService implements RedisOptionsFactory {
-	constructor(private configService: ConfigService) { }
+    constructor(private configService: ConfigService) {}
 
-	async createRedisOptions(): Promise<RedisModuleOptions> {
-		return {
-			config: {
-				host: this.configService.get<string>('REDIS_HOST'),
-				port: this.configService.get<number>('REDIS_PORT'),
-				password: this.configService.get<string>('REDIS_PASSWORD'),
-			},
-		};
-	}
+    async createRedisOptions(): Promise<RedisModuleOptions> {
+        return {
+            config: {
+                url: 'redis://jobfit.usn2ar.ng.0001.apn2.cache.amazonaws.com:6379',
+            },
+        }
+    }
 }

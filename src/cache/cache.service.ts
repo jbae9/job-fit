@@ -40,7 +40,7 @@ export class CacheService {
     }
 
     async saveRefreshToken(userId: number, token: string) {
-        await this.redisClient.set(userId.toString(), token)
+        await this.redisClient.set(userId.toString(), token, 'EX', 604800)
     }
 
     async getRefreshToken(userId: number): Promise<string> {

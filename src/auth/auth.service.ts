@@ -3,6 +3,7 @@ import { CACHE_MANAGER } from '@nestjs/common/cache'
 import { JwtService } from '@nestjs/jwt'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Cache } from 'cache-manager'
+import { CacheService } from 'src/cache/cache.service'
 import { User } from 'src/entities/user.entity'
 import { Repository } from 'typeorm'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -12,7 +13,7 @@ export class AuthService {
     constructor(
         @InjectRepository(User) private userRepository: Repository<User>,
         private jwtService: JwtService,
-        @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
+        private cacheService: CacheService
     ) {}
 
     async findUser(email: string): Promise<User | null> {
@@ -57,11 +58,11 @@ export class AuthService {
     }
 
     async saveRefreshToken(userId: number, token: string) {
-        await this.cacheManager.set(userId.toString(), token, { ttl: 604800 })
+        await this.cacheService.saveRefreshToken(userId, token)
     }
 
     async getRefreshToken(userId: number): Promise<string> {
-        return await this.cacheManager.get(userId.toString())
+        return await this.cacheService.getRefreshToken(userId)
     }
 
     async verifyAccessToken(accessToken: string) {

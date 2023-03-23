@@ -10,6 +10,8 @@ import redisStore from 'cache-manager-redis-store'
 import { forwardRef } from '@nestjs/common/utils'
 import { AuthModule } from 'src/auth/auth.module'
 import { Stack } from 'src/entities/stack.entity'
+import { RedisModule } from '@liaoliaots/nestjs-redis'
+import { CacheService } from 'src/cache/cache.service'
 
 @Module({
     imports: [
@@ -20,19 +22,9 @@ import { Stack } from 'src/entities/stack.entity'
             useClass: JwtConfigService,
             inject: [ConfigService],
         }),
-        CacheModule.registerAsync({
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            useFactory: (configService: ConfigService) => ({
-                isGlobal: true,
-                store: redisStore,
-                host: configService.get('REDIS_HOST'),
-                port: Number(configService.get('REDIS_PORT')),
-                password: configService.get('REDIS_PASSWORD'),
-            }),
-        }),
+        RedisModule,
     ],
-    providers: [UserService],
+    providers: [UserService, CacheService],
     exports: [UserService],
     controllers: [UserController],
 })
