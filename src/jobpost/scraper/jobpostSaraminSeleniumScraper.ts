@@ -1,6 +1,7 @@
 import { Builder, By, until } from 'selenium-webdriver'
 import { Options } from 'selenium-webdriver/chrome'
 import { PageLoadStrategy } from 'selenium-webdriver/lib/capabilities'
+
 import { SaraminScraper } from './jobpostSaraminAxiosScraper'
 import { CompanyRepository } from 'src/company/company.repository'
 import { JobpostRepository } from '../jobpost.repository'
@@ -28,6 +29,7 @@ export class SaraminSelenium {
     ) {}
     async getSaraminScraper(pageCount: string) {
         const options = new Options()
+        options.setChromeBinaryPath('/usr/bin/chromedriver')
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL)
         options.excludeSwitches('enable-logging')
         let page = 1
