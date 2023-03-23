@@ -12,7 +12,8 @@ export class RedisConfigService implements RedisOptionsFactory {
     async createRedisOptions(): Promise<RedisModuleOptions> {
         return {
             config: {
-                url: 'redis://' + this.configService.get('REDIS_URL'),
+                host: this.configService.get('REDIS_URL'),
+                port: Number(this.configService.get('REDIS_PORT')),
             },
         }
     }
