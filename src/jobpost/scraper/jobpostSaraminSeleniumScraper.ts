@@ -30,6 +30,7 @@ export class SaraminSelenium {
         const options = new Options()
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL)
         options.excludeSwitches('enable-logging')
+        options.addArguments('--headless', '--disable-gpu')
         let page = 1
         let index = 0
 
