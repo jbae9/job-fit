@@ -1,7 +1,6 @@
 # 잡핏 (jobfit)
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://github.com/jbae9/job-fit/blob/main/src/public/images/logo.png" width="423" height="204" alt="Nest Logo" /></a>
-<hr>
 
 ## 프로젝트 참여 인원
 - 길재형, 배진영, 박현민
