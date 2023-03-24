@@ -1,73 +1,39 @@
+# 잡핏 (jobfit)
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+  <a href="http://nestjs.com/" target="blank"><img src="https://github.com/jbae9/job-fit/blob/main/src/public/images/logo.png" width="423" height="204" alt="Nest Logo" /></a>
+<hr>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 프로젝트 참여 인원
+- 길재형, 배진영, 박현민
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 프로젝트 설명
+- IT 채용 공고를 쉽게 보고, 찾고, 추천 받을 수 있는 사이트
 
-## Description
+> Jobfit 중간 발표 ppt Click! [https://www.canva.com/design/DAFdVNTHxKM/4qOytCjsPRJUmsy-OrTRww/view?utm_content=DAFdVNTHxKM&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton]
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+> Jobfit 이용해보기 Click! [http://jobfit.ap-northeast-2.elasticbeanstalk.com/]
 
-## Installation
+![image](https://user-images.githubusercontent.com/77329973/227474359-b7436e4c-f627-465d-9af7-4c68b5601e2e.png)
 
-```bash
-$ npm install
-```
+## 아키텍쳐
+![image](https://user-images.githubusercontent.com/77329973/227474723-746436b8-762a-4514-a3e5-266f51bbf533.png)
 
-## Running the app
+## 기술스택
+- Language
+  + Javascript
+  + Typescript
 
-```bash
-# development
-$ npm run start
+- Framework
+  + Node.js
+  + Nest.js
 
-# watch mode
-$ npm run start:dev
+- Data
+  + Mysql
+  + Redis
+  
+- CI/CD
+  + AWS Codepipeline
+  + AWS beanstalk
 
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
--   Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
--   Website - [https://nestjs.com](https://nestjs.com/)
--   Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+- Front
+  + ejs
