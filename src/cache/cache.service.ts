@@ -81,7 +81,7 @@ export class CacheService {
     }
 
     async addCountOne(jobpostId: number) {
-        let count = Number(this.getViewCount(jobpostId))
+        let count = Number(await this.getViewCount(jobpostId))
         if (count > 0) {
             await this.redisClient.hincrby('views', jobpostId.toString(), 1)
         } else {
