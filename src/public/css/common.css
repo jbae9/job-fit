@@ -189,3 +189,32 @@ div[id^='jobpostRow'] {
 .card-text .material-symbols-outlined {
     margin-right: 5px;
 }
+
+.spinner-recommend,
+.spinner-popular,
+.spinner-recent,
+.spinner-ending,
+.spinner-jobposts {
+    display: flex;
+    justify-content: center;
+}
+
+.spinner-recommend {
+    color: lightgreen;
+}
+
+.spinner-popular {
+    color: lightcoral;
+}
+
+.spinner-recent {
+    color: skyblue;
+}
+
+.spinner-ending {
+    color: lightsalmon;
+}
+
+.spinner-jobposts {
+    color: lightslategray;
+}
