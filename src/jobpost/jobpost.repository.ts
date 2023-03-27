@@ -809,7 +809,7 @@ export class JobpostRepository extends Repository<Jobpost> {
 
     async updateView(views: string) {
         const viewCounts = views.split('/').map((view: string) => {
-            const [id, count] = view.split(',')
+            const [id, count] = view.split(', ')
             return { jobpostId: parseInt(id), views: parseInt(count) }
         })
 

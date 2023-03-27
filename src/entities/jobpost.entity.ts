@@ -84,7 +84,7 @@ export class Jobpost {
     @Column('datetime', { nullable: true })
     deadlineDtm: Date | null
 
-    @Column('int', { nullable: true })
+    @Column('int', { nullable: true, default: 0 })
     views: number | null
 
     @Column({ type: 'varchar', length: 1000, nullable: true })
