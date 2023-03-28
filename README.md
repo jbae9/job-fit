@@ -364,7 +364,6 @@
     <li>
     <details>
      1. 공고에 기재된 주소와 내 주소의 거리는 두 주소의 경도와 위도를 `Haversine 공식`을 사용해 계산
-
 $$
 distance =6371*acos\Bigl(cos(radians(lat_{user}))*cos(radians(lat_{jobpost}))\\*cos(radians(long_{jobpost})-radians(long_{user}))\\+sin(radians(lat_{user}))*sin(radians(lat_{jobpost}))\Bigl)
 $$
