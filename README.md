@@ -366,7 +366,11 @@
      1. 공고에 기재된 주소와 내 주소의 거리는 두 주소의 경도와 위도를 `Haversine 공식`을 사용해 계산
       
 $$
-distance =6371*acos\Bigl(cos(radians(lat_{user}))*cos(radians(lat_{jobpost}))\\*cos(radians(long_{jobpost})-radians(long_{user}))\\+sin(radians(lat_{user}))*sin(radians(lat_{jobpost}))\Bigl)
+distance =6371*acos(cos(radians(lat_{user}))*cos(radians(lat_{jobpost}))*cos(radians(long_{jobpost})
+$$
+      
+$$      
+-radians(long_{user}))+sin(radians(lat_{user}))*sin(radians(lat_{jobpost}))\Bigl)
 $$
 
 1. 유저가 등록한 기술스택 중에 공고가 몇 개 일치 되는지 확인
@@ -393,7 +397,11 @@ $$
 1. 각 요소에 비중을 줘서 추천 점수를 계산한다.
 
 $$
-score=0.5*\Bigl(\frac{stackMatches-min(stackMatches)}{max(stackMatches)-min(stackMatches)}\Bigl)\\+0.3*\Bigl(1-\frac{distance-min(distance)}{max(distance)-min(distance)}\Bigl)\\\\+0.3*\Bigl(\frac{keywordMatches-min(keywordMatches)}{max(keywordMatches)-min(keywordMatches)}\Bigl)\\+0.1*\Bigl(\frac{salary-min(salary)}{max(salary)-min(salary)}\Bigl)\\+0.05*\Bigl(\frac{avgSalary-min(avgSalary)}{max(avgSalary)-min(avgSalary)}\Bigl)
+score=0.5*(\frac{stackMatches-min(stackMatches)}{max(stackMatches)-min(stackMatches)})\+0.3*(1-\frac{distance-min(distance)}{max(distance)-min(distance)})\\\\
+$$
+      
+$$      
++0.3*(\frac{keywordMatches-min(keywordMatches)}{max(keywordMatches)-min(keywordMatches)})\+0.1*(\frac{salary-min(salary)}{max(salary)-min(salary)}\Bigl)\+0.05*(\frac{avgSalary-min(avgSalary)}{max(avgSalary)-min(avgSalary)})
 $$
 
 위 함수의 변수:
