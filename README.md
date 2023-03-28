@@ -356,4 +356,61 @@
     채용 공고 크롤링
   </summary>
 </details>
+<details>
+  <ul>
+    <li>
+    SQL 쿼리문을 이용해서 추천 점수를 계산
+    </li>
+    <li>
+    <details>
+     1. 공고에 기재된 주소와 내 주소의 거리는 두 주소의 경도와 위도를 `Haversine 공식`을 사용해 계산
+
+$$
+distance =6371*acos\Bigl(cos(radians(lat_{user}))*cos(radians(lat_{jobpost}))\\*cos(radians(long_{jobpost})-radians(long_{user}))\\+sin(radians(lat_{user}))*sin(radians(lat_{jobpost}))\Bigl)
+$$
+
+1. 유저가 등록한 기술스택 중에 공고가 몇 개 일치 되는지 확인
+    - 예: 유저가 NestJS, Javascript, Typescript를 등록했는데 공고의 기술스택은 NestJS, Javascript, Java일 때 2개 일치
+2. 유저가 찜한 공고의 키워드 중에 다른 공고의 키워드는 몇 개 일치 되는지 확인
+    - 예: 유저가 찜한 공고는 1번과 2번이다.
+    1번 공고의 키워드는 신입과 IT이고 2번 공고의 키워드는 신입과 QA이다.
+    유저가 찜한 공고의 키워드들은 신입, IT와 QA이다.
+    
+    다른 공고 4번의 키워드는 신입, 계약직, 고졸일 시 1개의 키워드만 일치한다.
+3. 추천 요소를 정규화하기 위해서 최대값과 최소값을 구한다
+4. 추천 점수를 계산하기 위해 모든 요소를 `Min-Max 정규화`를 한다.
+
+$$
+x_{norm} = \frac{x-min(x)}{max(x)-min(x)}
+$$
+
+- 주소만 정규화 함수의 결과에서 1을 뺀다. 주소가 가까울 수록 점수가 높아야되기 때문이다.
+
+$$
+distance_{norm} = 1-\frac{distance-min(distance)}{max(distance)-min(distance)}
+$$
+
+1. 각 요소에 비중을 줘서 추천 점수를 계산한다.
+
+$$
+score=0.5*\Bigl(\frac{stackMatches-min(stackMatches)}{max(stackMatches)-min(stackMatches)}\Bigl)\\+0.3*\Bigl(1-\frac{distance-min(distance)}{max(distance)-min(distance)}\Bigl)\\\\+0.3*\Bigl(\frac{keywordMatches-min(keywordMatches)}{max(keywordMatches)-min(keywordMatches)}\Bigl)\\+0.1*\Bigl(\frac{salary-min(salary)}{max(salary)-min(salary)}\Bigl)\\+0.05*\Bigl(\frac{avgSalary-min(avgSalary)}{max(avgSalary)-min(avgSalary)}\Bigl)
+$$
+
+위 함수의 변수:
+
+- `stackMatches`: 유저의 기술스택이랑 일치하는 수
+- `distance`: 유저의 거리와 공고에 기재된 주소의 거리
+- `keywordMatches`: 유저의 찜한 공고의 키워드랑 일치하는 수
+- `salary`: 공고에 기재된 연봉
+- `avgSalary`: 공고를 올린 회사의 평균 연봉
+    <summary>
+    계산 방식
+    </summary>
+    </details>
+    </li>
+  </ul>
+  <summary>
+    공고 추천 알고리즘
+  </summary>
+</details>
 
