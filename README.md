@@ -154,38 +154,120 @@
 <tbody>
 <tr>
 <td align="left">NestJS</td>
-<td align="left">NestJS는 모듈의 의존성 주입을 기반으로 하는 프레임워크로, 컨트롤러, 서비스 간의 의존성을 관리하고, 코드의 유지 보수와 테스트에 용이하다. 또한, TypeScript를 도입하여 개발 시 발생하는 오류들을 사전에 방지할 수 있다.</td>
+<td align="left">
+  <ul>
+    <li>
+      NestJS는 모듈의 의존성 주입을 기반으로 하는 프레임워크
+    </li>
+    <li>
+      컨트롤러, 서비스 간의 의존성을 관리하고, 코드의 유지 보수와 테스트에 용이
+    </li>
+    <li>
+      TypeScript를 도입하여 개발 시 발생하는 오류들을 사전에 방지
+    </li>
+    
+  </ul>
+  </td>
 </tr>
 <tr>
 <td align="left">TypeORM</td>
-<td align="left">TypeScript를 지원하여, 타입 체크를 지원한다. Repository 패턴을 지원하므로 코드를 구조화 하기 편리하다.<br /> 다양한 관계를 지원하고, 관계를 더 쉽게 조작하기 위해 많은 기능을 제공한다.</td>
+<td align="left">
+   <ul>
+    <li> 
+      TypeScript를 지원하여, 타입 체크를 지원
+    </li>
+    <li>
+      Repository 패턴을 지원하므로 코드를 구조화 하기 편리
+    </li>
+    <li>
+      다양한 관계를 지원하고, 관계를 더 쉽게 조작하기 위해 많은 기능을 제공
+    </li>
+  </ul>
+ </td>
 </tr>
 <tr>
 <td align="left">Axios</td>
-<td align="left">Axios는 비동기 HTTP 통신 라이브러리다. <br />API를 접속할 수 있는 Wanted와 프로그래머스 채용 공고에 접속하고 정보를 읽기 위해 사용된다.</td>
+<td align="left">
+  <ul>
+    <li> 
+      비동기 HTTP 통신 라이브러리
+    </li>
+    <li>
+      Wanted와 프로그래머스 채용 공고 API에 접속하고 정보를 읽음
+    </li>
+  </ul>
+ </td>
 </tr>
 <tr>
 <td align="left">Cheerio</td>
-<td align="left">Cheerio는 HTML DOM 파싱 라이브러리다. <br />Axios를 써서 사람인 공고에 접속하고 Cheerio를 사용해서 HTML 요소를 파싱하기 위해 사용된다.</td>
+<td align="left">
+   <ul>
+    <li> 
+      HTML DOM 파싱 라이브러리
+    </li>
+    <li>
+      Axios를 써서 사람인 공고에 접속하고 Cheerio를 사용해서 HTML 요소를 파싱하기 위해 사용
+    </li>
+  </ul>
+ </td>
 </tr>
 <tr>
 <td align="left">Selenium</td>
-<td align="left">Selenium은 포터블 프레임워크지만 웹 크롤링 라이브러리로 사용할 수 있다. <br />브라우저를 직접 실행해서 크롤링을 함으로서 자원을 많이 쓸 수 있고 Axios와 Cheerio 보다 느리다. <br />사람인의 공고 상세 페이지는 페이지 렌더가 되고 난 후 스크레이핑을 해야하기 때문에 Selenium을 써야했다.</td>
+<td align="left">
+   <ul>
+    <li> 
+      포터블 프레임워크지만 웹 크롤링 라이브러리로 사용
+    </li>
+    <li>
+      Axios와 Cheerio 보다 느리지만 사람인의 공고 상세 페이지는 페이지 렌더가 되고 난 후 스크레이핑을 해야하기 때문에 Selenium을 사용했다.
+    </li>
+  </ul>
+</td>
 </tr>
 <tr>
 <td align="left">Redis Engine</td>
-<td align="left">Redis는 In-Memory 기반의 데이터 저장소로, 디스크에 데이터를 저장하지 않고 메모리에 저장한다. <br /> 그래서 I/O 작업을 수행하지 않으므로 빠른 데이터 처리 속도를 제공한다.<br />
-우리 서비스는 많은 채용공고를 사용자에게 제공하는 것이 목적이므로 많은 데이터를 요청하고 읽어야 한다.<br />
-특정 조건에 맞는 채용공고와 자주 접근하는 페이지를 예상하여 메모리에 저장하고, 디스크 접근 횟수를 줄이고 조회 속도를 향상시키기 위해 사용한다.
+<td align="left">
+   <ul>
+    <li> 
+      기반의 데이터 저장소로, 디스크에 데이터를 저장하지 않고 메모리에 저장한다.
+    </li>
+    <li>
+       I/O 작업을 수행하지 않으므로 빠른 데이터 처리 속도를 제공
+    </li>
+     <li>
+       조건에 맞는 채용공고와 자주 접근하는 페이지를 예상하여 메모리에 저장하고, 디스크 접근 횟수를 줄이고 조회 속도를 향상시키기 위해 사용
+    </li>
+  </ul>
 </td>
 </tr>
 <tr>
 <td align="left">AWS ElastiCache</td>
-<td align="left">AWS ElastiCache는 Amazon Web Service에서 제공하는 관리형 캐시 서비스다. <br />In-Memory 데이터 저장소를 제공하며, Redis와 같은 인기있는 오픈 소스 캐시 엔진을 제공한다.</td>
+<td align="left">
+   <ul>
+    <li> 
+      Amazon Web Service에서 제공하는 관리형 데이터베이스
+    </li>
+    <li>
+       MySQL, PostgreSQL과 같은 인기있는 관계형 데이터베이스 엔진을 제공
+    </li>
+  </ul>
+ </td>
 </tr>
 <tr>
 <td align="left" width="20%">AWS Elastic Beanstalk<br /> AWS EC2 <br /> AWS CloudWatch</td>
-<td align="left">Amazon의 Elastic Beanstalk는 '서비스로서의 플랫폼' (PaaS)으로서 EC2 인스턴스를 생성하고 어플리케이션 배포 자동화를 할 수 있다. 유저 트래픽이 높을 때 인스턴스 자동 scaling이 가능하며 AWS CloudWatch를 설정해서 애플리케이션 및 인프라 모니터링이 가능하다.</td>
+<td align="left">
+   <ul>
+    <li> 
+      Amazon의 Elastic Beanstalk는 '서비스로서의 플랫폼' (PaaS)으로 EC2 인스턴스를 생성하고 어플리케이션 배포 자동화를 할 수 있다.
+    </li>
+    <li>
+       유저 트래픽이 높을 때 인스턴스 자동 scaling이 가능
+    </li>
+     <li>
+       AWS CloudWatch를 설정해서 애플리케이션 및 인프라 모니터링이 가능
+    </li>
+  </ul>
+</td>
 </tr>
 </tbody>
 </table>
