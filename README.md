@@ -272,3 +272,88 @@
 </tr>
 </tbody>
 </table>
+
+<h2>🔎 주요 기능</h2>
+<details>
+  <ul>
+    <li>
+    PassportStrategy를 이용한 카카오 인증 전략을 구현하여,<br />
+카카오 계정으로 회원가입 및 로그인을 할 수 있다.
+    </li>
+      <image src="https://file.notion.so/f/s/e6574a1f-e56b-4154-a567-097bd586d5f4/Frame_1_(1).png?id=5e9f6fb9-2b17-4e3e-a277-4d7ba85a9da0&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090024115&signature=OdFNaETyxsheIx5JAlfCYajsvniIL34K1gUa923ITkY&downloadName=Frame+1+%281%29.png"></image>
+  </ul>
+  <summary>
+    카카오 소셜 로그인
+  </summary>
+</details>
+<details>
+  <ul>
+    <li>
+    로그인 한 회원이 마이 페이지에 접속하여, 회원이 선호하는 기술 스택을 검색하고 추가 할 수 있다. <br />
+이 때 선택한 기술 스택들은 채용 공고 추천 알고리즘에 사용 된다.
+    </li>
+      <image src="https://file.notion.so/f/s/4a3527dc-bfb0-4758-88f9-5da9b7fab380/12121.png?id=c24d7068-debf-413d-9b4d-26d31077f507&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090199019&signature=Eo9PK6yBjBRivFN6nYPFQB5r5XclMvX7Hp-BuDEcg3o&downloadName=12121.PNG.png"></image>
+  </ul>
+  <summary>
+    기술 스택 선택
+  </summary>
+</details>
+<details>
+  <ul>
+    <li>
+    채용공고 목록, 상세 페이지에서 채용공고 이미지 우측 상단의  별⭐ 버튼을 누르면 찜 하고 취소를 할 수 있다. <br />
+회원이 찜 한 채용 공고는 추천 알고리즘에 사용 된다.
+    </li>
+      <image src="https://file.notion.so/f/s/1db8f54e-fb86-401d-9767-f4edf884aaef/1212.png?id=15f9fa44-4a25-4064-8260-80d233686e5a&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090254061&signature=pTotYqWUhgMZAKPJ-42bsBrgWdtPoKt-e9k-qJWPcNc&downloadName=1212.PNG.png"></image>
+  </ul>
+  <summary>
+    채용 공고 찜 하기 / 찜 취소하기
+  </summary>
+</details>
+<details>
+  <ul>
+    <li>
+    Header 검색창 이용<br />
+      <p></p>
+    - 입력한 단어를 회사 이름, 키워드 기술 스택, 주소, 공고 제목, 공고 내용 에 매칭 시켜 검색
+    </li>
+      <image src="https://file.notion.so/f/s/ec350b7e-faa0-4237-b4ce-2bba46254c8e/1212.png?id=57f2c4e2-cb2e-4f8d-b852-f0bf0bea7bc3&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090348143&signature=6UqVQvVdP6cB9jn1GI9kzo6-qKScROAuh611gccMqBY&downloadName=1212.PNG.png"></image>
+  </ul>
+  <ul>
+    <li>
+    필터 이용<br />
+      <p></p>
+    - 주소, 키워드, 기술 스택을 선택하여 검색
+    </li>
+      <image src="https://file.notion.so/f/s/adb6457f-fca9-4890-9b7b-54ac8ca38e35/1212.png?id=4de04ed3-f96f-425e-a680-ed37ae8654ab&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090373636&signature=iLGb6oUQP_PezLMI1sdGSWgrrPu5uB1DzHuxefpfV70&downloadName=1212.PNG.png"></image>
+  </ul>
+  <summary>
+    채용 공고 검색
+  </summary>
+</details>
+<details>
+  <ul>
+    <li>
+    채용 공고 목록에서 제목을 누르면 상세 페이지로 접속 할 수 있다.
+    </li>
+      <image src="https://file.notion.so/f/s/72d4b0b0-26a5-43f8-932f-f4251319a506/121212.png?id=4321fec9-03c4-4040-a606-41ee7e97517d&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090426828&signature=eJ63xMyaMhqaqf_oDe6FZVJI4kRKb3EdTTb_Fc0TjJQ&downloadName=121212.PNG.png"></image>
+  </ul>
+  <summary>
+    채용 공고 상세 페이지 확인
+  </summary>
+</details>
+<details>
+  <ul>
+    <li>
+    Axios, Cheerio, Selenium 라이브러리를 사용하여 원티드 / 프로그래머스 / 사람인 채용 공고 리스트를 크롤링
+    </li>
+    <li>
+    NestJS 의 Task Scheduling 기능인 Cron 데코레이터를 이용하여 프로그래머스 채용 공고는 매일 새벽 3시, <br />
+    원티드 채용 공고는 매일 새벽 4시, 사람인 채용 공고는 매일 새벽 5시에 크롤링을 하도록 설정
+    </li>
+  </ul>
+  <summary>
+    채용 공고 크롤링
+  </summary>
+</details>
+
