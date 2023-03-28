@@ -14,7 +14,6 @@
 
 > Jobfit 이용해보기 Click! [http://jobfit.ap-northeast-2.elasticbeanstalk.com/]
 
-![image](https://user-images.githubusercontent.com/77329973/227474359-b7436e4c-f627-465d-9af7-4c68b5601e2e.png)
 
 <p dir="auto"><br><br></p>
 
