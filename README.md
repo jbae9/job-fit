@@ -409,9 +409,6 @@ $$
 - `keywordMatches`: 유저의 찜한 공고의 키워드랑 일치하는 수
 - `salary`: 공고에 기재된 연봉
 - `avgSalary`: 공고를 올린 회사의 평균 연봉
-    <summary>
-    계산 방식
-    </summary>
     </details>
     </li>
   </ul>
