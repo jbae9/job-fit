@@ -1,12 +1,14 @@
 # 잡핏 (jobfit)
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://github.com/jbae9/job-fit/blob/main/src/public/images/logo.png" width="423" height="204" alt="Nest Logo" /></a>
+  <a href="http://nestjs.com/" target="blank"><img src="https://github.com/jbae9/job-fit/blob/main/src/public/images/logo.png" width="423" height="204" alt="Nest Logo" 
+/></a>
 
-## 프로젝트 참여 인원
-- 길재형, 배진영, 박현민
+<p dir="auto"><br><br></p>
 
-## 프로젝트 설명
+<h2>👉🏻 프로젝트 소개</h2>
 - IT 채용 공고를 쉽게 보고, 찾고, 추천 받을 수 있는 사이트
+
+<p dir="auto"></p>
 
 > Jobfit 팀 노션 Click! [https://www.notion.so/JobFit-7dc48ce92bb94a6d9cb5db185484483b]
 
@@ -14,31 +16,132 @@
 
 ![image](https://user-images.githubusercontent.com/77329973/227474359-b7436e4c-f627-465d-9af7-4c68b5601e2e.png)
 
-## 아키텍쳐
+<p dir="auto"><br><br></p>
+
+<h2> 👏 프로젝트 참여 인원 </h2>
+<table border="3">
+  <tbody><tr align="center">
+  </tr>
+  <tr align="center">
+  <td width="300">배진영</td>
+  <td width="300">길재형</td>
+  <td width="300">박현민</td>
+  </tr>
+  <tr>
+    <td>
+      <p align="center" dir="auto">
+        <img src="https://file.notion.so/f/s/346203ae-d16a-4ed6-877d-635642c30861/KakaoTalk_20230324_1620207421.jpg?id=97ee8c19-11af-4f53-b3a1-15abba3ba7a8&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680083993261&signature=KIG3pEqloHhEfmoRnDGAQd6Z3ZtMQQ52xiTcC-I1Y5U&downloadName=KakaoTalk_20230324_1620207421.jpg" width="150" style="max-width: 100%;">
+      </p>
+    </td>
+    <td>
+      <p align="center" dir="auto">
+        <img src="https://file.notion.so/f/s/628d6b63-ad6d-44e4-b9f8-321483df2fb5/KakaoTalk_20230324_190940484.jpg?id=5f0e485c-a3ca-4e6f-90bc-56dce1c054c4&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680084065694&signature=eTv_C8ZXeOQ_9hLVSLzBoOp7GT8IDdwdrsEz6GPi0_8&downloadName=KakaoTalk_20230324_190940484.jpg" width="150" style="max-width: 100%;">
+      </p>
+    </td>
+    <td>
+      <p align="center" dir="auto">
+        <img src="https://file.notion.so/f/s/3362e4f1-6043-41de-a5f0-a122cb1e07b9/KakaoTalk_20221014_180701326.jpg?id=4cfc1982-87f3-4501-a543-d9d32ca03f5f&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680084186976&signature=KBBqN9WeT_yMf9itK0qiPjlIYh3_Y8Dw0-CCdt2jTNE&downloadName=KakaoTalk_20221014_180701326.jpg" width="150" style="max-width: 100%;">
+      </p>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      <a href="https://github.com/jbae9">
+        @진영
+      </a>
+    </td>
+    <td>
+      <a href="https://github.com/Mrgil0">
+        @재형
+      </a>
+    </td>
+    <td>
+      <a href="https://github.com/ParkAsher">
+        @현민
+      </a>
+    </td>
+  </tr>
+  <tr align="center">
+    <td>
+      '원티드' 스크레이핑 <br>
+      공고의 키워드와 기술스택 파싱 <br>
+      공고 추천 알고리즘 <br>
+      공고 기준별로 불러오기 <br>
+      공고 검색 기능 <br>
+    </td>
+    <td>
+    '사람인' 스크레이핑 <br>
+    조회수 기능 <br>
+    키워드와 기술스택 검색 기능 <br>
+    채용공고 찜과 찜 취소 <br>
+    </td>
+    <td>
+      '프로그래머스' 스크레이핑<br>
+      카카오 소셜 로그인<br>
+      Refresh token 인증<br>
+      채용공고 찜과 찜 취소 기능 캐싱 적용<br>
+      회원 기술 스택과 주소 등록<br>
+      채용공고 상세 조회 <br>
+    </td>
+  </tr>
+</tbody></table>
+
+<p dir="auto"><br><br></p>
+
+<h2 tabindex="-1" dir="auto"><a id="user-content--프로젝트-아키텍쳐" class="anchor" aria-hidden="true" href="#-프로젝트-아키텍쳐"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><g-emoji class="g-emoji" alias="hammer_and_wrench" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png">🛠</g-emoji> 프로젝트 아키텍쳐</h2>
+
 ![image](https://user-images.githubusercontent.com/77329973/227474723-746436b8-762a-4514-a3e5-266f51bbf533.png)
 
-## 기술스택
-- Language
-  + Javascript
-  + Typescript
+<p dir="auto"><br><br></p>
 
-- Framework
-  + Node.js
-  + Nest.js
+<h2 tabindex="-1" dir="auto"><a id="user-content--기술-스택" class="anchor" aria-hidden="true" href="#-기술-스택"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><g-emoji class="g-emoji" alias="gear" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2699.png">⚙</g-emoji> 기술 스택</h2>
+<h3 tabindex="-1" dir="auto"><a id="user-content--frond-end" class="anchor" aria-hidden="true" href="#-frond-end"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><g-emoji class="g-emoji" alias="heavy_check_mark" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png">✔</g-emoji> Front-end</h3>
+<div dir="auto">
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=HTML5&logoColor=white">
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
+<img src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jQuery&logoColor=white">
+<img src="https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=Bootstrap&logoColor=white">
+<img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white">
+</div>
+<h3 tabindex="-1" dir="auto"><a id="user-content--back-end" class="anchor" aria-hidden="true" href="#-back-end"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><g-emoji class="g-emoji" alias="heavy_check_mark" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png">✔</g-emoji> Back-end</h3>
+<div dir="auto">
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
+<img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=NestJS&logoColor=white">
+<img src="https://img.shields.io/badge/Typeform-262627?style=for-the-badge&logo=Typeform&logoColor=white">
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white">
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+</div>
+<details>
+<img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white">
+<img src="https://img.shields.io/badge/Selenium-43B02A?style=for-the-badge&logo=Selenium&logoColor=white">
+<img src="https://img.shields.io/badge/cheerio-008DB6?style=for-the-badge&logo=cheerio&logoColor=white">
+<summary> 스크레이핑 툴</summary>
+</details>
+<h3 tabindex="-1" dir="auto"><a id="user-content--back-end" class="anchor" aria-hidden="true" href="#-back-end"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><g-emoji class="g-emoji" alias="heavy_check_mark" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png">✔</g-emoji> Database</h3>
+<div dir="auto">
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white">
+<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=Redis&logoColor=white">
+</div>
+<h3 tabindex="-1" dir="auto"><a id="user-content--dev-tools" class="anchor" aria-hidden="true" href="#-dev-tools"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><g-emoji class="g-emoji" alias="heavy_check_mark" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png">✔</g-emoji> Dev tools</h3>
+<div dir="auto">
+<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon CloudWatch-FF4F8B?style=for-the-badge&logo=Amazon CloudWatch&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon Elatic Beanstalk-FF9900?style=for-the-badge&logo=Amazon Elatic Beanstalk&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon CodePipeline-FF9900?style=for-the-badge&logo=Amazon CodePipeline&logoColor=white">
+</div>
+<h3 tabindex="-1" dir="auto"><a id="user-content--dev-tools" class="anchor" aria-hidden="true" href="#-dev-tools"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><g-emoji class="g-emoji" alias="heavy_check_mark" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/2714.png">✔</g-emoji> 협업툴</h3>
+<div dir="auto">
+<img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=Git&logoColor=white">
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white">
+<img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=Slack&logoColor=white">
+<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">
+</div>
 
-- Data
-  + Mysql
-  + Redis
-  
-- CI/CD
-  + AWS Codepipeline
-  + AWS beanstalk
+<p dir="auto"><br><br></p>
 
-- Front
-  + ejs
-
-
-## 기술적 의사 결정:
+<h2><g-emoji class="g-emoji" alias="memo" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png">📝</g-emoji>기술적 의사 결정 </h2>
 
 - 웹 프레임워크와 ORM
     - NestJS
@@ -85,63 +188,3 @@
             
        저희가 원하는 여러가지 기능을 한 서비스로 이용할 수 있기 때문에 선택하게 되었습니다.
             
-
-## 트러블슈팅
-
-- Axios, Cheerio VS Selenium
-    - 사람인 사이트에 대해서:
-        - 문제: 
-          > 사람인 페이지를 Axios와 Cheerio를 이용하여 목록을 스크랩하고 상세 페이지를 다시 Axios를 통해 로드하는 과정에서 
-          >   
-          > **빈 값이 출력**
-        
-        - 해결: 
-          > Axios 대신 Selenium으로 스크랩하여 **속도는 느리지만 확실히 스크랩**되도록 변경함
-          
-    - Wanted 사이트에 대해서:
-        - 문제: 
-          > 처음에는 Selenium을 이용해서 크롤링을 했지만 Wanted 채용 공고 사이트가 **무한 스크롤**로 구현되어서 
-          >    
-          > 모든 공고 데이터를 뽑아오기엔 **너무 느림**
-       
-        - 해결: 
-          > Wanted API을 찾아서 **Axios만 이용한 스크레이핑** 속도 개선
-        
-- 403 (접근 권한 없음) 에러
-    - 문제: 
-    
-        > Wanted 채용공고 사이트를 한 번 크롤링할 때 마다 약 5분만에 1만5천 GET 요청을 보내다 보니 IP가 차단되었다.
-    
-    - 해결:  
-   
-        > HTTP Header에서 가짜 유저 에이전트 (접속 통로)와 프록시 서버를 써봤지만 접속하는 IP는 동일해서 여전히 크롤링이 불가했다. 
-        >
-        > VPN으로 IP을 바꿀 시 사이트 접속이 가능했다. 약 1주일후에 차단이 풀렸다.
-        >
-        > 다시 차단이 안 되기 위해 Wanted 스크레이핑의 cron job는 트래픽이 적은 새벽에 크롤링하게 설정이 되어있다.
-            
-- 여러 채용 사이트 크롤링과 중복된 공고 처리 방식
-    - 문제: 
-    
-        > 한 회사가 여러 채용공고 사이트에 같은 공고를 올렸을 경우, 제공되는 데이터의 종류와 양식이 달랐다. 
-        >
-        > 중복된 채용공고의 경우, 가장 마지막에 크롤링 한 사이트의 데이터로 무분별하게 업데이트 되는 상황이 발생하여, 데이터의 손실이 일어났다.
-    - 해결: 
-    
-        > **채용공고의 제목**과 **회사의 고유번호**를 Unique index값으로 설정하여 중복 체크를 하고 중복인 경우,    
-        >  
-        > **orUpdate()** 메서드를 사용하여 특정 컬럼에 대한 update동작이 이루어지도록 했다.
-            
-- 채용공고 좋아요을 Redis를 이용해서 처리
-    - 문제: 
-   
-        > 채용공고 좋아요를 누를 시 추가나 삭제를 동시에 판별 후 Redis에서 처리하는 과정에서 hash 타입을 이용하여 구현했는데 
-        >
-        > hash 타입은 삭제를 하기 위해 데이터를 다시 들고 와 있는지 확인 후 삭제를 처리하게 되는데 
-        >   
-        > 이 과정에서 원하는 값을 불러오는 부분이 힘들었고 불필요하게 코드가 길어지게 되었다.    
-    - 해결: 
-    
-        > hash보다 중복된 데이터를 허용 안하는 sets를 이용했고, Redis에는 key 안에 공고 아이디와 유저 아이디를 섞어서 value로 넣고 
-        > 
-        > **zrem**을 이용해 이미 있는 데이터의 경우 자동으로 삭제가 되게 구현했다.
