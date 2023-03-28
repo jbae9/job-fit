@@ -56,6 +56,35 @@ export class JobpostService {
         const limitNum = parseInt(limit) || 16
         const offsetNum = parseInt(offset) || 0
 
+        // 메인화면 최신순, 마감순 12개 요청 일 때
+        if (['recent', 'ending'].includes(sort) && limit === '12') {
+            // 캐시에 존재하는지 확인
+            const isCached = await this.cacheService.isCachedMainJobposts(sort)
+
+            if (isCached) {
+                // 존재할 때
+                const mainJobposts = await this.cacheService.getMainJobposts(
+                    sort
+                )
+
+                return JSON.parse(mainJobposts)
+            } else {
+                // 존재하지 않을 떄 캐싱
+                const mainJobposts =
+                    await this.jobpostRepository.getFilteredJobposts(
+                        sort,
+                        order,
+                        limitNum,
+                        offsetNum,
+                        others
+                    )
+                // 메인화면 인기순 채용공고 12개 캐싱, 만료기간 하루
+                await this.cacheService.setMainJobposts(sort, mainJobposts)
+
+                return mainJobposts
+            }
+        }
+
         return await this.jobpostRepository.getFilteredJobposts(
             sort,
             order,
@@ -81,40 +110,6 @@ export class JobpostService {
         const limitNum = parseInt(limit) || 16
         const offsetNum = parseInt(offset) || 0
 
-        // 메인화면 최신순, 마감순 12개 요청 일 때
-        if (['recent', 'ending'].includes(sort) && limit === '12') {
-            console.log('최신순 마감순')
-            // 캐시에 존재하는지 확인
-            const isCached = await this.cacheService.isCachedMainJobposts(sort)
-            console.log('캐시 있는지없는지', isCached)
-            if (isCached) {
-                // 존재할 때
-                const mainJobposts = await this.cacheService.getMainJobposts(
-                    sort
-                )
-
-                return JSON.parse(mainJobposts)
-            } else {
-                // 존재하지 않을 떄 캐싱
-                console.log('캐시 존재안할때 ')
-                const mainJobposts =
-                    await this.jobpostRepository.getFilteredJobposts(
-                        sort,
-                        order,
-                        limitNum,
-                        offsetNum,
-                        others
-                    )
-                // 메인화면 인기순 채용공고 12개 캐싱, 만료기간 하루
-                await this.cacheService.setMainJobposts(sort, mainJobposts)
-
-                console.log(mainJobposts)
-
-                return mainJobposts
-            }
-        }
-
-        console.log('조건이 안걸러짐')
         return await this.jobpostRepository.getRecommendedJobposts(
             sort,
             order,
