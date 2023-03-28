@@ -56,10 +56,14 @@ export class JobpostRepository extends Repository<Jobpost> {
                 content
             )
 
-            const createdJobpost = await this.createQueryBuilder('jobpost')
-                .insert()
-                .into('jobpost')
-                .values({
+            // 존재하는지 확인
+            const isExistedJobpost = await this.jobpostRepository.findOne({
+                where: { companyId, title },
+            })
+
+            // 존재하지않는다면 ?
+            if (!isExistedJobpost) {
+                await this.jobpostRepository.save({
                     companyId,
                     title,
                     content,
@@ -74,27 +78,23 @@ export class JobpostRepository extends Repository<Jobpost> {
                     addressLower,
                     longitude,
                     latitude,
+                    keywords,
+                    stacks,
                 })
-                .orUpdate(
-                    ['salary', 'original_img_url', 'deadline_dtm'],
-                    ['company_id', 'title']
+            } else {
+                // 존재한다면
+                await this.jobpostRepository.update(
+                    isExistedJobpost.jobpostId,
+                    {
+                        salary: !salary ? isExistedJobpost.salary : salary,
+                        originalImgUrl: !originalImgUrl
+                            ? isExistedJobpost.originalImgUrl
+                            : originalImgUrl,
+                        deadlineDtm: !deadlineDtm
+                            ? isExistedJobpost.deadlineDtm
+                            : deadlineDtm,
+                    }
                 )
-                .updateEntity(false)
-                .execute()
-
-            if (
-                createdJobpost.raw.insertId !== 0 &&
-                createdJobpost.raw.affectedRows === 1
-            ) {
-                await this.createQueryBuilder()
-                    .relation(Jobpost, 'keywords')
-                    .of({ jobpostId: createdJobpost.raw.insertId })
-                    .add(keywords)
-
-                await this.createQueryBuilder()
-                    .relation(Jobpost, 'stacks')
-                    .of({ jobpostId: createdJobpost.raw.insertId })
-                    .add(stacks)
             }
         }
     }
