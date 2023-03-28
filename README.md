@@ -1,6 +1,6 @@
 # 잡핏 (jobfit)
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://file.notion.so/f/s/038e57d5-d690-49b6-a545-1ef2a7e7d4db/jobfit-brochure.png?id=25de748f-368d-4b78-8ce5-4b8ccfcd5cdf&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680088057792&signature=Kg5uvJkw7e2KPp8upOmp-c5vkSJ4JMyY7aJVLv9lLJQ&downloadName=jobfit-brochure.png" width="100%"  alt="Nest Logo" 
+  <a href="http://nestjs.com/" target="blank"><img src="https://file.notion.so/f/s/038e57d5-d690-49b6-a545-1ef2a7e7d4db/jobfit-brochure.png?id=25de748f-368d-4b78-8ce5-4b8ccfcd5cdf&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680088057792&signature=Kg5uvJkw7e2KPp8upOmp-c5vkSJ4JMyY7aJVLv9lLJQ&downloadName=jobfit-brochure.png"  alt="Nest Logo" 
 /></a>
 
 <p dir="auto"><br><br></p>
