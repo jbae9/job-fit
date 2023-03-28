@@ -10,7 +10,9 @@
 
 <p dir="auto"></p>
 
-> Jobfit 팀 노션 Click! [https://www.notion.so/JobFit-7dc48ce92bb94a6d9cb5db185484483b]
+> Jobfit 팀 노션 Click! [https://wheat-baker-241.notion.site/JobFit-7dc48ce92bb94a6d9cb5db185484483b]
+
+> Jobfit 브로셔 Click! [https://wheat-baker-241.notion.site/IT-6cab1da1841f44ff81b238b6d74a50af]
 
 > Jobfit 이용해보기 Click! [http://jobfit.ap-northeast-2.elasticbeanstalk.com/]
 
