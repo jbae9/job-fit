@@ -1,6 +1,6 @@
 # 잡핏 (JobFit)
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://file.notion.so/f/s/038e57d5-d690-49b6-a545-1ef2a7e7d4db/jobfit-brochure.png?id=25de748f-368d-4b78-8ce5-4b8ccfcd5cdf&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680088057792&signature=Kg5uvJkw7e2KPp8upOmp-c5vkSJ4JMyY7aJVLv9lLJQ&downloadName=jobfit-brochure.png"  alt="Nest Logo" 
+  <a href="http://jobfit.ap-northeast-2.elasticbeanstalk.com/" target="blank"><img src="https://i.imgur.com/EloNqXK.png"  alt="Nest Logo" 
 /></a>
 
 <p dir="auto"><br><br></p>
@@ -31,34 +31,34 @@
   <tr>
     <td>
       <p align="center" dir="auto">
-        <img src="https://file.notion.so/f/s/346203ae-d16a-4ed6-877d-635642c30861/KakaoTalk_20230324_1620207421.jpg?id=97ee8c19-11af-4f53-b3a1-15abba3ba7a8&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680083993261&signature=KIG3pEqloHhEfmoRnDGAQd6Z3ZtMQQ52xiTcC-I1Y5U&downloadName=KakaoTalk_20230324_1620207421.jpg" width="150" style="max-width: 100%;">
+        <img src="https://i.imgur.com/XWCRQI0.png" width="150" style="max-width: 100%;">
       </p>
     </td>
     <td>
       <p align="center" dir="auto">
-        <img src="https://file.notion.so/f/s/628d6b63-ad6d-44e4-b9f8-321483df2fb5/KakaoTalk_20230324_190940484.jpg?id=5f0e485c-a3ca-4e6f-90bc-56dce1c054c4&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680253493155&signature=Z5TGOdSofKQWl86xS6aUwopH3ix8B_c-tLUe7z2URzs&downloadName=KakaoTalk_20230324_190940484.jpg" width="150" style="max-width: 100%;">
+        <img src="https://i.imgur.com/B7572rP.png" width="150" style="max-width: 100%;">
       </p>
     </td>
     <td>
       <p align="center" dir="auto">
-        <img src="https://file.notion.so/f/s/3362e4f1-6043-41de-a5f0-a122cb1e07b9/KakaoTalk_20221014_180701326.jpg?id=4cfc1982-87f3-4501-a543-d9d32ca03f5f&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680084186976&signature=KBBqN9WeT_yMf9itK0qiPjlIYh3_Y8Dw0-CCdt2jTNE&downloadName=KakaoTalk_20221014_180701326.jpg" width="150" style="max-width: 100%;">
+        <img src="https://i.imgur.com/vEcbocx.png" width="150" style="max-width: 100%;">
       </p>
     </td>
   </tr>
   <tr align="center">
     <td>
       <a href="https://github.com/jbae9">
-        @진영
+        @jbae9
       </a>
     </td>
     <td>
       <a href="https://github.com/Mrgil0">
-        @재형
+        @Mrgil0
       </a>
     </td>
     <td>
       <a href="https://github.com/ParkAsher">
-        @현민
+        @ParkAsher
       </a>
     </td>
   </tr>
@@ -91,7 +91,7 @@
 
 <h2 tabindex="-1" dir="auto"><a id="user-content--프로젝트-아키텍쳐" class="anchor" aria-hidden="true" href="#-프로젝트-아키텍쳐"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><g-emoji class="g-emoji" alias="hammer_and_wrench" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png">🛠</g-emoji> 프로젝트 아키텍쳐</h2>
 
-![image](https://user-images.githubusercontent.com/77329973/227474723-746436b8-762a-4514-a3e5-266f51bbf533.png)
+![image](https://i.imgur.com/uDxoSGo.png)
 
 <p dir="auto"><br><br></p>
 
@@ -280,7 +280,7 @@
     PassportStrategy를 이용한 카카오 인증 전략을 구현하여,<br />
 카카오 계정으로 회원가입 및 로그인을 할 수 있다.
     </li>
-      <image src="https://file.notion.so/f/s/e6574a1f-e56b-4154-a567-097bd586d5f4/Frame_1_(1).png?id=5e9f6fb9-2b17-4e3e-a277-4d7ba85a9da0&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680253403087&signature=ynGqq1Mlw4_1mwFJZErVb6EuGk2tbb95CPKWwOZ4q8I&downloadName=Frame+1+%281%29.png"></image>
+      <image src="https://i.imgur.com/u0rmwPx.png"></image>
   </ul>
   <summary>
     카카오 소셜 로그인
@@ -292,7 +292,7 @@
     로그인 한 회원이 마이 페이지에 접속하여, 회원이 선호하는 기술 스택을 검색하고 추가 할 수 있다. <br />
 이 때 선택한 기술 스택들은 채용 공고 추천 알고리즘에 사용 된다.
     </li>
-      <image src="https://file.notion.so/f/s/4a3527dc-bfb0-4758-88f9-5da9b7fab380/12121.png?id=c24d7068-debf-413d-9b4d-26d31077f507&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090199019&signature=Eo9PK6yBjBRivFN6nYPFQB5r5XclMvX7Hp-BuDEcg3o&downloadName=12121.PNG.png"></image>
+      <image src="https://i.imgur.com/N2HxeCq.png"></image>
   </ul>
   <summary>
     기술 스택 선택
@@ -304,7 +304,7 @@
     채용공고 목록, 상세 페이지에서 채용공고 이미지 우측 상단의  별⭐ 버튼을 누르면 찜 하고 취소를 할 수 있다. <br />
 회원이 찜 한 채용 공고는 추천 알고리즘에 사용 된다.
     </li>
-      <image src="https://file.notion.so/f/s/1db8f54e-fb86-401d-9767-f4edf884aaef/1212.png?id=15f9fa44-4a25-4064-8260-80d233686e5a&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090254061&signature=pTotYqWUhgMZAKPJ-42bsBrgWdtPoKt-e9k-qJWPcNc&downloadName=1212.PNG.png"></image>
+      <image src="https://i.imgur.com/e4k4Cpf.png"></image>
   </ul>
   <summary>
     채용 공고 찜 하기 / 찜 취소하기
@@ -317,7 +317,7 @@
       <p></p>
     - 입력한 단어를 회사 이름, 키워드 기술 스택, 주소, 공고 제목, 공고 내용 에 매칭 시켜 검색
     </li>
-      <image src="https://file.notion.so/f/s/ec350b7e-faa0-4237-b4ce-2bba46254c8e/1212.png?id=57f2c4e2-cb2e-4f8d-b852-f0bf0bea7bc3&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680253442030&signature=-rfiDGn3Kx4lOvNk8fpPtukaJ6IucCdpX3yR8ALPbdU&downloadName=1212.PNG.png"></image>
+      <image src="https://i.imgur.com/FxHEWrU.png"></image>
   </ul>
   <ul>
     <li>
@@ -325,7 +325,7 @@
       <p></p>
     - 주소, 키워드, 기술 스택을 선택하여 검색
     </li>
-      <image src="https://file.notion.so/f/s/adb6457f-fca9-4890-9b7b-54ac8ca38e35/1212.png?id=4de04ed3-f96f-425e-a680-ed37ae8654ab&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090373636&signature=iLGb6oUQP_PezLMI1sdGSWgrrPu5uB1DzHuxefpfV70&downloadName=1212.PNG.png"></image>
+      <image src="https://i.imgur.com/sda3dxD.png"></image>
   </ul>
   <summary>
     채용 공고 검색
@@ -336,7 +336,7 @@
     <li>
     채용 공고 목록에서 제목을 누르면 상세 페이지로 접속 할 수 있다.
     </li>
-      <image src="https://file.notion.so/f/s/72d4b0b0-26a5-43f8-932f-f4251319a506/121212.png?id=4321fec9-03c4-4040-a606-41ee7e97517d&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090426828&signature=eJ63xMyaMhqaqf_oDe6FZVJI4kRKb3EdTTb_Fc0TjJQ&downloadName=121212.PNG.png"></image>
+      <image src="https://i.imgur.com/8SmcCG0.png"></image>
   </ul>
   <summary>
     채용 공고 상세 페이지 확인
