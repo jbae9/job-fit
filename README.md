@@ -1,5 +1,5 @@
 <h1 style='display:flex;align-items:center;'>
-<img src='src\public\images\favicon.ico' width='30' style='padding-right:5px'>
+<img src='src\public\images\favicon.ico' width='30'>
 잡핏 (JobFit)
 </h1>
 
@@ -7,26 +7,23 @@
   <a href="http://jobfit.ap-northeast-2.elasticbeanstalk.com/" target="blank"><img src="https://i.imgur.com/EloNqXK.png"  alt="JobFit Banner" 
 /></a>
 </p>
-<div align='center' style='justify-content:space-between; display:flex; margin:0 50px'>
-    <div>
-        <div>
-            <a href='http://jobfit.ap-northeast-2.elasticbeanstalk.com/' target="_blank" rel="noopener noreferrer"><img src='src\public\images\favicon.ico' width='50'></a>
-        </div>
-        사이트 바로가기
-    </div>
-    <div>
-        <div>
-            <a href='https://wheat-baker-241.notion.site/JobFit-7dc48ce92bb94a6d9cb5db185484483b' target="_blank" rel="noopener noreferrer"><img src='https://user-images.githubusercontent.com/111232061/226879852-00ff3075-bd3d-4772-a796-adcfa8b2197f.png' width='50'></a>
-        </div>
-        JobFit 기획안
-    </div>
-    <div>
-        <div>
-            <a href='https://wheat-baker-241.notion.site/IT-6cab1da1841f44ff81b238b6d74a50af' target="_blank" rel="noopener noreferrer"><img src='https://cdn-icons-png.flaticon.com/512/2628/2628859.png' width='50'></a>
-        </div>
-        JobFit 브로슈어
-    </div>
-</div>
+
+<p align='center'>
+  <span>
+    <a href='http://jobfit.ap-northeast-2.elasticbeanstalk.com/' target="_blank" rel="noopener noreferrer"><img src='src\public\images\favicon.ico' width='50px'></a>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    <a href='https://wheat-baker-241.notion.site/JobFit-7dc48ce92bb94a6d9cb5db185484483b' target="_blank" rel="noopener noreferrer"><img src='https://user-images.githubusercontent.com/111232061/226879852-00ff3075-bd3d-4772-a796-adcfa8b2197f.png' width='50px'></a>
+    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    <a href='https://wheat-baker-241.notion.site/IT-6cab1da1841f44ff81b238b6d74a50af' target="_blank" rel="noopener noreferrer"><img src='https://cdn-icons-png.flaticon.com/512/2628/2628859.png' width='50px'></a>
+  </span>
+</p>
+<p align='center'>
+  사이트 바로가기
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  JobFit 기획안
+  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+  JobFit 브로슈어
+</p>
 
 <p dir="auto"><br><br></p>
 
@@ -37,7 +34,7 @@
 하지만, 현재 공고 사이트에는 기술 스택으로 분류해 볼 수 없으니<br>
 개발자를 위해 편리하게 <b>기술 스택으로 현재 공고를 분리하고 공고 추천을</b> 제공합니다.
 </p>
-<br><br>
+<br>
 
 <h3 align='center' style="color:#ff8210;">
 <b>🤔다른 공고 사이트도 많은데 JobFit은 어떻게 차별되나요?</b>
@@ -46,7 +43,7 @@
 점핏과 Wanted 같은 개발자 전용 채용 사이트는 기술 스택 등으로 검색은 용이하지만
 공고 폭이 매우 좁다는 단점이 있습니다.
 <br><br>
-따라서, <span style="color:#ff8210">검색이 용이</span>하며 <span style="color:#ff8210">공고량도 많고, 공고 추천까지</span> 받을 수 있는 통합 IT 채용 공고 검색 사이트를 만들고자 합니다.
+따라서, <span style="color:#ff8210"><b>검색이 용이</b></span>하며 <span style="color:#ff8210"><b>공고량도 많고, 공고 추천까지</b></span> 받을 수 있는 통합 IT 채용 공고 검색 사이트를 만들고자 합니다.
 <br><br>
 <b>🎉무엇보다 우리가 모두 취업 준비를 하는 만큼 공고를 찾을 때 JobFit이 유용하게 쓰이면 좋겠습니다!🎉</b>
 </p>
