@@ -396,54 +396,42 @@
     </li>
     <li>
     <details>
-     1. 공고에 기재된 주소와 내 주소의 거리는 두 주소의 경도와 위도를 `Haversine 공식`을 사용해 계산
-      
-$$
-\displaylines{distance =6371*acos(cos(radians(lat_{user}))*cos(radians(lat_{jobpost}))\\\\
-  *cos(radians(long_{jobpost})-radians(long_{user}))\\\\
-  +sin(radians(lat_{user}))*sin(radians(lat_{jobpost}))\Bigl)}
-$$
-
-1. 유저가 등록한 기술스택 중에 공고가 몇 개 일치 되는지 확인
-    - 예: 유저가 NestJS, Javascript, Typescript를 등록했는데 공고의 기술스택은 NestJS, Javascript, Java일 때 2개 일치
-2. 유저가 찜한 공고의 키워드 중에 다른 공고의 키워드는 몇 개 일치 되는지 확인
-
-    - 예: 유저가 찜한 공고는 1번과 2번이다.
-      1번 공고의 키워드는 신입과 IT이고 2번 공고의 키워드는 신입과 QA이다.
-      유저가 찜한 공고의 키워드들은 신입, IT와 QA이다.
-
-    다른 공고 4번의 키워드는 신입, 계약직, 고졸일 시 1개의 키워드만 일치한다.
-
-3. 추천 요소를 정규화하기 위해서 최대값과 최소값을 구한다
-4. 추천 점수를 계산하기 위해 모든 요소를 `Min-Max 정규화`를 한다.
-
-$$
-x_{norm} = \frac{x-min(x)}{max(x)-min(x)}
-$$
-
--   주소만 정규화 함수의 결과에서 1을 뺀다. 주소가 가까울 수록 점수가 높아야되기 때문이다.
-
-$$
-distance_{norm} = 1-\frac{distance-min(distance)}{max(distance)-min(distance)}
-$$
-
-1. 각 요소에 비중을 줘서 추천 점수를 계산한다.
-
-$$
-\displaylines{score=0.5*(\frac{stackMatches-min(stackMatches)}{max(stackMatches)-min(stackMatches)})\\\\
-  +0.3*(1-\frac{distance-min(distance)}{max(distance)-min(distance)})\\\\
-  +0.3*(\frac{keywordMatches-min(keywordMatches)}{max(keywordMatches)-min(keywordMatches)})\\\\
-  +0.1*(\frac{salary-min(salary)}{max(salary)-min(salary)}\Bigl)\\\\
-  +0.05*(\frac{avgSalary-min(avgSalary)}{max(avgSalary)-min(avgSalary)})}
-$$
-
-위 함수의 변수:
-
--   `stackMatches`: 유저의 기술스택이랑 일치하는 수
--   `distance`: 유저의 거리와 공고에 기재된 주소의 거리
--   `keywordMatches`: 유저의 찜한 공고의 키워드랑 일치하는 수
--   `salary`: 공고에 기재된 연봉
--   `avgSalary`: 공고를 올린 회사의 평균 연봉
+    <p>
+      1. 공고에 기재된 주소와 내 주소의 거리는 두 주소의 경도와 위도를 'Haversine 공식'을 사용해 계산
+      <br>
+      <p align='center'>
+        <img src='https://i.imgur.com/d8h9PMY.png'>
+      </p>
+      2. 유저가 등록한 기술스택 중에 공고가 몇 개 일치 되는지 확인<br>
+      - 예: 유저가 NestJS, Javascript, Typescript를 등록했는데 공고의 기술스택은 NestJS, Javascript, Java일 때 2개 일치<br><br>
+      3. 유저가 찜한 공고의 키워드 중에 다른 공고의 키워드는 몇 개 일치 되는지 확인<br>
+      - 예: 유저가 찜한 공고는 1번과 2번이다.<br>
+      &nbsp;&nbsp;
+      1번 공고의 키워드는 신입과 IT이고 2번 공고의 키워드는 신입과 QA이다.<br>
+      &nbsp;&nbsp;
+      유저가 찜한 공고의 키워드들은 신입, IT와 QA이다.<br><br>
+      &nbsp;&nbsp;
+      다른 공고 4번의 키워드는 신입, 계약직, 고졸일 시 1개의 키워드만 일치한다.<br><br>
+      4. 추천 요소를 정규화하기 위해서 최대값과 최소값을 구한다<br>
+      5. 추천 점수를 계산하기 위해 모든 요소를 'Min-Max 정규화'를 한다.<br>
+      <p align='center'>
+        <img src='https://i.imgur.com/V917t5T.png'>
+      </p>
+      - 주소만 정규화 함수의 결과에서 1을 뺀다. 주소가 가까울 수록 점수가 높아야되기 때문이다.
+      <p align='center'>
+        <img src='https://i.imgur.com/B51ytek.png'>
+      </p>
+      6. 각 요소에 비중을 줘서 추천 점수를 계산한다.
+      <p align='center'>
+        <img src='https://i.imgur.com/3UCsrSc.png'>
+      </p>
+      위 함수의 변수:<br>
+      -   stackMatches: 유저의 기술스택이랑 일치하는 수<br>
+      -   distance: 유저의 거리와 공고에 기재된 주소의 거리<br>
+      -   keywordMatches: 유저의 찜한 공고의 키워드랑 일치하는 수<br>
+      -   salary: 공고에 기재된 연봉<br>
+      -   avgSalary: 공고를 올린 회사의 평균 연봉
+    </p>
 </details>
 </li>
   </ul>
