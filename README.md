@@ -1,23 +1,60 @@
-# 잡핏 (JobFit)
+<h1 style='display:flex;align-items:center;'>
+<img src='src\public\images\favicon.ico' width='30' style='padding-right:5px'>
+잡핏 (JobFit)
+</h1>
+
 <p align="center">
-  <a href="http://jobfit.ap-northeast-2.elasticbeanstalk.com/" target="blank"><img src="https://i.imgur.com/EloNqXK.png"  alt="Nest Logo" 
+  <a href="http://jobfit.ap-northeast-2.elasticbeanstalk.com/" target="blank"><img src="https://i.imgur.com/EloNqXK.png"  alt="JobFit Banner" 
 /></a>
+</p>
+<div align='center' style='justify-content:space-between; display:flex; margin:0 50px'>
+    <div>
+        <div>
+            <a href='http://jobfit.ap-northeast-2.elasticbeanstalk.com/' target="_blank" rel="noopener noreferrer"><img src='src\public\images\favicon.ico' width='50'></a>
+        </div>
+        사이트 바로가기
+    </div>
+    <div>
+        <div>
+            <a href='https://wheat-baker-241.notion.site/JobFit-7dc48ce92bb94a6d9cb5db185484483b' target="_blank" rel="noopener noreferrer"><img src='https://user-images.githubusercontent.com/111232061/226879852-00ff3075-bd3d-4772-a796-adcfa8b2197f.png' width='50'></a>
+        </div>
+        JobFit 기획안
+    </div>
+    <div>
+        <div>
+            <a href='https://wheat-baker-241.notion.site/IT-6cab1da1841f44ff81b238b6d74a50af' target="_blank" rel="noopener noreferrer"><img src='https://cdn-icons-png.flaticon.com/512/2628/2628859.png' width='50'></a>
+        </div>
+        JobFit 브로슈어
+    </div>
+</div>
 
 <p dir="auto"><br><br></p>
 
-<h2>👉🏻 프로젝트 소개</h2>
-- IT 채용 공고를 쉽게 보고, 찾고, 추천 받을 수 있는 사이트
+<h2>👉 프로젝트 소개</h2>
+<p align='center'>
+개발자들은 <b>기술 스택 (혹은 연봉!)</b>에 알맞은 공고를 찾기를 희망합니다.
+<br><br>
+하지만, 현재 공고 사이트에는 기술 스택으로 분류해 볼 수 없으니<br>
+개발자를 위해 편리하게 <b>기술 스택으로 현재 공고를 분리하고 공고 추천을</b> 제공합니다.
+</p>
+<br><br>
 
+<h3 align='center' style="color:#ff8210;">
+<b>🤔다른 공고 사이트도 많은데 JobFit은 어떻게 차별되나요?</b>
+</h3>
+<p align='center'>
+점핏과 Wanted 같은 개발자 전용 채용 사이트는 기술 스택 등으로 검색은 용이하지만
+공고 폭이 매우 좁다는 단점이 있습니다.
+<br><br>
+따라서, <span style="color:#ff8210">검색이 용이</span>하며 <span style="color:#ff8210">공고량도 많고, 공고 추천까지</span> 받을 수 있는 통합 IT 채용 공고 검색 사이트를 만들고자 합니다.
+<br><br>
+<b>🎉무엇보다 우리가 모두 취업 준비를 하는 만큼 공고를 찾을 때 JobFit이 유용하게 쓰이면 좋겠습니다!🎉</b>
+</p>
+
+<br>
 <p dir="auto"></p>
 
-> Jobfit 팀 노션 Click! [https://wheat-baker-241.notion.site/JobFit-7dc48ce92bb94a6d9cb5db185484483b]
-
-> Jobfit 브로셔 Click! [https://wheat-baker-241.notion.site/IT-6cab1da1841f44ff81b238b6d74a50af]
-
-> Jobfit 이용해보기 Click! [http://jobfit.ap-northeast-2.elasticbeanstalk.com/]
-
-
-<p dir="auto"><br><br></p>
+<p dir="auto"><br></p>
 
 <h2> 👏 프로젝트 참여 인원 </h2>
 <table border="3">
@@ -47,17 +84,17 @@
   </tr>
   <tr align="center">
     <td>
-      <a href="https://github.com/jbae9">
+      <a href="https://github.com/jbae9" target="_blank" rel="noopener noreferrer">
         @jbae9
       </a>
     </td>
     <td>
-      <a href="https://github.com/Mrgil0">
+      <a href="https://github.com/Mrgil0" target="_blank" rel="noopener noreferrer">
         @Mrgil0
       </a>
     </td>
     <td>
-      <a href="https://github.com/ParkAsher">
+      <a href="https://github.com/ParkAsher" target="_blank" rel="noopener noreferrer">
         @ParkAsher
       </a>
     </td>
@@ -86,12 +123,6 @@
     </td>
   </tr>
 </tbody></table>
-
-<p dir="auto"><br><br></p>
-
-<h2 tabindex="-1" dir="auto"><a id="user-content--프로젝트-아키텍쳐" class="anchor" aria-hidden="true" href="#-프로젝트-아키텍쳐"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><g-emoji class="g-emoji" alias="hammer_and_wrench" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png">🛠</g-emoji> 프로젝트 아키텍쳐</h2>
-
-![image](https://i.imgur.com/uDxoSGo.png)
 
 <p dir="auto"><br><br></p>
 
@@ -142,8 +173,13 @@
 
 <p dir="auto"><br><br></p>
 
-<h2><g-emoji class="g-emoji" alias="memo" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png">📝</g-emoji>기술적 의사 결정 </h2>
+<h2 tabindex="-1" dir="auto"><a id="user-content--프로젝트-아키텍쳐" class="anchor" aria-hidden="true" href="#-프로젝트-아키텍쳐"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a><g-emoji class="g-emoji" alias="hammer_and_wrench" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f6e0.png">🛠</g-emoji> 프로젝트 아키텍쳐</h2>
 
+![image](https://i.imgur.com/uDxoSGo.png)
+
+<p dir="auto"><br><br></p>
+
+<h2><g-emoji class="g-emoji" alias="memo" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f4dd.png">📝</g-emoji>기술적 의사 결정 </h2>
 
 <table>
 <thead>
@@ -374,11 +410,13 @@ $$
 1. 유저가 등록한 기술스택 중에 공고가 몇 개 일치 되는지 확인
     - 예: 유저가 NestJS, Javascript, Typescript를 등록했는데 공고의 기술스택은 NestJS, Javascript, Java일 때 2개 일치
 2. 유저가 찜한 공고의 키워드 중에 다른 공고의 키워드는 몇 개 일치 되는지 확인
+
     - 예: 유저가 찜한 공고는 1번과 2번이다.
-    1번 공고의 키워드는 신입과 IT이고 2번 공고의 키워드는 신입과 QA이다.
-    유저가 찜한 공고의 키워드들은 신입, IT와 QA이다.
-    
+      1번 공고의 키워드는 신입과 IT이고 2번 공고의 키워드는 신입과 QA이다.
+      유저가 찜한 공고의 키워드들은 신입, IT와 QA이다.
+
     다른 공고 4번의 키워드는 신입, 계약직, 고졸일 시 1개의 키워드만 일치한다.
+
 3. 추천 요소를 정규화하기 위해서 최대값과 최소값을 구한다
 4. 추천 점수를 계산하기 위해 모든 요소를 `Min-Max 정규화`를 한다.
 
@@ -386,7 +424,7 @@ $$
 x_{norm} = \frac{x-min(x)}{max(x)-min(x)}
 $$
 
-- 주소만 정규화 함수의 결과에서 1을 뺀다. 주소가 가까울 수록 점수가 높아야되기 때문이다.
+-   주소만 정규화 함수의 결과에서 1을 뺀다. 주소가 가까울 수록 점수가 높아야되기 때문이다.
 
 $$
 distance_{norm} = 1-\frac{distance-min(distance)}{max(distance)-min(distance)}
@@ -404,16 +442,15 @@ $$
 
 위 함수의 변수:
 
-- `stackMatches`: 유저의 기술스택이랑 일치하는 수
-- `distance`: 유저의 거리와 공고에 기재된 주소의 거리
-- `keywordMatches`: 유저의 찜한 공고의 키워드랑 일치하는 수
-- `salary`: 공고에 기재된 연봉
-- `avgSalary`: 공고를 올린 회사의 평균 연봉
-    </details>
-    </li>
+-   `stackMatches`: 유저의 기술스택이랑 일치하는 수
+-   `distance`: 유저의 거리와 공고에 기재된 주소의 거리
+-   `keywordMatches`: 유저의 찜한 공고의 키워드랑 일치하는 수
+-   `salary`: 공고에 기재된 연봉
+-   `avgSalary`: 공고를 올린 회사의 평균 연봉
+</details>
+</li>
   </ul>
   <summary>
     공고 추천 알고리즘
   </summary>
 </details>
-
