@@ -36,7 +36,7 @@
     </td>
     <td>
       <p align="center" dir="auto">
-        <img src="https://file.notion.so/f/s/628d6b63-ad6d-44e4-b9f8-321483df2fb5/KakaoTalk_20230324_190940484.jpg?id=5f0e485c-a3ca-4e6f-90bc-56dce1c054c4&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680084065694&signature=eTv_C8ZXeOQ_9hLVSLzBoOp7GT8IDdwdrsEz6GPi0_8&downloadName=KakaoTalk_20230324_190940484.jpg" width="150" style="max-width: 100%;">
+        <img src="https://file.notion.so/f/s/628d6b63-ad6d-44e4-b9f8-321483df2fb5/KakaoTalk_20230324_190940484.jpg?id=5f0e485c-a3ca-4e6f-90bc-56dce1c054c4&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680253493155&signature=Z5TGOdSofKQWl86xS6aUwopH3ix8B_c-tLUe7z2URzs&downloadName=KakaoTalk_20230324_190940484.jpg" width="150" style="max-width: 100%;">
       </p>
     </td>
     <td>
@@ -280,7 +280,7 @@
     PassportStrategy를 이용한 카카오 인증 전략을 구현하여,<br />
 카카오 계정으로 회원가입 및 로그인을 할 수 있다.
     </li>
-      <image src="https://file.notion.so/f/s/e6574a1f-e56b-4154-a567-097bd586d5f4/Frame_1_(1).png?id=5e9f6fb9-2b17-4e3e-a277-4d7ba85a9da0&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090024115&signature=OdFNaETyxsheIx5JAlfCYajsvniIL34K1gUa923ITkY&downloadName=Frame+1+%281%29.png"></image>
+      <image src="https://file.notion.so/f/s/e6574a1f-e56b-4154-a567-097bd586d5f4/Frame_1_(1).png?id=5e9f6fb9-2b17-4e3e-a277-4d7ba85a9da0&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680253403087&signature=ynGqq1Mlw4_1mwFJZErVb6EuGk2tbb95CPKWwOZ4q8I&downloadName=Frame+1+%281%29.png"></image>
   </ul>
   <summary>
     카카오 소셜 로그인
@@ -317,7 +317,7 @@
       <p></p>
     - 입력한 단어를 회사 이름, 키워드 기술 스택, 주소, 공고 제목, 공고 내용 에 매칭 시켜 검색
     </li>
-      <image src="https://file.notion.so/f/s/ec350b7e-faa0-4237-b4ce-2bba46254c8e/1212.png?id=57f2c4e2-cb2e-4f8d-b852-f0bf0bea7bc3&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680090348143&signature=6UqVQvVdP6cB9jn1GI9kzo6-qKScROAuh611gccMqBY&downloadName=1212.PNG.png"></image>
+      <image src="https://file.notion.so/f/s/ec350b7e-faa0-4237-b4ce-2bba46254c8e/1212.png?id=57f2c4e2-cb2e-4f8d-b852-f0bf0bea7bc3&table=block&spaceId=054b625d-d544-461f-9383-d28f4efa5786&expirationTimestamp=1680253442030&signature=-rfiDGn3Kx4lOvNk8fpPtukaJ6IucCdpX3yR8ALPbdU&downloadName=1212.PNG.png"></image>
   </ul>
   <ul>
     <li>
