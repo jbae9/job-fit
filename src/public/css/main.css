@@ -57,3 +57,11 @@
     align-items: center;
     font-weight: bold !important;
 }
+
+.carousel-control-next {
+    right: -25px;
+}
+
+.carousel-control-prev {
+    left: -25px;
+}
