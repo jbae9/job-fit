@@ -1,120 +1,67 @@
 footer {
     position: absolute;
-    background: #455775;
+    background: #2d3142;
     height: auto;
     width: 100%;
     color: #fcfeff;
     bottom: auto;
-}
-
-.footer-top {
-    width: 100%;
 
     display: flex;
-    align-items: center;
     justify-content: center;
+
     padding: 2rem 0;
 }
 
-.footer-content {
+.footer-wrap {
     width: 1200px;
 
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    gap: 3rem;
-}
-
-.footer-team {
-    width: 25%;
-
-    display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.footer-logo {
-    margin-bottom: 1.5rem;
+.footer-link {
+    width: 100%;
+    padding: 1rem 0;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
-.footer-logo img {
-    height: 2rem;
-    object-fit: contain;
-}
-
-.footer-team-desc {
-    height: 1.5rem;
+.footer-link img {
+    width: 3rem;
+    height: 3rem;
 }
 
 .footer-info {
-    width: 25%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.footer-title {
-    font-size: 2rem;
-    color: lightgray;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-}
-
-.footer-member-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.footer-member-info a img {
-    width: 1.5rem;
-    height: 1.5rem;
-    object-fit: contain;
-}
-
-.footer-develop {
-    width: 25%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.footer-develop-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.footer-develop-info a img {
-    width: 1.5rem;
-    height: 1.5rem;
-    object-fit: contain;
-}
-
-.footer-develop-info .material-symbols-outlined {
-    font-size: 1.5rem !important;
-    color: #000000;
-}
-
-.footer-bottom {
-    background: #2d3142;
     width: 100%;
-    padding: 10px 0;
-    text-align: center;
+    padding: 1rem 0;
+
+    display: flex;
+    justify-content: center;
 }
 
-.footer-bottom p {
-    font-size: 14px;
-    word-spacing: 2px;
-    text-transform: capitalize;
-    color: #fff;
+.footer-info ul {
+    display: flex;
+    flex-wrap: wrap;
 }
 
-.footer-bottom span {
-    text-transform: uppercase;
-    opacity: 0.4;
-    font-weight: 200;
+.footer-info ul li {
+    padding: 0 0.5rem;
+    border-right: 0.5px solid #ffffff;
+    box-sizing: border-box;
+}
+
+.footer-info ul li:last-child {
+    border: none;
+}
+
+.footer-info ul li a {
+    color: #ffffff !important;
+}
+
+.footer-copyright {
+    width: 100%;
 }
