@@ -137,8 +137,10 @@
                                     </span>
                                 </div>
                             <% } %>
-                            <img src="${jobpostImgUrl}"
-                                class="card-img-top" alt="${companyName}" title="${companyName}">
+                            <a href='/jobpost/${jobpostId}' class="card-img-link">
+                                <img src="${jobpostImgUrl}"
+                                    class="card-img-top" alt="${companyName}" title="${companyName}">
+                            </a>
                             <div class="card-body">
                                 <a href='/jobpost/${jobpostId}'>
                                     <h5 class="card-title">${title}</h5>

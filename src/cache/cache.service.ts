@@ -88,4 +88,24 @@ export class CacheService {
             await this.redisClient.hset('views', jobpostId.toString(), 1)
         }
     }
+
+    // 메인화면 채용공고 12개 캐싱
+    async setMainJobposts(sort, mainJobposts) {
+        await this.redisClient.set(
+            `main-${sort}`,
+            JSON.stringify(mainJobposts),
+            'EX',
+            60 * 60 * 24
+        )
+    }
+
+    // 메인화면 채용공고 12개 가져오기
+    async getMainJobposts(sort) {
+        return await this.redisClient.get(`main-${sort}`)
+    }
+
+    // 메인화면 채용공고가 캐시에 존재하는지 확인
+    async isCachedMainJobposts(sort) {
+        return await this.redisClient.exists(`main-${sort}`)
+    }
 }
