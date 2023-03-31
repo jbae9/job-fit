@@ -6,6 +6,8 @@
 
 .carousel-inner {
     padding: 0 30px;
+    min-height: 270px;
+    position: relative;
 }
 
 .carousel {
