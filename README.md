@@ -51,6 +51,34 @@
 <br>
 <p dir="auto"></p>
 
+<h2> 🖥 화면 구현 </h2>
+<table border="3">
+  <tbody>
+  <tr align="center">
+    <td colspan=3><b>이미지를 클릭하면 크게 볼 수 있습니다!</b></td>
+  </tr>
+  <tr align="center">
+    <td width="300">메인 페이지</td>
+    <td width="300">전체 공고 페이지와 필터링</td>
+    <td width="300">공고 상세 페이지</td>
+  </tr>
+  <tr>
+    <td><img src='https://user-images.githubusercontent.com/20327256/229333145-3ef360a9-8ad7-454a-9907-a167ad059888.png'></td>
+    <td><img src='https://user-images.githubusercontent.com/20327256/229333249-acfea66e-875a-4010-a493-f08c3470c3aa.png'></td>
+    <td><img src='https://user-images.githubusercontent.com/20327256/229333263-1150dda1-32f8-41e9-83ea-9e3e880a19e5.png'></td>
+  </tr>
+  <tr align="center">
+    <td>유저 페이지</td>
+    <td>유저 찜 페이지</td>
+  </tr>
+  <tr>
+    <td><img src='https://user-images.githubusercontent.com/20327256/229333602-0bad0b61-1990-417e-99af-18d606cc4375.png'></td>
+    <td><img src='https://user-images.githubusercontent.com/20327256/229333615-43961f3c-6e46-4c10-9c67-4934887962e3.png'></td>
+  </tr>
+  </tbody>
+</table>
+  
+
 <p dir="auto"><br></p>
 
 <h2> 👏 프로젝트 참여 인원 </h2>
