@@ -79,7 +79,7 @@ button .muted {
     align-items: center;
     color: rgb(69, 87, 117, 0.8) !important;
     padding: 5px 0;
-    font-size: 15px;
+    font-size: 13px;
 }
 
 .card-text.companyName {
@@ -201,7 +201,7 @@ div[id^='jobpostRow'] {
 }
 
 .card-text .material-symbols-outlined {
-    margin-right: 5px;
+    margin-right: 3px;
 }
 
 .spinner-recommend,
@@ -246,5 +246,11 @@ div[id^='jobpostRow'] {
 }
 
 .col-8 {
-    width: 65%;
+    width: 60%;
+    padding-right: 3px;
+}
+
+.col-4 {
+    width: 40%;
+    padding-left: 3px;
 }
