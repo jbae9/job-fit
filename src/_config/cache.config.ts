@@ -13,10 +13,10 @@ export class RedisConfigService implements RedisOptionsFactory {
         return {
             config: {
                 url: this.configService.get('REDIS_URL'),
+                password: this.configService.get('REDIS_PASSWORD'),
                 // host: this.configService.get('REDIS_HOST'),
                 // port: Number(this.configService.get('REDIS_PORT')),
                 // username: this.configService.get('REDIS_USERNAME'),
-                // password: this.configService.get('REDIS_PASSWORD'),
             },
         }
     }
