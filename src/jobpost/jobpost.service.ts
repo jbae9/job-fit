@@ -56,6 +56,35 @@ export class JobpostService {
         const limitNum = parseInt(limit) || 16
         const offsetNum = parseInt(offset) || 0
 
+        // 메인화면 최신순, 마감순 12개 요청 일 때
+        if (['recent', 'ending'].includes(sort) && limit === '12') {
+            // 캐시에 존재하는지 확인
+            const isCached = await this.cacheService.isCachedMainJobposts(sort)
+
+            if (isCached) {
+                // 존재할 때
+                const mainJobposts = await this.cacheService.getMainJobposts(
+                    sort
+                )
+
+                return JSON.parse(mainJobposts)
+            } else {
+                // 존재하지 않을 떄 캐싱
+                const mainJobposts =
+                    await this.jobpostRepository.getFilteredJobposts(
+                        sort,
+                        order,
+                        limitNum,
+                        offsetNum,
+                        others
+                    )
+                // 메인화면 인기순 채용공고 12개 캐싱, 만료기간 하루
+                await this.cacheService.setMainJobposts(sort, mainJobposts)
+
+                return mainJobposts
+            }
+        }
+
         return await this.jobpostRepository.getFilteredJobposts(
             sort,
             order,
@@ -146,7 +175,7 @@ export class JobpostService {
 
     // redis에 있는 찜 눌린 채용공고를 DB에 반영
     // 서버시간 매 10초마다 반영
-    @Cron('*/5 * * * * *')
+    // @Cron('*/5 * * * * *')
     async jobpostLikeInsert() {
         const likedJobposts = await this.cacheService.getAllLikedjobpost()
 
@@ -171,7 +200,7 @@ export class JobpostService {
         return await this.jobpostRepository.getViewJobpost(jobpostId)
     }
 
-    @Cron('*/5 * * * * *')
+    // @Cron('*/5 * * * * *')
     async jobpostViewInsert() {
         const viewJobposts = Object.entries(
             await this.cacheService.getAllViews()

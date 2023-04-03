@@ -14,7 +14,7 @@ import { JobpostService } from './jobpost.service'
 export class JobpostController {
     constructor(private readonly jobpostService: JobpostService) {}
 
-    @Cron('0 0 5 * * *') // 매일 새벽 5시
+    // @Cron('0 0 5 * * *') // 매일 새벽 5시
     @Get('/saramin')
     async getSaraminData() {
         return await this.jobpostService.getSaraminJobposts()

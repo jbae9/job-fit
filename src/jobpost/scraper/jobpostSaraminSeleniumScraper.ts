@@ -30,7 +30,6 @@ export class SaraminSelenium {
         const options = new Options()
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL)
         options.excludeSwitches('enable-logging')
-        options.addArguments('--headless', '--disable-gpu')
         let page = 1
         let index = 0
 
@@ -39,11 +38,16 @@ export class SaraminSelenium {
             .forBrowser('chrome')
             .setChromeOptions(options)
             .setChromeService(
-                new chrome.ServiceBuilder('src/resources/chromedriver')
+                new chrome.ServiceBuilder('src/resources/chromedriver.exe')
             )
             .build()
         while (true) {
             console.log(`사람인 ${page}페이지 스크롤 중...`)
+            console.log(`https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=` +
+                    page +
+                    `&cat_mcls=2&isAjaxRequest=0&page_count=` +
+                    pageCount +
+                    `&sort=RL&type=job-category&is_param=1&isSearchResultEmpty=1&isSectionHome=0&searchParamCount=1#searchTitle`)
             const saraminScraper = new SaraminScraper(
                 `https://www.saramin.co.kr/zf_user/jobs/list/job-category?page=` +
                     page +
@@ -62,6 +66,7 @@ export class SaraminSelenium {
                     let tries = 0
                     while (tries < 10) {
                         try {
+                            console.log(`${this.allJobsArr[index].originalUrl}`)
                             await driver.get(
                                 `${this.allJobsArr[index].originalUrl}`
                             )

@@ -81,11 +81,31 @@ export class CacheService {
     }
 
     async addCountOne(jobpostId: number) {
-        let count = Number(this.getViewCount(jobpostId))
+        let count = Number(await this.getViewCount(jobpostId))
         if (count > 0) {
             await this.redisClient.hincrby('views', jobpostId.toString(), 1)
         } else {
             await this.redisClient.hset('views', jobpostId.toString(), 1)
         }
+    }
+
+    // 메인화면 채용공고 12개 캐싱
+    async setMainJobposts(sort, mainJobposts) {
+        await this.redisClient.set(
+            `main-${sort}`,
+            JSON.stringify(mainJobposts),
+            'EX',
+            60 * 60 * 24
+        )
+    }
+
+    // 메인화면 채용공고 12개 가져오기
+    async getMainJobposts(sort) {
+        return await this.redisClient.get(`main-${sort}`)
+    }
+
+    // 메인화면 채용공고가 캐시에 존재하는지 확인
+    async isCachedMainJobposts(sort) {
+        return await this.redisClient.exists(`main-${sort}`)
     }
 }
