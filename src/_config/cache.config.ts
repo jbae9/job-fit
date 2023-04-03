@@ -12,7 +12,7 @@ export class RedisConfigService implements RedisOptionsFactory {
     async createRedisOptions(): Promise<RedisModuleOptions> {
         return {
             config: {
-                url: 'redis://jobfit-ro.ktwtdg.ng.0001.apn2.cache.amazonaws.com:6379',
+                url: this.configService.get('REDIS_URL'),
                 // host: this.configService.get('REDIS_HOST'),
                 // port: Number(this.configService.get('REDIS_PORT')),
                 // username: this.configService.get('REDIS_USERNAME'),
