@@ -4,13 +4,13 @@
 </h1>
 
 <p align="center">
-  <a href="http://jobfit.ap-northeast-2.elasticbeanstalk.com/" target="blank"><img src="https://i.imgur.com/EloNqXK.png"  alt="JobFit Banner" 
+  <a href="https://port-0-job-fit-3zbzrz92clg0xu02s.sel3.cloudtype.app/" target="_blank" rel="noopener noreferrer"><img src="https://i.imgur.com/EloNqXK.png"  alt="JobFit Banner" 
 /></a>
 </p>
 
 <p align='center'>
   <span>
-    <a href='http://jobfit.ap-northeast-2.elasticbeanstalk.com/' target="_blank" rel="noopener noreferrer"><img src='src\public\images\favicon.ico' width='50px'></a>
+    <a href='https://port-0-job-fit-3zbzrz92clg0xu02s.sel3.cloudtype.app/' target="_blank" rel="noopener noreferrer"><img src='src\public\images\favicon.ico' width='50px'></a>
     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
     <a href='https://wheat-baker-241.notion.site/JobFit-7dc48ce92bb94a6d9cb5db185484483b' target="_blank" rel="noopener noreferrer"><img src='https://user-images.githubusercontent.com/111232061/226879852-00ff3075-bd3d-4772-a796-adcfa8b2197f.png' width='50px'></a>
     &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
@@ -23,6 +23,8 @@
   JobFit 기획안
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
   JobFit 브로슈어
+  <br><br>
+  <a href="https://drive.google.com/file/d/11jMdmOk4nW-4rgAdbrJvSGjw9sYmPmGO/view" target="_blank" rel="noopener noreferrer"><b>🎊최고의 프로젝트상 수상!🎊</b></a>
 </p>
 
 <p dir="auto"><br><br></p>
