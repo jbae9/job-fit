@@ -17,9 +17,9 @@ export class ProgrammersScraper {
         console.log('프로그래머스 스크레이핑 시작' + startDate.toTimeString())
 
         // 회사정보 객체 배열
-        let companies = []
+        const companies = []
         // 채용공고 객체 배열
-        let jobposts = []
+        const jobposts = []
         try {
             const { data } = await axios.get(
                 'https://career.programmers.co.kr/api/job_positions'
@@ -150,24 +150,19 @@ export class ProgrammersScraper {
                         continue
                     }
                 }
-                // 회사 데이터 중복 제거
-                const companiesSetArray = companies.filter(
-                    (arr, index, callback) =>
-                        index ===
-                        callback.findIndex(
-                            (v) => v.companyName === arr.companyName
-                        )
-                )
-
-                // 회사 데이터 넣기
-                await this.companyRepository.createCompanies(jobposts)
-
-                // 채용공고 데이터 넣기
-                await this.jobpostRepository.createJobposts(companiesSetArray)
-
-                jobposts = []
-                companies = []
             }
+            // 회사 데이터 중복 제거
+            const companiesSetArray = companies.filter(
+                (arr, index, callback) =>
+                    index ===
+                    callback.findIndex((v) => v.companyName === arr.companyName)
+            )
+
+            // 회사 데이터 넣기
+            await this.companyRepository.createCompanies(jobposts)
+
+            // 채용공고 데이터 넣기
+            await this.jobpostRepository.createJobposts(companiesSetArray)
 
             const endDate = new Date(Date.now())
             console.log('프로그래머스 스크레이핑 완료' + endDate.toTimeString())
