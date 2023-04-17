@@ -26,9 +26,9 @@ export class WantedScraper {
             const kreditjobIndustryCodes = axiosKreditjobIndustryCodes.data
 
             let nextLink = data.links.next
-            let allJobs = []
+            const allJobs = []
             const allCompanyIds = []
-            let allCompanies = []
+            const allCompanies = []
             let jobsList = data.data
             while (nextLink !== null) {
                 for (let i = 0; i < jobsList.length; i++) {
@@ -214,16 +214,6 @@ export class WantedScraper {
                         })
                     }
                 }
-
-                // 회사 데이터 넣기
-                await this.companyRepository.createCompanies(allCompanies)
-
-                // 채용공고 데이터 넣기
-                await this.jobpostRepository.createJobposts(allJobs)
-
-                allCompanies = []
-                allJobs = []
-
                 const nextPage = await getAxios(
                     `https://www.wanted.co.kr${nextLink}`
                 )
@@ -233,6 +223,12 @@ export class WantedScraper {
 
                 jobsList = nextPage.data.data
             }
+
+            // 회사 데이터 넣기
+            await this.companyRepository.createCompanies(allCompanies)
+
+            // 채용공고 데이터 넣기
+            await this.jobpostRepository.createJobposts(allJobs)
 
             const endDate = new Date(Date.now())
             console.log('원티드 스크레이핑 완료' + endDate.toTimeString())
