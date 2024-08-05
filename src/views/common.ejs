@@ -31,7 +31,7 @@
             } else if (Number(salary) >= 100000000) {
                 salary = (Number(salary) / 100000000).toString() + '억원'
             }
-            salaryCol = `<div class="col">
+            salaryCol = `<div class="col-4">
                             <a class="card-col" title="연봉">
                                 <span class="material-symbols-outlined">
                                     payments
@@ -56,7 +56,7 @@
         let wordAndAddressCol = ``
         if (keywords !== null) {
             if (keywords.includes('신입')) {
-                wordAndAddressCol = `<div class="col-7">
+                wordAndAddressCol = `<div class="col-8">
                                         <a class="card-col" title="주소">
                                         <span class="material-symbols-outlined">
                                             location_on
@@ -64,7 +64,7 @@
                                         ${address}
                                         </a>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-4">
                                         <a class="card-col">
                                         <span class="material-symbols-outlined">
                                             work
@@ -73,7 +73,7 @@
                                         </a>
                                     </div>`
             } else if (keywords.includes('경력')) {
-                wordAndAddressCol = `<div class="col-7">
+                wordAndAddressCol = `<div class="col-8">
                                         <a class="card-col" title="주소">
                                         <span class="material-symbols-outlined">
                                             location_on
@@ -81,7 +81,7 @@
                                         ${address}
                                         </a>
                                     </div>
-                                    <div class="col">
+                                    <div class="col-4">
                                         <a class="card-col">
                                         <span class="material-symbols-outlined">
                                             work
@@ -90,7 +90,7 @@
                                         </a>
                                     </div>`
             } else {
-                wordAndAddressCol = `<div class="col-7">
+                wordAndAddressCol = `<div class="col-8">
                                         <a class="card-col" title="주소">
                                         <span class="material-symbols-outlined">
                                             location_on
@@ -100,7 +100,7 @@
                                     </div>`
             }
         } else {
-            wordAndAddressCol = `<div class="col-7">
+            wordAndAddressCol = `<div class="col-8">
                                         <a class="card-col" title="주소">
                                         <span class="material-symbols-outlined">
                                             location_on
@@ -137,8 +137,10 @@
                                     </span>
                                 </div>
                             <% } %>
-                            <img src="${jobpostImgUrl}"
-                                class="card-img-top" alt="${companyName}" title="${companyName}">
+                            <a href='/jobpost/${jobpostId}' class="card-img-link">
+                                <img src="${jobpostImgUrl}"
+                                    class="card-img-top" alt="${companyName}" title="${companyName}">
+                            </a>
                             <div class="card-body">
                                 <a href='/jobpost/${jobpostId}'>
                                     <h5 class="card-title">${title}</h5>
@@ -148,7 +150,7 @@
                                 </p>
                                 <div class="card-text row">
                                     ${wordAndAddressCol}
-                                    <div class="col-7">
+                                    <div class="col-8">
                                         <a class="card-col" title="마감일자">
                                         <span class="material-symbols-outlined">
                                             calendar_month

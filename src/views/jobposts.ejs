@@ -4,16 +4,13 @@
             <div class="card">
                 <div class="row">
                     <div id="filterTitle">
-                        <p class="keyword-text" style="font-size: 25;">
-                            필터
-                        </p>
+                        <p class="keyword-text" style="font-size: 25">필터</p>
                         <a title="초기화" onclick="resetKeywords()" style="cursor: pointer">
                             <span class="material-symbols-outlined" id="resetButton">
                                 restart_alt
                             </span>
                         </a>
                     </div>
-
                 </div>
                 <div class="row">
                     <p class="keyword-text">
@@ -105,6 +102,11 @@
                 </div>
                 <div id="searchCount"></div>
             </div>
+            <div class="spinner-jobposts">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
             <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow1"></div>
             <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow2"></div>
             <div class="row row-cols-1 row-cols-md-4 g-4" id="jobpostRow3"></div>
@@ -165,7 +167,7 @@
             const userId = '<%= user?.userId %>'
             if (userId) {
                 $.ajax({
-                    type: "GET",
+                    type: 'GET',
                     url: `/api/jobpost/filter/${userId}/${url.search}`,
                     success: function (response) {
                         if (response.message) {
@@ -180,7 +182,10 @@
                         )
                         showJobposts(response.data, likedJobpostIds)
                         showPagination(response.totalCount, page)
-                    }
+                        document.querySelector(
+                            '.spinner-jobposts'
+                        ).style.display = 'none'
+                    },
                 })
             } else {
                 modalOpen('로그인해서 공고를 추천 받아보세요!', '/')
@@ -195,6 +200,8 @@
                     )
                     showJobposts(response.data, likedJobpostIds)
                     showPagination(response.totalCount, page)
+                    document.querySelector('.spinner-jobposts').style.display =
+                        'none'
                 },
             })
         }
@@ -210,7 +217,7 @@
                 $('#addressUpperDropdown').append(tempHtml)
 
                 for (let i = 0; i < addressUpper.length; i++) {
-                    tempHtml = `<li><a class="dropdown-item" id="addressUpper${addressUpper[i].address_upper}" onclick="onclickAddressUpper('${addressUpper[i].address_upper}')">${addressUpper[i].address_upper}</a>
+                    tempHtml = `<li><a class="dropdown-item" id="addressUpper${addressUpper[i].address_upper}" onclick="onclickAddressUpper('${addressUpper[i].address_upper}'); $('#currentAddressLower').show()">${addressUpper[i].address_upper}</a>
                                 </li>`
                     $('#addressUpperDropdown').append(tempHtml)
 
@@ -238,20 +245,25 @@
                             `#addressUpper${addressUpperParam}addressLower${addressLowerParam}`
                         ).addClass('active')
                         $('#addressLowerDropDown > li').hide()
-                        $(`#addressLowerDropDown > li.${addressUpperParam}`).show()
+                        $(
+                            `#addressLowerDropDown > li.${addressUpperParam}`
+                        ).show()
                     } else {
                         $('#currentAddressLower').html('전체')
-                        $(`#addressUpper${addressUpperParam}addressLower전체`).addClass(
-                            'active'
-                        )
+                        $(
+                            `#addressUpper${addressUpperParam}addressLower전체`
+                        ).addClass('active')
                         $('#addressLowerDropDown > li').hide()
-                        $(`#addressLowerDropDown > li.${addressUpperParam}`).show()
+                        $(
+                            `#addressLowerDropDown > li.${addressUpperParam}`
+                        ).show()
                     }
                 } else {
                     $('#currentAddressUpper').html('전체')
                     $(`#addressUpper전체`).addClass('active')
                     $('#addressLowerDropDown > li').hide()
                     $('#currentAddressLower').html('전체')
+                    $('#currentAddressLower').hide()
                 }
             },
         })
@@ -343,17 +355,32 @@
         let addressLowerParam = url.searchParams.get('address_lower')
         let stacks = url.searchParams.get('stack')
         let keywordCode = url.searchParams.get('keywordCode')
-        if (search || stacks || keywordCode || addressUpperParam || addressLowerParam) {
+        if (
+            search ||
+            stacks ||
+            keywordCode ||
+            addressUpperParam ||
+            addressLowerParam
+        ) {
             if (keywordCode) {
                 keywordCode = keywordCode.split(',')
-                keywordCode = keywordCode.map(code => {
+                keywordCode = keywordCode.map((code) => {
                     return $(`#keywordCode${code}`).text()
                 })
                 keywordCode = keywordCode.join(',')
             }
 
-            let searchedBy = (search || '') + ',' + (stacks || '') + ',' + (keywordCode || '') + ',' + (addressUpperParam || '') + ',' + (addressLowerParam || '')
-            searchedBy = searchedBy.split(',').filter(val => val !== '')
+            let searchedBy =
+                (search || '') +
+                ',' +
+                (stacks || '') +
+                ',' +
+                (keywordCode || '') +
+                ',' +
+                (addressUpperParam || '') +
+                ',' +
+                (addressLowerParam || '')
+            searchedBy = searchedBy.split(',').filter((val) => val !== '')
             let searchedByStr = ''
             for (let i = 0; i < searchedBy.length; i++) {
                 if (i === searchedBy.length - 1 && searchedBy[i].length !== 0) {

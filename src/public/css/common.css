@@ -2,8 +2,7 @@
 
 @font-face {
     font-family: 'EliceDigitalBaeum-Bd';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2')
-        format('woff2');
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_elice@1.0/EliceDigitalBaeum-Bd.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
@@ -47,9 +46,15 @@ button .muted {
 }
 
 .card-title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
-    word-break: keep-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    padding-bottom: 1px;
+    line-height: 1.4;
 }
 
 .card-text {
@@ -61,6 +66,7 @@ button .muted {
 .card-text img {
     height: 30px;
     padding-right: 3px;
+    padding-bottom: 3px;
 }
 
 .card-text .row {
@@ -73,11 +79,14 @@ button .muted {
     align-items: center;
     color: rgb(69, 87, 117, 0.8) !important;
     padding: 5px 0;
-    font-size: 15px;
+    font-size: 13px;
 }
 
 .card-text.companyName {
-    font-size: 18px;
+    font-size: 17px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .card-img-top {
@@ -88,6 +97,10 @@ button .muted {
     padding: 10px;
     position: relative;
     object-fit: contain;
+}
+
+.card-img-link {
+    text-align: center;
 }
 
 .material-symbols-outlined {
@@ -165,6 +178,7 @@ div[id^='jobpostRow'] {
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     margin-bottom: var(--bs-gutter-y);
 }
+
 #recommendationWarning {
     color: red;
     margin: 0 5;
@@ -187,5 +201,56 @@ div[id^='jobpostRow'] {
 }
 
 .card-text .material-symbols-outlined {
-    margin-right: 5px;
+    margin-right: 3px;
+}
+
+.spinner-recommend,
+.spinner-popular,
+.spinner-recent,
+.spinner-ending,
+.spinner-jobposts {
+    display: flex;
+    justify-content: center;
+}
+
+.spinner-recommend {
+    color: lightgreen;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.spinner-popular {
+    color: lightcoral;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.spinner-recent {
+    color: skyblue;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.spinner-ending {
+    color: lightsalmon;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.spinner-jobposts {
+    color: lightslategray;
+}
+
+.col-8 {
+    width: 60%;
+    padding-right: 3px;
+}
+
+.col-4 {
+    width: 40%;
+    padding-left: 3px;
 }

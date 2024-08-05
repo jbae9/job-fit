@@ -23,6 +23,7 @@
 
     display: flex;
     align-items: center;
+    padding: 3px 0;
 }
 
 .header-logo-wrap img {
@@ -88,7 +89,10 @@
     border-left: none;
     border-color: rgb(69, 87, 117, 0.3);
     border-radius: 0 6px 6px 0;
-    --bs-btn-hover-bg: none;
+}
+
+#searchButton:hover {
+    background: none;
 }
 
 .material-icons {

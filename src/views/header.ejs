@@ -4,53 +4,43 @@
             <a class="logo" href="/"><img src="/images/logo.png" /></a>
         </div>
         <div class="input-group m-2" id="searchBar">
-            <input
-                type="text"
-                class="form-control"
-                id="searchInput"
-                placeholder="검색"
-                aria-label="검색"
-                aria-describedby="button-addon2"
-            />
+            <input type="text" class="form-control" id="searchInput" placeholder="검색" aria-label="검색"
+                aria-describedby="button-addon2" />
             <div class="input-group-append">
-                <button
-                    class="btn btn-outline-secondary"
-                    type="button"
-                    id="searchButton"
-                    onclick="search($('#searchInput').val())"
-                >
+                <button class="btn btn-outline-secondary" type="button" id="searchButton"
+                    onclick="search($('#searchInput').val())">
                     <span class="material-icons"> search </span>
                 </button>
             </div>
         </div>
         <% if (!user) { %>
-        <div class="header-menu-wrap">
-            <ul>
-                <li>
-                    <a class="about-link" href="/about">ABOUT</a>
-                </li>
-                <li>
-                    <a class="login-link" href="/login">로그인</a>
-                </li>
-            </ul>
-        </div>
-        <% } else { %>
-        <div class="header-menu-wrap">
-            <ul>
-                <li>
-                    <a class="about-link" href="/about">ABOUT</a>
-                </li>
-                <li>
-                    <a class="login-link" href="/mypage">마이페이지</a>
-                </li>
-                <li>
-                    <button type="button" class="logout-btn" onclick="logout()">
-                        로그아웃
-                    </button>
-                </li>
-            </ul>
-        </div>
-        <% } %>
+            <div class="header-menu-wrap">
+                <ul>
+                    <li>
+                        <a class="about-link" href="/about">ABOUT</a>
+                    </li>
+                    <li>
+                        <a class="login-link" href="/login">로그인</a>
+                    </li>
+                </ul>
+            </div>
+            <% } else { %>
+                <div class="header-menu-wrap">
+                    <ul>
+                        <li>
+                            <a class="about-link" href="/about">ABOUT</a>
+                        </li>
+                        <li>
+                            <a class="login-link" href="/mypage">마이페이지</a>
+                        </li>
+                        <li>
+                            <button type="button" class="logout-btn" onclick="logout()">
+                                로그아웃
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <% } %>
     </div>
 </div>
 
@@ -76,6 +66,10 @@
     })
 
     function search(input) {
+        if (input.length === 0) {
+            return modalOpen('검색할 문구를 입력하세요!')
+        }
+
         let url = new URL(window.location.href)
         let newUrl = new URL(window.location.origin + '/jobposts')
         if (url.searchParams.get('sort') === null) {
