@@ -168,7 +168,7 @@ export class JobpostRepository extends Repository<Jobpost> {
 
         let where = `WHERE j.updated_dtm > '${todayDate.getFullYear()}-${
             todayDate.getMonth() + 1
-        }-${todayDate.getDate() - 1}'`
+        }-${todayDate.getDate() - 1} AND j.deadline_dtm >= CURRENT_DATE()'`
 
         let having = ''
         if (others) {
@@ -565,14 +565,17 @@ export class JobpostRepository extends Repository<Jobpost> {
         switch (sort) {
             case 'recent':
                 sort = `j.updated_dtm ${order}`
+                where = 'where deadline_dtm >= CURRENT_DATE()'
                 break
             case 'popular':
                 sort = `likesCount ${order}, views ${order}`
+                where = 'where deadline_dtm >= CURRENT_DATE()'
                 break
             case 'ending':
                 if (order === 'asc') {
                     sort = `deadline_dtm ${order}`
-                    where = 'where deadline_dtm is not null'
+                    where =
+                        'where deadline_dtm is not null AND deadline_dtm >= CURRENT_DATE()'
                     break
                 } else {
                     sort = `deadline_dtm ${order}`
